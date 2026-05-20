@@ -197,7 +197,7 @@ export default function Home() {
 
         <section className="flex flex-col w-full gap-4 pb-4">
           <h1 className="text-lg lg:text-2xl">&gt; Contact</h1>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 max-w-full">
             {
               contact.map((e, i) => (
                 <Link key={i} href={e.href} target="_blank" rel="noopener">
@@ -207,8 +207,8 @@ export default function Home() {
                     <span className="absolute top-0 right-0 border-t border-r size-2 group-hover:w-full group-hover:h-full"></span>
                   <span className="absolute bottom-0 right-0 border-b border-r size-2 group-hover:w-full group-hover:h-full"></span>
 
-                  <h1 className="flex items-center gap-2">{ e.icon }{ e.displayText }</h1>
-                  <p className="text-sm">{ e.href }</p>
+                  <h1 className="flex items-center gap-2 ">{ e.icon }{ e.displayText }</h1>
+                  <p className="min-w-0 wrap-break-word text-sm">{ e.href }</p>
 
                 </div>
               </Link>
