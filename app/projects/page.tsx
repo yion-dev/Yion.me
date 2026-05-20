@@ -5,7 +5,7 @@ import { navLinks, projects } from "@/data/data";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Projects",
+  title: "Projects | Yion Dev",
   description:
     "Explore software engineering projects, web applications, backend systems, and development work created by Yion.",
 };

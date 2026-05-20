@@ -7,7 +7,7 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Home | Yion Dev",
   description:
     "Official portfolio website of Yion, a backend developer building web applications and software",
 };
@@ -83,7 +83,7 @@ export default function Home() {
           <span className="absolute bottom-0 right-0 border-b border-r w-full h-3"></span>
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-1 lg:gap-4">
-            <h1 className="text-xl lg:text-2xl"> &gt; Knowledge</h1>
+            <h2 className="text-xl lg:text-2xl"> &gt; Knowledge</h2>
             <div className="flex gap-4 text-xs lg:text-sm font-black">
               <span>[ ] = Not Learnt</span>
               <span>[x] = Leant</span>
@@ -106,13 +106,13 @@ export default function Home() {
         </section>
 
         <section className="flex flex-col  realtive w-full mt-5 gap-2">
-          <h1 className="text-xl lg:text-2xl">&gt; Work Experience</h1>
+          <h2 className="text-xl lg:text-2xl">&gt; Work Experience</h2>
           <div className="flex flex-col w-full h-auto gap-4">
 
             {work.map((e, i) => (
               <div key={i} className="flex justify-between w-full h-fit min-h-10 py-1">
                 <div className="flex flex-col w-auto h-fit gap-0">
-                  <h1 className="text-sm lg:text-lg">{e.displayName} [ {e.workType} ]</h1>
+                  <h2 className="text-sm lg:text-lg">{e.displayName} [ {e.workType} ]</h2>
                   <p className="-mt-1 text-xs lg:text-sm">{e.institutionName}</p>
                 </div>
                 <div >
@@ -130,7 +130,7 @@ export default function Home() {
 
         <section className="flex flex-col w-full min-h-60 gap-4">
 
-          <h1 className="text-xl lg:text-2xl"> &gt; Projects</h1>
+          <h2 className="text-xl lg:text-2xl"> &gt; Projects</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-60 gap-10">
             {projects.map((e, i) => (
@@ -138,7 +138,7 @@ export default function Home() {
                 <div className="flex flex-col gap-4">
 
                   <div className="text-base">
-                    <h1 className="text-lg lg:text-xl font-bold">[{i}] {e.title}</h1>
+                    <h2 className="text-lg lg:text-xl font-bold">[{i}] {e.title}</h2>
                     <p className="text-sm">{e.description}</p>
                     <p className="mt-4">stack:   {e.tech}</p>
                     <p>status:  deployed</p>
@@ -177,14 +177,14 @@ export default function Home() {
         <span className="w-full h-px my-6 bg-background-secondary"></span>
 
         <section className="flex flex-col w-full gap-2">
-          <h1 className="text-lg lg:text-2xl">&gt; Education</h1>
+          <h2 className="text-lg lg:text-2xl">&gt; Education</h2>
           <div className="flex flex-col w-full h-auto gap-4">
 
             {education.map((e, i) => (
               <Link key={i} href={e.href}>
                 <div className="flex justify-between w-full h-fit min-h-10 py-1 hover:bg-background-secondary hover:text-zinc-900 hover:ps-2">
                   <div className="flex flex-col w-auto max-w-70 lg:max-w-200 h-fit gap-0">
-                    <h1 className="text-base lg:text-lg">{e.displayName}</h1>
+                    <h2 className="text-base lg:text-lg">{e.displayName}</h2>
                     <p className="-mt-1 text-xs lg:text-sm">{e.institutionName}</p>
                   </div>
                   <div className="text-sm lg:text-base">
@@ -202,7 +202,7 @@ export default function Home() {
         <span className="w-full h-px my-6 bg-background-secondary"></span>
 
         <section className="flex flex-col w-full gap-4 pb-4">
-          <h1 className="text-lg lg:text-2xl">&gt; Contact</h1>
+          <h2 className="text-lg lg:text-2xl">&gt; Contact</h2>
           <div className="flex flex-col gap-4 max-w-full">
             {
               contact.map((e, i) => (
@@ -213,7 +213,7 @@ export default function Home() {
                     <span className="absolute top-0 right-0 border-t border-r size-2 group-hover:w-full group-hover:h-full"></span>
                   <span className="absolute bottom-0 right-0 border-b border-r size-2 group-hover:w-full group-hover:h-full"></span>
 
-                  <h1 className="flex items-center gap-2 ">{ e.icon }{ e.displayText }</h1>
+                  <h2 className="flex items-center gap-2 ">{ e.icon }{ e.displayText }</h2>
                   <p className="min-w-0 wrap-break-word text-sm">{ e.href }</p>
 
                 </div>

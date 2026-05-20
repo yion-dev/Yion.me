@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Blogs",
+  title: "Blogs | Yion Dev",
   description:
     "Technical blogs, development notes, programming insights, and software engineering articles written by Yion.",
 };
