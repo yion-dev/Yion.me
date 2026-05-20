@@ -22,14 +22,14 @@ export default function Home() {
         <Navbar links={navLinks} />
 
         <section className="flex flex-col lg:flex-row w-full gap-6">
-          <div className="h-full w-auto box-border border">
+          <div className="h-full w-fit min-w-35 box-border overflow-hidden">
             <Image
               width={200}
               height={200}
               src="/yion-square.jpg"
               alt="yion"
               loading="lazy"
-              className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 opacity-80 overflow-hidden" />
+              className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 opacity-80 overflow-hidden border-2 border-foreground" />
           </div>
           <div className="relative flex flex-col justify-between h-full min-h-35 w-full px-4 py-3">
 
