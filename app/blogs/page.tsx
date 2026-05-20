@@ -2,7 +2,14 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { navLinks } from "@/data/data";
 import { baseUrl, blogUrl } from "@/lib/constants";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description:
+    "Technical blogs, development notes, programming insights, and software engineering articles written by Yion.",
+};
 
 export default function Blogs () {
     return (
@@ -15,8 +22,8 @@ export default function Blogs () {
                 
                 <main className="relative flex flex-col px-1 py-6 gap-10 ">
                 
-                    <span className="absolute top-0 left-0 border-t border-l w-full h-2 rounded-xs"></span>
-                    <span className="absolute top-0 right-0 border-t border-r w-full h-2 rounded-xs"></span>
+                    <span className="absolute top-0 left-0 border-t border-l w-full h-2"></span>
+                    <span className="absolute top-0 right-0 border-t border-r w-full h-2"></span>
                 
                 { [...Array(5)].map((e,i) => (
                     <Link key={ i } href={ baseUrl + blogUrl + "/849292-0" + i }>

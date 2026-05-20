@@ -26,10 +26,10 @@ export default function ProjectCard({
       </div>
 
       <div className="relative w-full max-w-100 h-fit group">
-        <span className="absolute top-0 left-0 border-t border-l size-4 rounded-xs"></span>
-        <span className="absolute bottom-0 left-0 border-b border-l size-4 rounded-xs"></span>
-        <span className="absolute top-0 right-0 border-t border-r size-4 rounded-xs"></span>
-        <span className="absolute bottom-0 right-0 border-b border-r size-4 rounded-xs"></span>
+        <span className="absolute top-0 left-0 border-t border-l size-4"></span>
+        <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
+        <span className="absolute top-0 right-0 border-t border-r size-4"></span>
+        <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
         <img src={gif} alt={title} className="w-full max-h-50 object-cover" />
       </div>
     </div>

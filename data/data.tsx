@@ -48,7 +48,7 @@ export const contact: ContactInterface[] = [
   {
     displayText: "Resume",
     icon: <ResumeIcon strokeWidth={ 1.8 } className="size-4 fill-foreground" />,
-    href: "github.com/yion-dev"
+    href: "https://drive.google.com/file/d/1RCkL5hu20gUZwd_GKLRKv9XPTM_OaQfX/view?usp=sharing"
   },
   {
     displayText: "Github",
@@ -58,7 +58,7 @@ export const contact: ContactInterface[] = [
   {
     displayText: "Linkedin",
     icon: <LinkedinIcon strokeWidth={ 1 } className="size-4 fill-foreground" />,
-    href: "https://linkedin.com/in/thuta-naing-83b5222b0"
+    href: "https://linkedin.com/in/thutanaing"
   },
   {
     displayText: "thutanaing.personal@gmail.com",

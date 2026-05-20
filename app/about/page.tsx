@@ -1,6 +1,14 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { aboutmepictures, navLinks } from "@/data/data";
+import { Metadata } from "next";
+import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Learn more about Yion, backend developer from Chiang Rai, Thailand, including skills, technologies, and development experience.",
+};
 
 export default function About () {
     return (
@@ -18,12 +26,12 @@ export default function About () {
                     
                         <div className="relative w-full h-fit">
                             
-                            <span className="absolute top-0 left-0 border-t border-l size-4 rounded-xs"></span>
-                            <span className="absolute bottom-0 left-0 border-b border-l size-4 rounded-xs"></span>
-                            <span className="absolute top-0 right-0 border-t border-r size-4 rounded-xs"></span>
-                            <span className="absolute bottom-0 right-0 border-b border-r size-4 rounded-xs"></span>
+                            <span className="absolute top-0 left-0 border-t border-l size-4"></span>
+                            <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
+                            <span className="absolute top-0 right-0 border-t border-r size-4"></span>
+                            <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
                             
-                            <img src="/aboutme/aboutme1.gif" alt="" className="w-full h-60 lg:h-80 object-cover object-center p-1" />
+                            <img loading="lazy" src="/aboutme/aboutme1.gif" alt="" className="w-full h-60 lg:h-80 object-cover object-center p-1" />
 
                         </div>
                     </div>
@@ -35,12 +43,12 @@ export default function About () {
                     
                         <div className="relative w-full h-fit lg:order-1">
                             
-                            <span className="absolute top-0 left-0 border-t border-l size-4 rounded-xs"></span>
-                            <span className="absolute bottom-0 left-0 border-b border-l size-4 rounded-xs"></span>
-                            <span className="absolute top-0 right-0 border-t border-r size-4 rounded-xs"></span>
-                            <span className="absolute bottom-0 right-0 border-b border-r size-4 rounded-xs"></span>
+                            <span className="absolute top-0 left-0 border-t border-l size-4"></span>
+                            <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
+                            <span className="absolute top-0 right-0 border-t border-r size-4"></span>
+                            <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
                             
-                            <img src="/aboutme/aboutme2.gif" alt="" className="w-full h-60 lg:h-80 object-cover object-center p-1" />
+                            <img loading="lazy" src="/aboutme/aboutme2.gif" alt="" className="w-full h-60 lg:h-80 object-cover object-center p-1" />
 
                         </div>
 
@@ -55,12 +63,12 @@ export default function About () {
                         {aboutmepictures.map((e,i) => (
                             <div key={ i } className="relative w-full h-fit">
                                 
-                                <span className="absolute top-0 left-0 border-t border-l size-2 rounded-xs"></span>
-                                <span className="absolute bottom-0 left-0 border-b border-l size-2 rounded-xs"></span>
-                                <span className="absolute top-0 right-0 border-t border-r size-2 rounded-xs"></span>
-                                <span className="absolute bottom-0 right-0 border-b border-r size-2 rounded-xs"></span>
+                                <span className="absolute top-0 left-0 border-t border-l size-2"></span>
+                                <span className="absolute bottom-0 left-0 border-b border-l size-2"></span>
+                                <span className="absolute top-0 right-0 border-t border-r size-2"></span>
+                                <span className="absolute bottom-0 right-0 border-b border-r size-2"></span>
                                 
-                                <img src={ e.url } alt={ e.title } className="w-full h-40 lg:h-80 object-cover object-top p-1" />
+                                <Image height={400} width={400} loading="lazy" src={ e.url } alt={ e.title } className="w-full h-40 lg:h-80 object-cover object-top p-1" />
 
                             </div>
                         ))}

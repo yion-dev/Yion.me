@@ -2,6 +2,13 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectItem";
 import { navLinks, projects } from "@/data/data";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Explore software engineering projects, web applications, backend systems, and development work created by Yion.",
+};
 
 export default function Projects () {
     return (
@@ -14,7 +21,7 @@ export default function Projects () {
                 { projects.map((e,i) => (
                     <ProjectCard 
                         key={ i }
-                        index={ e.index} 
+                        index={ e.index+1 } 
                         title={ e.title } 
                         href={ e.href } 
                         gif={ e.gif } 

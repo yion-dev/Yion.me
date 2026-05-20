@@ -1,8 +1,16 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { navLinks, information, contact, knowledge, work, projects, education } from "@/data/data";
+import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Official portfolio website of Yion, a backend developer building web applications and software",
+};
 
 export default function Home() {
 
@@ -14,18 +22,21 @@ export default function Home() {
         <Navbar links={navLinks} />
 
         <section className="flex flex-col lg:flex-row w-full gap-6">
-          <div className="h-full w-auto box-border">
-            <img
+          <div className="h-full w-auto box-border border">
+            <Image
+              width={200}
+              height={200}
               src="/yion-square.jpg"
               alt="yion"
-              className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 border-2 opacity-80 rounded-xs" />
+              loading="lazy"
+              className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 opacity-80 overflow-hidden" />
           </div>
           <div className="relative flex flex-col justify-between h-full min-h-35 w-full px-4 py-3">
 
-            <span className="absolute top-0 left-0 border-t border-l size-4 rounded-xs"></span>
-            <span className="absolute bottom-0 left-0 border-b border-l size-4 rounded-xs"></span>
-            <span className="absolute top-0 right-0 border-t border-r size-4 rounded-xs"></span>
-            <span className="absolute bottom-0 right-0 border-b border-r size-4 rounded-xs"></span>
+            <span className="absolute top-0 left-0 border-t border-l size-4"></span>
+            <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
+            <span className="absolute top-0 right-0 border-t border-r size-4"></span>
+            <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
 
             <div className="flex flex-col w-full h-full gap-2">
               <h1 className="text-base lg:text-xl">
@@ -66,10 +77,10 @@ export default function Home() {
 
         <section className="relative flex flex-col w-full h-fit min-h-20 mt-5 px-4 py-4 lg:py-6 gap-4">
 
-          <span className="absolute top-0 left-0 border-t border-l w-full h-3 rounded-xs"></span>
-          <span className="absolute top-0 right-0 border-t border-r w-full h-3 rounded-xs"></span>
-          <span className="absolute bottom-0 left-0 border-b border-l w-full h-3 rounded-xs"></span>
-          <span className="absolute bottom-0 right-0 border-b border-r w-full h-3 rounded-xs"></span>
+          <span className="absolute top-0 left-0 border-t border-l w-full h-3"></span>
+          <span className="absolute top-0 right-0 border-t border-r w-full h-3"></span>
+          <span className="absolute bottom-0 left-0 border-b border-l w-full h-3"></span>
+          <span className="absolute bottom-0 right-0 border-b border-r w-full h-3"></span>
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-1 lg:gap-4">
             <h1 className="text-xl lg:text-2xl"> &gt; Knowledge</h1>
@@ -137,12 +148,12 @@ export default function Home() {
                   </div>
 
                   <div className="relative w-full h-fit">
-                    <span className="absolute top-0 left-0 border-t border-l size-4 rounded-xs"></span>
-                    <span className="absolute bottom-0 left-0 border-b border-l size-4 rounded-xs"></span>
-                    <span className="absolute top-0 right-0 border-t border-r size-4 rounded-xs"></span>
-                    <span className="absolute bottom-0 right-0 border-b border-r size-4 rounded-xs"></span>
+                    <span className="absolute top-0 left-0 border-t border-l size-4"></span>
+                    <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
+                    <span className="absolute top-0 right-0 border-t border-r size-4"></span>
+                    <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
 
-                    <img src={e.gif} alt="" className="w-full max-h-50 object-cover" />
+                    <img loading="lazy" src={e.gif} alt="" className="w-full max-h-50 object-cover" />
 
                   </div>
                 </div>
@@ -166,7 +177,7 @@ export default function Home() {
             {education.map((e, i) => (
               <Link key={i} href={e.href}>
                 <div className="flex justify-between w-full h-fit min-h-10 py-1 hover:bg-background-secondary hover:text-zinc-900 hover:ps-2">
-                  <div className="flex flex-col w-auto max-w-80 lg:max-w-200 h-fit gap-0">
+                  <div className="flex flex-col w-auto max-w-70 lg:max-w-200 h-fit gap-0">
                     <h1 className="text-base lg:text-lg">{e.displayName}</h1>
                     <p className="-mt-1 text-xs lg:text-sm">{e.institutionName}</p>
                   </div>
@@ -191,10 +202,10 @@ export default function Home() {
               contact.map((e, i) => (
                 <Link key={i} href={e.href} target="_blank" rel="noopener">
                   <div className="relative flex flex-col lg:flex-row justify-between p-3 group transition-all">
-                    <span className="absolute top-0 left-0 border-t border-l size-2 rounded-xs group-hover:w-full group-hover:h-ful"></span>
-                    <span className="absolute bottom-0 left-0 border-b border-l size-2 rounded-xs group-hover:w-full group-hover:h-full"></span>
-                    <span className="absolute top-0 right-0 border-t border-r size-2 rounded-xs group-hover:w-full group-hover:h-full"></span>
-                  <span className="absolute bottom-0 right-0 border-b border-r size-2 rounded-xs group-hover:w-full group-hover:h-full"></span>
+                    <span className="absolute top-0 left-0 border-t border-l size-2 group-hover:w-full group-hover:h-ful"></span>
+                    <span className="absolute bottom-0 left-0 border-b border-l size-2 group-hover:w-full group-hover:h-full"></span>
+                    <span className="absolute top-0 right-0 border-t border-r size-2 group-hover:w-full group-hover:h-full"></span>
+                  <span className="absolute bottom-0 right-0 border-b border-r size-2 group-hover:w-full group-hover:h-full"></span>
 
                   <h1 className="flex items-center gap-2">{ e.icon }{ e.displayText }</h1>
                   <p className="text-sm">{ e.href }</p>
