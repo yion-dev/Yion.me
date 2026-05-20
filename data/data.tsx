@@ -207,18 +207,18 @@ export const projects: ProjectCardProps[] = [
 export const aboutmepictures: AboutMePictureCardInterface[] = [
   {
     title: "...",
-    url: "/aboutme/aboutme3.jpg"
+    url: "/aboutme/aboutme3.webp"
   },
   {
     title: "...",
-    url: "/aboutme/aboutme4.jpg"
+    url: "/aboutme/aboutme4.webp"
   },
   {
     title: "...",
-    url: "/aboutme/aboutme5.jpg"
+    url: "/aboutme/aboutme5.webp"
   },
   {
     title: "...",
-    url: "/aboutme/aboutme6.jpg"
+    url: "/aboutme/aboutme6.webp"
   },
 ]
