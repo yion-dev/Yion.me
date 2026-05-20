@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "yion.me",
+  title: "__ yion.me __",
   description: "thanks for visiting",
 };
 
