@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function Blogs () {
     return (
-        <div className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
+        <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
             <div className="flex flex-col w-full max-w-4xl mx-auto gap-4">
                 
  
@@ -48,6 +48,6 @@ export default function Blogs () {
                 <Footer />
  
             </div>
-        </div>
+        </main>
     )
 }

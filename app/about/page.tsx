@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function About () {
     return (
-        <div className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
+        <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
             <div className="flex flex-col w-full max-w-4xl min-h-200 mx-auto gap-4">
             
                 <Navbar links={ navLinks } />
@@ -82,6 +82,6 @@ export default function About () {
                 <Footer />
             
             </div>
-        </div>
+        </main>
     )
 }

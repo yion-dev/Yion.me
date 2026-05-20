@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function Home() {
 
   return (
-    <div className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
+    <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
 
       <div className="flex flex-col w-full max-w-4xl min-h-screen mx-auto gap-4">
 
@@ -26,7 +26,7 @@ export default function Home() {
             <Image
               width={200}
               height={200}
-              src="/yion-square.jpg"
+              src="/yion-square.webp"
               alt="yion"
               loading="lazy"
               className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 opacity-80 overflow-hidden border-2 border-foreground" />
@@ -153,7 +153,13 @@ export default function Home() {
                     <span className="absolute top-0 right-0 border-t border-r size-4"></span>
                     <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
 
-                    <img loading="lazy" src={e.gif} alt="" className="w-full max-h-50 object-cover" />
+                    <img 
+                      width={400}
+                      height={200}
+                      loading="lazy" 
+                      src={e.gif} 
+                      alt={e.title} 
+                      className="w-full max-h-50 object-cover" />
 
                   </div>
                 </div>
@@ -222,7 +228,7 @@ export default function Home() {
  
       </div>
  
-    </div>    
+    </main>    
 
   );
 }
