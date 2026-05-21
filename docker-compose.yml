@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # 1. THE FRONTEND (Next.js) - Used for local development testing
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile_inline: |
+        FROM node:20-alpine
+        WORKDIR /app
+        COPY package*.json ./
+        RUN npm install
+        COPY . .
+        EXPOSE 3000
+        CMD ["npm", "run", "dev"]
+    ports:
+      - target: 3000
+        published: 3000
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /app
+      - type: volume
+        target: /app/node_modules
+      - type: volume
+        target: /app/.next
+    depends_on:
+      backend:
+        condition: service_started
+
+  # 2. THE BACKEND (Python FastAPI / Flask)
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - target: 8000
+        published: 8000
+    environment:
+      - DATABASE_URL=postgresql://yion_user:yion_password@db:5432/yion_db
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /app
+    depends_on:
+      db:
+        condition: service_started
+
+  # 3. THE DATABASE (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=yion_user
+      - POSTGRES_PASSWORD=yion_password
+      - POSTGRES_DB=yion_db
+    ports:
+      - target: 5432
+        published: 5432
+    volumes:
+      - type: volume
+        source: postgres_data
+        target: /var/lib/postgresql/data
+
+# Persistent Named Volume configuration
+volumes:
+  postgres_data:

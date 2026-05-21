@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Full-Stack Portfolio Ecosystem
 
-## Getting Started
+Welcome to my full-stack portfolio repository. This project is structured as a **monorepo**, combining a blazing-fast React/Next.js frontend with an isolated Python-based REST API backend and a persistent PostgreSQL database.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🏗️ Project Architecture
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The repository is split into two main application directories orchestrated top-down by Docker Compose:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **`/frontend`**: Built with **Next.js (App Router)**. Optimized for performance (achieving 95+ Lighthouse metrics) and styled dynamically. Deployed automatically via **Vercel**.
+* **`/backend`**: A high-performance REST API built with **Python (FastAPI/Flask)**. Containers are built on minimal Alpine Linux images.
+* **Database**: **PostgreSQL**, completely containerized with persistent data volume mapping to ensure data survives container restarts.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Local Development Setup
 
-To learn more about Next.js, take a look at the following resources:
+Thanks to Docker, you can spin up the entire full-stack ecosystem (Frontend, Backend, and Database) locally with a single command.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
+Ensure you have [Docker and Docker Compose](https://docs.docker.com/get-docker/) installed on your machine.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Getting Started
 
-## Deploy on Vercel
+1.  Clone the repository:
+    ```bash
+    git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
+    cd YOUR_REPO_NAME
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2.  Spin up the entire stack:
+    ```bash
+    docker compose up --build
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3.  Access the local services:
+    * **Frontend web app:** [http://localhost:3000](http://localhost:3000) (Supports Hot-Reload / Fast Refresh)
+    * **Backend REST API:** [http://localhost:8000](http://localhost:8000)
+    * **Interactive API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs) *(If using FastAPI)*
+
+---
+
+## 🚀 CI/CD & Automation
+
+This project utilizes automated pipelines to ensure code quality and stability before deployment:
+* **GitHub Actions (`eslint.yml`)**: Automatically triggers Next.js's native framework-optimized linter on every push to the `main` branch.
+* **Production Deployments**: 
+    * The frontend automatically compiles and shifts live onto **Vercel** via root-directory branch tracking.
+    * The backend and database run seamlessly within isolated Docker container networks on a dedicated cloud virtual private server.

@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectItem";
 import { navLinks, projects } from "@/data/data";
+import { baseUrl, projectUrl } from "@/lib/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,13 +22,14 @@ export default function Projects () {
                 { projects.map((e,i) => (
                     <ProjectCard 
                         key={ i }
+                        itemId={ e.itemId }
                         index={ e.index+1 } 
                         title={ e.title } 
                         href={ e.href } 
                         gif={ e.gif } 
                         tech={ e.tech } 
                         description={ e.description } 
-                        status={"deployed"} />
+                        status={ e.status } />
                 ))}
                 </div>
 

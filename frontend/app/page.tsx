@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import ProjectCard from "@/components/ProjectItem";
 import { navLinks, information, contact, knowledge, work, projects, education } from "@/data/data";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -86,7 +87,7 @@ export default function Home() {
             <h2 className="text-xl lg:text-2xl"> &gt; Knowledge</h2>
             <div className="flex gap-4 text-xs lg:text-sm font-black">
               <span>[ ] = Not Learnt</span>
-              <span>[x] = Leant</span>
+              <span>[x] = Learnt</span>
               <span>[~] = Learning</span>
             </div>
           </div>
@@ -135,40 +136,20 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-60 gap-10">
             {projects.map((e, i) => (
               <React.Fragment key={i}>
-                <div className="flex flex-col gap-4">
-
-                  <div className="text-base">
-                    <h2 className="text-lg lg:text-xl font-bold">[{i}] {e.title}</h2>
-                    <p className="text-sm">{e.description}</p>
-                    <p className="mt-4">stack:   {e.tech}</p>
-                    <p>status:  deployed</p>
-                    <p className="flex justify-between">link:    yion.me/project
-                      <span className="font-black">[Read More]</span>
-                    </p>
-                  </div>
-
-                  <div className="relative w-full h-fit">
-                    <span className="absolute top-0 left-0 border-t border-l size-4"></span>
-                    <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
-                    <span className="absolute top-0 right-0 border-t border-r size-4"></span>
-                    <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
-
-                    <img 
-                      width={400}
-                      height={200}
-                      loading="lazy" 
-                      src={e.gif} 
-                      alt={e.title} 
-                      className="w-full max-h-50 object-cover" />
-
-                  </div>
-                </div>
+                <ProjectCard 
+                  itemId={ e.itemId }
+                  index={ i+1 } 
+                  title={ e.title } 
+                  href={ e.href } 
+                  gif={ e.gif } 
+                  tech={ e.tech } 
+                  description={ e.description } 
+                  status={"Production"} 
+                  className="flex-col!" />
               </React.Fragment>
 
             ))
             }
-
-
           </div>
 
 

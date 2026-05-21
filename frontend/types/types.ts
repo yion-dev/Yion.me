@@ -43,3 +43,20 @@ export interface AboutMePictureCardInterface {
   title: string,
   url: string,
 }
+
+export interface TechCardPropsInterface {
+  displayName: string,
+}
+
+export interface ProjectCardProps {
+  itemId: string,
+  index: number,
+  title: string,
+  href: string,
+  gif: string,
+  tech: TechCardPropsInterface[],
+  description: string,
+  status: 'Production' | 'Development'
+  className?: string
+}
+

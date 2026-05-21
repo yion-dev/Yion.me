@@ -3,7 +3,6 @@ import GithubIcon from "../components/icons/github"
 import LinkedinIcon from "../components/icons/linkedin"
 import ResumeIcon from "../components/icons/resume"
 import { GraduationCap, PinIcon } from "lucide-react"
-import { ProjectCardProps } from "../components/ProjectItem"
 import { 
   InformationInterface, 
   ContactInterface, 
@@ -11,7 +10,8 @@ import {
   WorkInterface, 
   KnowledgeInterface, 
   NavLinksInterface, 
-  AboutMePictureCardInterface} from "../types/types"
+  AboutMePictureCardInterface,
+  ProjectCardProps} from "../types/types"
 
 export const navLinks:NavLinksInterface[] = [
   {
@@ -186,21 +186,40 @@ export const knowledge: KnowledgeInterface[] = [
 export const projects: ProjectCardProps[] = [
   {
     title: "Juan Discord Bot",
-    href: "#",
+    itemId: "4228-01", 
+    href: "github.com/yion-dev/juan-discord-bot",
     gif: "/project1.gif",
-    tech: "Rust | Serenity",
+    tech: [
+      {
+        displayName: "Rust",
+      }, 
+      {
+        displayName: "Serenity",
+      }
+    ],
     description: "Discord bot created with Rust and Serenity Crate that uses Weather API fetch data and return back to users.",
     index: 0,
-    status: "deployed"
+    status: 'Production'
   },
   {
     title: "Stargazer",
-    href: "#",
+    itemId: "4228-02", 
+    href: "github.com/yion-dev/stargazer",
     gif: "/project2.gif",
-    tech: "React | Python | Flask",
+    tech: [
+      {
+        displayName: "React",
+      }, 
+      {
+        displayName: "Python",
+      },
+      {
+        displayName: "Flask",
+      }
+    ],
     description: "Clothing website created with React for the frontend and Python + Flask for the backend",
     index: 1,
-    status: "deployed"
+    status: 'Production'
   },
 ]
 
