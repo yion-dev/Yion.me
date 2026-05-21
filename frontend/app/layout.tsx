@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.yiondev.me"),
 
   title: {
-    default: "Yion Dev",
+    default: "YionDev(Thuta Naing) | Backend-Focused Full-Stack Developer",
     template: "%s | Yion Dev",
   },
 
