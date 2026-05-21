@@ -10,7 +10,7 @@ import React from "react";
 export const metadata: Metadata = {
   title: "Home | Yion Dev",
   description:
-    "Official portfolio website of Yion, a backend developer building web applications and software",
+    "Software Engineering student at Mae Fah Luang University. Full-Stack Developer focused on backend architectures, IoT ecosystems, and low-level programming.",
 };
 
 export default function Home() {
