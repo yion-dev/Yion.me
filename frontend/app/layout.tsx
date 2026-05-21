@@ -31,12 +31,41 @@ export const metadata: Metadata = {
     "Backend developer portfolio showcasing projects, blogs, and software engineering work.",
 
   keywords: [
+    // Name Variations
     "Yion",
-    "Backend Developer",
-    "Next.js",
+    "YionDev",
+    "Thuta Naing",
+    "Thuta naing",
+    "thuta Naing",
+    "thuta naing",
+    "Thu Ta Naing",
+    "Thu ta Naing",
+    "Thu ta naing",
+    "Thu Ta naing",
+    "thu ta naing",
+    
+    // Core Specialties & Niche
+    "Developer",
     "Software Engineer",
+    "Software Engineering",
+    "Web Developer",
+    "Backend Developer",
+    "Frontend Developer",
+    "IoT Developer",
+    "Low-Level Developer",
+    "Embedded Systems",
+    "Next.js",
     "Portfolio",
+    
+    // Location & Education Context
+    "Mae Fah Luang University",
+    "MFU",
+    "MFU Developer",
+    "Myanmar",
+    "Myanmar Developer",
+    "Myanmar Software Engineer",
     "Thailand Developer",
+    "Thailand Software Engineer",
   ],
 
   authors: [{ name: "Yion" }],
