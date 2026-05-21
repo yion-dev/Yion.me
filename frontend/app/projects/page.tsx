@@ -2,7 +2,6 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectItem";
 import { navLinks, projects } from "@/data/data";
-import { baseUrl, projectUrl } from "@/lib/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

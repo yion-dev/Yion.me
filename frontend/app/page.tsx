@@ -43,7 +43,7 @@ export default function Home() {
               <h1 className="text-base lg:text-xl">
                 hello, i am
                 <span className="w-full font-black"> yion</span>
-                <span className=" text-xs"> - pronounced "Yee On"</span>
+                <span className=" text-xs"> - pronounced &quot;Yee On&quot;</span>
               </h1>
               <p className="text-sm lg:text-base">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima mollitia sit quod aperiam dolor reiciendis, exercitationem necessitatibus eligendi eveniet culpa.

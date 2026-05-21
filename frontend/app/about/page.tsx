@@ -31,7 +31,13 @@ export default function About () {
                             <span className="absolute top-0 right-0 border-t border-r size-4"></span>
                             <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
                             
-                            <img loading="lazy" src="/aboutme/aboutme1.gif" alt="" className="w-full h-60 lg:h-80 object-cover object-center p-1" />
+                            <Image 
+                                width={"400"}
+                                height={"200"}
+                                loading="lazy" 
+                                src="/aboutme/aboutme1.gif" 
+                                alt="" 
+                                className="w-full h-60 lg:h-80 object-cover object-center p-1" />
 
                         </div>
                     </div>
@@ -48,7 +54,13 @@ export default function About () {
                             <span className="absolute top-0 right-0 border-t border-r size-4"></span>
                             <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
                             
-                            <img loading="lazy" src="/aboutme/aboutme2.gif" alt="" className="w-full h-60 lg:h-80 object-cover object-center p-1" />
+                            <Image 
+                                width={"400"}
+                                height={"200"}
+                                loading="lazy" 
+                                src="/aboutme/aboutme2.gif" 
+                                alt="" 
+                                className="w-full h-60 lg:h-80 object-cover object-center p-1" />
 
                         </div>
 

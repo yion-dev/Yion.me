@@ -1,7 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import ProjectCard from "@/components/ProjectItem";
-import { navLinks, projects } from "@/data/data";
+import { navLinks } from "@/data/data";
 
 export default function Project () {
     return (
