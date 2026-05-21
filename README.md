@@ -1,6 +1,6 @@
-# Full-Stack Portfolio Ecosystem
+# Yiondev.me 
 
-Welcome to my full-stack portfolio repository. This project is structured as a **monorepo**, combining a blazing-fast React/Next.js frontend with an isolated Python-based REST API backend and a persistent PostgreSQL database.
+Welcome to my portfolio repository. This project is structured as a **monorepo**, combining a blazing-fast React/Next.js frontend with an isolated Python-based REST API backend and a persistent PostgreSQL database.
 
 ---
 
