@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Inconsolata } from 'next/font/google'
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -115,6 +116,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">{children}</body>
       <Analytics />
+      <Script
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          strategy="lazyOnload"
+          data-cf-beacon='{"token": "296987469f4f487bb8fafd5c6cc4bb05"}'
+        />
     </html>
   );
 }
