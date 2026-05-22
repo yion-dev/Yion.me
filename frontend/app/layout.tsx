@@ -109,6 +109,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cfToken = process.env.NEXT_PUBLIC_CLOUDFLARE_TOKEN;
   return (
     <html
       lang="en"
@@ -119,7 +120,7 @@ export default function RootLayout({
       <Script
           src="https://static.cloudflareinsights.com/beacon.min.js"
           strategy="lazyOnload"
-          data-cf-beacon='{"token": "296987469f4f487bb8fafd5c6cc4bb05"}'
+          data-cf-beacon={`{"token": "${cfToken}"}`}
         />
     </html>
   );
