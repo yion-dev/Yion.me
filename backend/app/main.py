@@ -13,11 +13,10 @@ app.include_router(visitor.router)
 Base.metadata.create_all(bind=engine);
 
 app.add_middleware(
-    CORSMiddleware(
-        allow_origins=["https://www.yiondev.me"],
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+    CORSMiddleware,
+    allow_origins=["https://www.yiondev.me"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.middleware("http")
