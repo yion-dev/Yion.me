@@ -188,7 +188,7 @@ export const projects: ProjectCardProps[] = [
     title: "Juan Discord Bot",
     itemId: "4228-01", 
     href: "github.com/yion-dev/juan-discord-bot",
-    gif: "/project1.gif",
+    thumbnail: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/Projects/project1.webm",
     tech: [
       {
         displayName: "Rust",
@@ -205,7 +205,7 @@ export const projects: ProjectCardProps[] = [
     title: "Stargazer",
     itemId: "4228-02", 
     href: "github.com/yion-dev/stargazer",
-    gif: "/project2.gif",
+    thumbnail: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/Projects/project2.webm",
     tech: [
       {
         displayName: "React",
@@ -225,19 +225,37 @@ export const projects: ProjectCardProps[] = [
 
 export const aboutmepictures: AboutMePictureCardInterface[] = [
   {
-    title: "...",
-    url: "/aboutme/aboutme3.webp"
+    title: "About Me Video 1",
+    url: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/aboutme1.webm"
   },
   {
-    title: "...",
-    url: "/aboutme/aboutme4.webp"
+    title: "About Me Video 2",
+    url: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/aboutme2.webm"
   },
   {
-    title: "...",
-    url: "/aboutme/aboutme5.webp"
+    title: "About Me Pic 1",
+    url: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/aboutme3.webp"
   },
   {
-    title: "...",
-    url: "/aboutme/aboutme6.webp"
+    title: "About Me Pic 2",
+    url: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/aboutme4.webp"
+  },
+  {
+    title: "About Me Pic 3",
+    url: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/aboutme5.webp"
+  },
+  {
+    title: "About Me Pic 4",
+    url: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/aboutme6.webp"
   },
 ]
+
+export const yionData = {
+  small_description: "I am a Backend Developer and a Software Engineering student at Mae Fah Luang University. Currently exploring Embedded Systems and Low-Level Programming on the side.",
+
+  about_me_1: "I am Thuta Naing but many people know me as Yion. I am a software developer originally from Myanmar, currently living in Chiang Rai, Thailand. I am currently studying in Mae Fah Luang University as a Software Engineering Student. I spend most of my time building backend systems, writing APIs, and occasionally breaking things just to fix them again. I don't just like Software Engineering — I love Technology in general.",
+
+  about_me_2: "Outside of software, I enjoy learning about different fields within the Technology industry. Currently, I am exploring Embedded Systems and IoT using microcontrollers like Arduino and ESP32 with various modules. I am also really interested in Operating Systems and Hardware Architecture, which I plan to learn in the future.",
+
+  about_me_3: "When I am not coding, you will find me spending time with my beloved, cooking, or taking random photos. I also play table tennis whenever I get the chance. I enjoy a quiet life without many distractions. I rather spend my time improving myself and being with my loved one. I believe that everyone is bound to die one day, but that doesn't mean we have to live in misery."
+}

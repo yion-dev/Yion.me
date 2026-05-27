@@ -2,13 +2,15 @@ import Link from "next/link"
 import { baseUrl } from "../lib/constants"
 import { NavbarProps } from "../types/types"
 
-export default function Navbar({ links}: NavbarProps) {
+export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
   return (
-    <nav className="flex flex-col my-4 gap-2">
-      <h1 className="text-2xl lg:text-3xl">
-        _Yiondev
-        <span className="text-xl text-foreground-mute">.me</span>
-      </h1>
+    <nav className="lg:relative flex flex-col w-full max-w-4xl my-4 px-4 lg:px-0 gap-2">
+      <Link href={ baseUrl }>
+        <h1 className="text-2xl lg:text-3xl">
+          _Yiondev
+          <span className="text-xl text-foreground-mute">.me</span>
+        </h1>
+      </Link>
       <ul className="flex gap-2 md:gap-10">
         {links.map((e, i) => (
           <li key={i}>
@@ -20,6 +22,9 @@ export default function Navbar({ links}: NavbarProps) {
           </li>
         ))}
       </ul>
+        <div className="absolute right-2 top-1 lg:right-0 lg:top-0 text-sm">
+          [{websiteVisitorCount} visitors]
+        </div>
     </nav>
   )
 }

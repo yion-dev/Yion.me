@@ -4,6 +4,9 @@ import { Inconsolata } from 'next/font/google'
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import Script from "next/script";
+import Navbar from "@/components/Navbar";
+import { navLinks } from "@/data/data";
+import { getVisitors } from "@/lib/api";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -104,18 +107,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const cfToken = process.env.NEXT_PUBLIC_CLOUDFLARE_TOKEN;
+  const visitors = await getVisitors();
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${inconsolata.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col items-center justify-center lg:py-10">
+        <Navbar links={navLinks} websiteVisitorCount={visitors.length} />
+        {children}
+      </body>
       <Analytics />
       <Script
           src="https://static.cloudflareinsights.com/beacon.min.js"

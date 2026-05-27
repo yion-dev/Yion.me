@@ -1,4 +1,3 @@
-export const baseUrl = "https://yiondev.me";
-// export const baseUrl = "http://localhost:3000";
+export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 export const blogUrl = "/blogs"
 export const projectUrl = "/projects"

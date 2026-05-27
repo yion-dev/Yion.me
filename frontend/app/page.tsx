@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectItem";
-import { navLinks, information, contact, knowledge, work, projects, education } from "@/data/data";
+import { navLinks, information, contact, knowledge, work, projects, education, yionData } from "@/data/data";
+import { getVisitors } from "@/lib/api";
+import { VisitorResponseInterface } from "@/types/types";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,23 +15,20 @@ export const metadata: Metadata = {
     "Software Engineering student at Mae Fah Luang University. Full-Stack Developer focused on backend architectures, IoT ecosystems, and low-level programming.",
 };
 
-export default function Home() {
-
+export default async function Home() {
+ 
   return (
-    <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0 lg:py-20">
-
-      <div className="flex flex-col w-full max-w-4xl min-h-screen mx-auto gap-4">
-
-        <Navbar links={navLinks} />
+    <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0">
+      <div className="flex flex-col w-full h-auto max-w-4xl mx-auto gap-4">
 
         <section className="flex flex-col lg:flex-row w-full gap-6">
           <div className="h-full w-fit min-w-35 box-border overflow-hidden">
             <Image
+              priority
               width={200}
               height={200}
               src="/yion-square.webp"
               alt="yion"
-              loading="lazy"
               className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 opacity-80 overflow-hidden border-2 border-foreground" />
           </div>
           <div className="relative flex flex-col justify-between h-full min-h-35 w-full px-4 py-3">
@@ -46,7 +45,7 @@ export default function Home() {
                 <span className=" text-xs"> - pronounced &quot;Yee On&quot;</span>
               </h1>
               <p className="text-sm lg:text-base">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima mollitia sit quod aperiam dolor reiciendis, exercitationem necessitatibus eligendi eveniet culpa.
+               { yionData.small_description }
               </p>
             </div>
             <div className="flex w-full min-h-fit mt-4 lg:mt-0 lg:-mb text-xs lg:text-sm gap-4 lg:gap-10">
@@ -65,7 +64,7 @@ export default function Home() {
         <section className="flex relative w-full">
           <div className="flex flex-wrap items-center w-full min-h-10 px-4 py-2 lg:py-0 gap-x-10 gap-y-2 lg:gap-14 border">
             {contact.map((e, i) => (
-              <Link key={ i } href={ e.href }>
+              <Link key={ i } href={ e.href } rel="noopener" target="_blank">
                 <div className="flex items-center lg:justify-center w-fit lg:min-w-0 h-fit gap-2 text-sm lg:text-base">
                   {e.icon}
                   {e.displayText}
@@ -141,7 +140,7 @@ export default function Home() {
                   index={ i+1 } 
                   title={ e.title } 
                   href={ e.href } 
-                  gif={ e.gif } 
+                  thumbnail={ e.thumbnail } 
                   tech={ e.tech } 
                   description={ e.description } 
                   status={"Production"} 
