@@ -54,7 +54,8 @@ export async function getBlogs() {
 export async function getBlog(id: number) {
     try {
         const res = await fetch(`${API_URL}/blogs/get-one/${id}`, {
-            method: "GET"
+            method: "GET",
+            next: { revalidate: 86400 },
         })
 
         console.log(`${API_URL}/blogs/get-one/${id}`)
