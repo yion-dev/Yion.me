@@ -34,6 +34,7 @@ export async function getProjects() {
 }
 
 export async function getBlogs() {
+    console.log(API_URL);
     try {
         const res = await fetch(`${API_URL}/blogs/get-all`, {
             method: "GET"

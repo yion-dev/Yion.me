@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 export default async function Blogs () {
     const blogs:BlogResponseInterface[] = await getBlogs();
+    console.log(blogs)
     return (
         <main className="w-full h-auto bg-background text-foreground font-mono font-medium px-4 lg:px-0">
             <div className="flex flex-col w-full max-w-4xl mx-auto gap-">
