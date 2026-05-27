@@ -48,7 +48,7 @@ export const contact: ContactInterface[] = [
   {
     displayText: "Resume",
     icon: <ResumeIcon strokeWidth={ 1.8 } className="size-4 fill-foreground" />,
-    href: "https://drive.google.com/file/d/1RCkL5hu20gUZwd_GKLRKv9XPTM_OaQfX/view?usp=sharing"
+    href: "https://shorturl.at/x9s8G"
   },
   {
     displayText: "Github",
