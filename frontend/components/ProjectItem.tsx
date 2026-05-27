@@ -13,7 +13,7 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   return (
     <div className={clsx("flex flex-col lg:flex-row h-full gap-4", className)}>
-      <div className="flex flex-col justify-evenly text-base">
+      <div className="flex flex-col justify-between text-base">
         <h1 className="text-lg lg:text-xl font-bold">[{index}] {title}</h1>
         <p className="text-sm">{description}</p>
         <div className="flex flex-wrap mt-4 gap-2">
@@ -23,11 +23,10 @@ export default function ProjectCard({
 
           }
         </div>
-        <p>status:  {status}</p>
-        <p className="flex justify-between">
+        <div className="flex flex-col">
+          <p>status:  {status}</p>
           <span>link:    {href}</span>
-          <span className="font-black">[Read More]</span>
-        </p>
+        </div>
       </div>
 
       <div className="relative w-full max-w-100 h-fit group">
