@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { aboutmepictures, navLinks, yionData } from "@/data/data";
+import { aboutmepictures, yionData } from "@/data/data";
 import { Metadata } from "next";
 import Image from "next/image";
 

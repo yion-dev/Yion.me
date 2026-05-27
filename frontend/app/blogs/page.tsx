@@ -1,6 +1,4 @@
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { navLinks } from "@/data/data";
 import { getBlogs } from "@/lib/api";
 import { baseUrl, blogUrl } from "@/lib/constants";
 import { BlogResponseInterface } from "@/types/types";
@@ -31,7 +29,7 @@ export default async function Blogs () {
                                 <div className="flex items-center justify-between w-full py-2 lg:py-4 font-bold text-sm lg:text-lg ">
                                     <div className="flex gap-2">
                                         <p className="opacity-80">{ e.blog_author }</p>
-                                        <span> // </span>
+                                        <span> { "//" } </span>
                                     <p className="opacity-80">
                                         {new Date(e.blog_createdAt).toLocaleDateString("en-US", {
                                             year: "numeric",

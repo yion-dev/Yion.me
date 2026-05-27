@@ -1,9 +1,6 @@
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectItem";
-import { navLinks, information, contact, knowledge, work, projects, education, yionData } from "@/data/data";
-import { getVisitors } from "@/lib/api";
-import { VisitorResponseInterface } from "@/types/types";
+import { information, contact, knowledge, work, projects, education, yionData } from "@/data/data";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";

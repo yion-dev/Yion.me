@@ -1,7 +1,5 @@
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { navLinks } from "@/data/data";
-import { getBlog, getBlogs } from "@/lib/api";
+import { getBlog } from "@/lib/api";
 import { baseUrl, blogUrl } from "@/lib/constants";
 import { BlogResponseInterface } from "@/types/types";
 import { MoveLeft } from "lucide-react";
