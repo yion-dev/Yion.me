@@ -3,8 +3,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:8000"
 export async function getVisitors() {
     try{
         const res = await fetch(API_URL + "/visitors/get-all", {
-            next: { revalidate: 86400 },
-            method: "GET"
+            method: "GET",
+            cache: 'no-store'
         })
 
         if(!res.ok) return [] 
