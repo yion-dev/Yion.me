@@ -20,7 +20,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=https://yiondev-backend.yiondev.me
       - NEXT_PUBLIC_BASE_URL=https://www.yiondev.me
-      - NODE_OPTIONS=--max-old-space-size=1536
+      - NODE_OPTIONS=--max-old-space-size=4096
     volumes:
       - type: bind
         source: ./frontend

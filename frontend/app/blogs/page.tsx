@@ -21,7 +21,7 @@ export default async function Blogs () {
                 <main className="relative flex flex-col w-full h-auto min-h-180 px-1 py-6 gap-10 ">
                 
                 { blogs.map((e,i) => (
-                    <Link key={ i } href={ baseUrl + blogUrl + "/849292-" + (e.blog_id) }>
+                    <Link key={ i } href={ blogUrl + "/849292-" + (e.blog_id) }>
                         <div className="flex flex-col group cursor-pointer">
                             <h1 className="text-base lg:text-xl font-black lg:font-semibold group-hover:underline">
                                 <span className="text-sm lg:text-lg">[{ i+1 }] </span>
