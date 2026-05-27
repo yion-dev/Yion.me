@@ -1,4 +1,4 @@
-from sqlalchemy import String, Text, func, DateTime
+from sqlalchemy import String, Text, func, DateTime, ARRAY
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import JSONB
 from app.database import Base
@@ -15,6 +15,7 @@ class Project(Base):
     project_githubUrl: Mapped[str | None]
     project_liveUrl: Mapped[str | None]
     project_thumbnailUrl: Mapped[str | None]
+    project_pictures: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
     project_techstack: Mapped[list[str]] = mapped_column(JSONB)
     project_status: Mapped[str]
     project_created_at: Mapped[datetime] = mapped_column( 

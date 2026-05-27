@@ -3,6 +3,7 @@ version: '3.8'
 services:
   # 1. THE FRONTEND (Next.js) - Used for local development testing
   frontend:
+    mem_limit: 2g
     build:
       context: ./frontend
       dockerfile_inline: |
@@ -19,6 +20,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000
       - NEXT_PUBLIC_BASE_URL=https://www.yiondev.me
+      - NODE_OPTIONS=--max-old-space-size=1536
     volumes:
       - type: bind
         source: ./frontend

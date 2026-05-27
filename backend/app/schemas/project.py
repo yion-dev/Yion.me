@@ -11,6 +11,7 @@ class ProjectBase(BaseModel):
     project_githubUrl: str | None = None
     project_liveUrl: str | None = None
     project_thumbnailUrl: str | None = None
+    project_pictures: list[str] = []
 
     project_techstack: list[str] = []
 

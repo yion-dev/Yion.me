@@ -22,7 +22,7 @@ router = APIRouter(
 def getAllBlog(dbInstance: Session = Depends(get_db)):
     return get_blog_all(db=dbInstance)
 
-@router.get("/get-one/{id}")
+@router.get("/get-one/{blogID}")
 def getOneBlog(blogID: int, dbInstance: Session = Depends(get_db)):
     return get_blog_one(id=blogID, db=dbInstance);
 
@@ -30,11 +30,11 @@ def getOneBlog(blogID: int, dbInstance: Session = Depends(get_db)):
 def createBlog(blogObject: BlogCreate, dbInstance: Session = Depends(get_db)):
     return create_blog(blog=blogObject, db=dbInstance)
 
-@router.put("/update/{id}")
+@router.put("/update/{blogID}")
 def updateBlog(blogID: int, blogObject: BlogUpdate, dbInstance: Session = Depends(get_db)):
     return update_blog(blog_id=blogID, blog=blogObject, db=dbInstance)
 
-@router.delete("/delete/{id}")
+@router.delete("/delete/{blogID}")
 def deleteBlog(blogID: int, dbInstance: Session = Depends(get_db)):
     return delete_blog(blog_id=blogID, db=dbInstance)
     

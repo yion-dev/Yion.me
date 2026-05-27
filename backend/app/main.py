@@ -17,9 +17,9 @@ app.add_middleware(
     allow_origins=[
         "https://www.yiondev.me",
         "https://yiondev.me",
-        "http://localhost:3000"
+        "http://localhost:3000",
     ],
-    allow_cerdentials=True,
+    allow_credentials=True, 
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -53,7 +53,7 @@ async def track_visitors(request: Request, call_next):
                 
             else:
                 visitor = Visitor(
-                    visitor_visited_pages=[str(request.url.path)],  # list since it's ARRAY
+                    visitor_visited_pages=[str(request.url.path)], 
                     visitor_ip_address=request.client.host
                 )
                 db.add(visitor)
