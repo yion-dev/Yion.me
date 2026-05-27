@@ -17,7 +17,8 @@ services:
       - target: 3000
         published: 3000
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NEXT_PUBLIC_BASE_URL=https://www.yiondev.me
     volumes:
       - type: bind
         source: ./frontend
