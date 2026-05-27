@@ -3,6 +3,7 @@ import { baseUrl } from "../lib/constants"
 import { NavbarProps } from "../types/types"
 
 export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
+  console.log(baseUrl)
   return (
     <nav className="lg:relative flex flex-col w-full max-w-4xl my-4 px-4 lg:px-0 gap-2">
       <Link href={ baseUrl }>
@@ -15,7 +16,7 @@ export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
         {links.map((e, i) => (
           <li key={i}>
             <Link
-              href={ baseUrl + e.href }
+              href={ e.href }
               className="text-sm md:text-base font-bold text-foreground-mute hover:bg-background-secondary hover:text-zinc-900 transition-all px-1 py-1">
               [ {e.displayName} ]
             </Link>
