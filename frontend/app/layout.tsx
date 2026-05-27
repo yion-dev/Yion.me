@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     "Thu ta naing",
     "Thu Ta naing",
     "thu ta naing",
-    
+
     // Core Specialties & Niche
     "Developer",
     "Software Engineer",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     "Embedded Systems",
     "Next.js",
     "Portfolio",
-    
+
     // Location & Education Context
     "Mae Fah Luang University",
     "MFU",
@@ -119,16 +119,31 @@ export default async function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${inconsolata.variable} h-full antialiased`}
     >
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-RXE4Q3KGTJ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', 'G-RXE4Q3KGTJ');
+                    `}
+        </Script>
+      </head>
       <body className="min-h-full flex flex-col items-center justify-center lg:py-10">
         <Navbar links={navLinks} websiteVisitorCount={visitors.length} />
         {children}
       </body>
       <Analytics />
       <Script
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          strategy="lazyOnload"
-          data-cf-beacon={`{"token": "${cfToken}"}`}
-        />
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        strategy="lazyOnload"
+        data-cf-beacon={`{"token": "${cfToken}"}`}
+      />
+
     </html>
   );
 }
