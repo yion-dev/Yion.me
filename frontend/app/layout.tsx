@@ -7,6 +7,7 @@ import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import { navLinks } from "@/data/data";
 import { getVisitors } from "@/lib/api";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -126,18 +127,22 @@ export default async function RootLayout({
         />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', 'G-RXE4Q3KGTJ');
-                    `}
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-RXE4Q3KGTJ');
+          `}
         </Script>
       </head>
+
       <body className="min-h-full flex flex-col items-center justify-center lg:py-10">
         <Navbar links={navLinks} websiteVisitorCount={visitors.length} />
         {children}
       </body>
+
       <Analytics />
+      <SpeedInsights />
+
       <Script
         src="https://static.cloudflareinsights.com/beacon.min.js"
         strategy="lazyOnload"
