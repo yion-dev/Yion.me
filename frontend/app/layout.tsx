@@ -138,10 +138,9 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col items-center justify-center lg:py-10">
         <Navbar links={navLinks} websiteVisitorCount={visitors.length} />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
-
-      <Analytics />
-      <SpeedInsights />
 
       <Script
         src="https://static.cloudflareinsights.com/beacon.min.js"
