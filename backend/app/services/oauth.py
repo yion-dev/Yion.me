@@ -34,7 +34,7 @@ async def github_callback_service(code: str) -> RedirectResponse:
         if user["login"] != ALLOWED_USER:
             return RedirectResponse(f"{FRONTEND_URL}?error=unauthorized")       
   
-        response = RedirectResponse(url="/blogs/display/dashboard")
+        response = RedirectResponse(url=f"{BASE_URL}/blogs/display/dashboard")
         response.set_cookie(
             key="session_token",
             value=token,
