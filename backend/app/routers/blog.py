@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from fastapi.responses import HTMLResponse
 
 from sqlalchemy.orm import Session
 
@@ -38,3 +39,14 @@ def updateBlog(blogID: int, blogObject: BlogUpdate, dbInstance: Session = Depend
 def deleteBlog(blogID: int, dbInstance: Session = Depends(get_db)):
     return delete_blog(blog_id=blogID, db=dbInstance)
     
+@router.get("/display/edit")
+def route_to_blog_edit_page():
+    with open("/app/app/views/blog_edit.html", "r") as f:
+        html = f.read()
+    return HTMLResponse(content=html)
+
+@router.get("/display/dashboard")
+def route_to_blog_dashboard_page():
+    with open("/app/app/views/blog_dashboard.html", "r") as f:
+        html = f.read()
+    return HTMLResponse(content=html)

@@ -18,7 +18,7 @@ class BlogGet(BlogBase):
 class BlogCreate(BlogBase):
     pass
 
-class BlogUpdate(BlogBase):
+class BlogUpdate(BaseModel):
     blog_title: str | None = None
     blog_smallDescription: str | None = None
     blog_description: str | None = None
