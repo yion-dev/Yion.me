@@ -11,7 +11,7 @@ from app.database import Base, engine, SessionLocal
 from app.models.visitor import Visitor
 
 ALLOWED_USER = os.getenv("ALLOWED_USER")
-BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
+BASE_URL = os.getenv("BASE_URL")
 
 app = FastAPI()
 
