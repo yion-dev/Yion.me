@@ -1,4 +1,8 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://backend:8000"
+const isServer = typeof window === "undefined"
+
+const API_URL = isServer
+  ? process.env.API_URL || "http://backend:8000"          // server side
+  : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 
 export async function getVisitors() {
     try{

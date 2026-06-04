@@ -15,7 +15,7 @@ def get_blog_all(db: Session):
     return blogs
 
 def get_blog_one(id: int, db: Session):
-    blog = db.query(Blog).filter(id == Blog.blog_id).first();
+    blog = db.query(Blog).filter(Blog.blog_id == id).first();
     
     if not blog:
         raise HTTPException(status_code=404, detail="Blog Not Found")
@@ -34,7 +34,7 @@ def create_blog(blog: BlogCreate,db: Session):
         raise HTTPException(status_code=500, detail=f"{type(error).__name__}: {str(error)}")
 
 def update_blog(blog_id: int, blog: BlogUpdate, db: Session):
-    blog_model = db.query(Blog).filter(blog_id == Blog.blog_id).first()
+    blog_model = db.query(Blog).filter(Blog.blog_id == id).first()
     
     if not blog_model:
         raise HTTPException(status_code=404, detail="Blog Not Found")
@@ -47,7 +47,7 @@ def update_blog(blog_id: int, blog: BlogUpdate, db: Session):
         raise HTTPException(status_code=500, detail=f"{type(error).__name__}: {str(error)}")
 
 def delete_blog(blog_id: int, db: Session):
-    blog_model = db.query(Blog).filter(blog_id == Blog.blog_id).first()
+    blog_model = db.query(Blog).filter(Blog.blog_id == id).first()
     
     if not blog_model:
         raise HTTPException(status_code=404, detail="Blog Not Found")
@@ -56,5 +56,5 @@ def delete_blog(blog_id: int, db: Session):
     db.commit()
     
     return {
-        'message': "Blog [" + str(blog_model.project_id) + "] " + "Deleted Successfully"
+        'message': "Blog [" + str(blog_model.blog_id) + "] " + "Deleted Successfully"
     }

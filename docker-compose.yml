@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # 1. THE FRONTEND (Next.js) - Used for local development testing
   frontend:
     mem_limit: 2g
     build:
@@ -15,12 +12,13 @@ services:
         EXPOSE 3000
         CMD ["npm", "run", "dev"]
     ports:
-      - target: 3000
-        published: 3000
+      - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=https://yiondev-backend.yiondev.me
-      - NEXT_PUBLIC_BASE_URL=https://www.yiondev.me
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_BASE_URL=http://localhost:3000
+      - API_URL=http://backend:8000
       - NODE_OPTIONS=--max-old-space-size=4096
+      
     volumes:
       - type: bind
         source: ./frontend
@@ -30,43 +28,39 @@ services:
       - type: volume
         target: /app/.next
     depends_on:
-      backend:
-        condition: service_started
+      db:
+        condition: service_healthy
 
-  # 2. THE BACKEND (Python FastAPI / Flask)
   backend:
     build:
       context: ./backend
     ports:
-      - target: 8000
-        published: 8000
-    environment:
-      - DATABASE_URL=postgresql://yion_user:yion_password@db:5432/yion_db
-      - BASE_URL=https://yiondev-backend.yiondev.me
-      - FRONTEND_URL=https://yiondev.me
+      - "8000:8000"
+    env_file:
+      - .env
     volumes:
       - type: bind
         source: ./backend
         target: /app
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
 
-  # 3. THE DATABASE (PostgreSQL)
   db:
     image: postgres:15-alpine
-    environment:
-      - POSTGRES_USER=yion_user
-      - POSTGRES_PASSWORD=yion_password
-      - POSTGRES_DB=yion_db
+    env_file:
+      - .env
     ports:
-      - target: 5432
-        published: 5432
+      - "5432:5432"
     volumes:
       - type: volume
         source: postgres_data
         target: /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yion_user -d yion_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-# Persistent Named Volume configuration
 volumes:
   postgres_data:
