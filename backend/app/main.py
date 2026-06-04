@@ -95,8 +95,8 @@ async def auth_middleware(request: Request, call_next):
                 headers={"Authorization": f"Bearer {token}"}
             )
             if user_res.status_code != 200:
-                return RedirectResponse(url="/auth/github")
+                return RedirectResponse(url=f"{BASE_URL}/auth/github")
             user = user_res.json()
             if user["login"] != ALLOWED_USER:
-                return RedirectResponse(url="/auth/github")
+                return RedirectResponse(url=f"{BASE_URL}/auth/github")
     return await call_next(request)
