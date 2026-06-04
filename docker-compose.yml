@@ -44,8 +44,6 @@ services:
       - DATABASE_URL=postgresql://yion_user:yion_password@db:5432/yion_db
       - BASE_URL=https://yiondev-backend.yiondev.me
       - FRONTEND_URL=https://yiondev.me
-    env_file:
-      - .env
     volumes:
       - type: bind
         source: ./backend
