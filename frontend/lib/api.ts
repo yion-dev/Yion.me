@@ -1,7 +1,7 @@
 const isServer = typeof window === "undefined"
 
 const API_URL = isServer
-  ? process.env.API_URL || "http://backend:8000"          // server side
+  ? process.env.API_URL || "http://backend:8000"
   : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 
 export async function getVisitors() {
@@ -42,7 +42,7 @@ export async function getBlogs() {
     try {
         const res = await fetch(`${API_URL}/blogs/get-all`, {
             method: "GET",
-            next: { revalidate: 3600 },
+            next: { revalidate: 60 },
         })
         
         if(!res.ok) return []
