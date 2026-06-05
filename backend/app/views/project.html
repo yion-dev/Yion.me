@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>projects / dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #1a1a1a;
+            --surface: #222;
+            --border: #333;
+            --text: #e8e8e8;
+            --muted: #666;
+            --dim: #444
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px
+        }
+
+        .wrap {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        h1 {
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 11px
+        }
+
+        .nav {
+            margin-bottom: 1.5rem
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 0;
+            transition: color 0.1s;
+            text-decoration: none;
+            display: inline-block
+        }
+
+        .back-btn:hover {
+            color: var(--text)
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap
+        }
+
+        input[type=text] {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 6px 0;
+            outline: none;
+            width: 240px;
+            transition: border-color 0.15s
+        }
+
+        input[type=text]:focus {
+            border-bottom-color: var(--text)
+        }
+
+        input[type=text]::placeholder {
+            color: var(--dim)
+        }
+
+        textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 6px 0;
+            outline: none;
+            resize: none;
+            transition: border-color 0.15s;
+            width: 100%;
+            line-height: 1.7;
+            border-radius: 0
+        }
+
+        textarea:focus {
+            border-bottom-color: var(--text)
+        }
+
+        textarea::placeholder {
+            color: var(--dim)
+        }
+
+        select {
+            background: var(--bg);
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 6px 0;
+            outline: none;
+            width: 100%;
+            cursor: pointer
+        }
+
+        select option {
+            background: var(--surface)
+        }
+
+        .btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 5px 12px;
+            transition: all 0.1s
+        }
+
+        .btn:hover {
+            border-color: var(--text);
+            color: var(--text)
+        }
+
+        .btn.primary {
+            background: var(--text);
+            color: #1a1a1a;
+            border-color: var(--text)
+        }
+
+        .btn.primary:hover {
+            opacity: 0.85
+        }
+
+        .btn.danger {
+            border-color: #553333;
+            color: #884444
+        }
+
+        .btn.danger:hover {
+            border-color: #cc4444;
+            color: #cc4444
+        }
+
+        .count {
+            color: var(--muted);
+            font-size: 11px;
+            margin-left: auto
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column
+        }
+
+        .project-row {
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: start
+        }
+
+        .project-row:first-child {
+            border-top: 1px solid var(--border)
+        }
+
+        .project-id {
+            color: var(--dim);
+            font-size: 11px;
+            margin-bottom: 4px
+        }
+
+        .project-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: color 0.1s;
+            color: var(--text);
+            display: block
+        }
+
+        .project-title:hover {
+            color: var(--muted)
+        }
+
+        .project-desc {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 6px
+        }
+
+        .project-meta {
+            color: var(--dim);
+            font-size: 10px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 6px;
+            align-items: flex-start;
+            padding-top: 2px
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 1px 6px;
+            border: 1px solid;
+            margin-right: 6px
+        }
+
+        .status-published {
+            border-color: #2a4a2a;
+            color: #4a8a4a
+        }
+
+        .status-draft {
+            border-color: #4a4a2a;
+            color: #8a8a4a
+        }
+
+        .status-archived {
+            border-color: #3a3a3a;
+            color: #666
+        }
+
+        .empty {
+            color: var(--muted);
+            font-size: 12px;
+            padding: 2rem 0;
+            text-align: center
+        }
+
+        .loading {
+            color: var(--muted);
+            font-size: 12px;
+            padding: 2rem 0;
+            text-align: center
+        }
+
+        .page {
+            display: none
+        }
+
+        .page.active {
+            display: block
+        }
+
+        .detail-title-text {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            line-height: 1.4
+        }
+
+        .detail-slug {
+            color: var(--dim);
+            font-size: 11px;
+            margin-bottom: 0.75rem
+        }
+
+        .detail-meta {
+            color: var(--muted);
+            font-size: 11px;
+            display: flex;
+            gap: 16px;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap
+        }
+
+        .detail-summary {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            border-left: 2px solid var(--border)
+        }
+
+        .detail-body {
+            font-size: 13px;
+            line-height: 1.9;
+            color: #ccc;
+            white-space: pre-wrap;
+            margin-bottom: 1.5rem
+        }
+
+        .detail-section {
+            margin-bottom: 1.25rem
+        }
+
+        .detail-section-label {
+            color: var(--dim);
+            font-size: 10px;
+            margin-bottom: 6px
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px
+        }
+
+        .tech-tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border: 1px solid var(--border);
+            color: var(--muted)
+        }
+
+        .detail-links {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1.5rem
+        }
+
+        .detail-link {
+            color: var(--muted);
+            font-size: 11px;
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1px;
+            transition: color 0.1s
+        }
+
+        .detail-link:hover {
+            color: var(--text)
+        }
+
+        .thumb {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            display: block
+        }
+
+        .pictures-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 1.5rem
+        }
+
+        .pictures-grid img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border: 1px solid var(--border)
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border)
+        }
+
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center
+        }
+
+        .modal-bg.open {
+            display: flex
+        }
+
+        .modal {
+            background: #1e1e1e;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 600px;
+            margin: 1rem;
+            max-height: 90vh;
+            overflow-y: auto
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .modal h2 {
+            font-size: 13px;
+            font-weight: 500
+        }
+
+        .field {
+            margin-bottom: 1.1rem
+        }
+
+        label {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-bottom: 4px
+        }
+
+        .modal input[type=text] {
+            width: 100%
+        }
+
+        .field-hint {
+            color: var(--dim);
+            font-size: 10px;
+            margin-top: 4px
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border)
+        }
+
+        .confirm-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center
+        }
+
+        .confirm-bg.open {
+            display: flex
+        }
+
+        .confirm {
+            background: #1e1e1e;
+            border: 1px solid #553333;
+            padding: 1.25rem;
+            max-width: 360px;
+            width: 100%;
+            margin: 1rem
+        }
+
+        .confirm p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 1rem
+        }
+
+        .confirm strong {
+            color: var(--text)
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 10px 14px;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: all 0.2s;
+            pointer-events: none;
+            z-index: 300
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .section-divider {
+            color: var(--dim);
+            font-size: 10px;
+            margin: 1.25rem 0 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Project
+            management</h2>
+
+        <!-- LIST PAGE -->
+        <div class="page active" id="page-list">
+            <div class="header">
+                <h1>&gt; projects / all</h1>
+                <span class="hint">GET /projects/get-all</span>
+            </div>
+            <div class="nav"><a class="back-btn" href="/display/dashboard">← back to dashboard</a></div>
+            <div class="toolbar">
+                <input type="text" id="search" placeholder="search projects..." oninput="filterProjects()">
+                <button class="btn primary" onclick="openCreate()">[ + new project ]</button>
+                <span class="count" id="count"></span>
+            </div>
+            <div class="project-list" id="project-list">
+                <div class="loading">// fetching projects...</div>
+            </div>
+        </div>
+
+        <!-- DETAIL PAGE -->
+        <div class="page" id="page-detail">
+            <div class="header">
+                <h1>&gt; projects / <span id="detail-id-label">1</span></h1>
+                <span class="hint">GET /projects/get-one/<span id="detail-hint-id">1</span></span>
+            </div>
+            <button class="back-btn" onclick="goList()">← back to all projects</button>
+            <div id="detail-loading" class="loading" style="margin-top:1.5rem">// fetching project...</div>
+            <div id="detail-content" style="display:none;margin-top:1.5rem">
+                <div id="detail-thumbnail-wrap"></div>
+                <div class="detail-title-text" id="detail-title"></div>
+                <div class="detail-slug" id="detail-slug"></div>
+                <div class="detail-meta">
+                    <span id="detail-status-badge"></span>
+                    <span>slug: <span id="detail-slug-meta"></span></span>
+                </div>
+                <div class="detail-summary" id="detail-summary"></div>
+                <div class="detail-body" id="detail-body"></div>
+                <div class="detail-links" id="detail-links"></div>
+                <div class="detail-section">
+                    <div class="detail-section-label">// tech stack</div>
+                    <div class="tech-tags" id="detail-techstack"></div>
+                </div>
+                <div class="detail-section" id="detail-pictures-section">
+                    <div class="detail-section-label">// screenshots</div>
+                    <div class="pictures-grid" id="detail-pictures"></div>
+                </div>
+                <div class="post-actions">
+                    <button class="btn" onclick="openEditFromDetail()">[ edit ]</button>
+                    <button class="btn danger" onclick="openConfirmFromDetail()">[ delete ]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CREATE / EDIT MODAL -->
+    <div class="modal-bg" id="edit-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">&gt; projects / create</h2>
+                <span class="hint" id="modal-hint"></span>
+            </div>
+            <input type="hidden" id="edit-id">
+
+            <div class="section-divider">// basic info</div>
+            <div class="field"><label>[ project_name ]</label><input type="text" id="edit-name"
+                    placeholder="project name..." maxlength="255"></div>
+            <div class="field"><label>[ project_slug ]</label><input type="text" id="edit-slug"
+                    placeholder="my-project-slug..." maxlength="255">
+                <div class="field-hint">// used in url, lowercase with hyphens</div>
+            </div>
+            <div class="field"><label>[ project_short_description ]</label><input type="text" id="edit-short-desc"
+                    placeholder="one-line description..." maxlength="255"></div>
+            <div class="field"><label>[ project_description ]</label><textarea id="edit-desc"
+                    placeholder="full project description..." style="min-height:120px"></textarea></div>
+            <div class="field"><label>[ project_status ]</label>
+                <select id="edit-status">
+                    <option value="published">published</option>
+                    <option value="draft">draft</option>
+                    <option value="archived">archived</option>
+                </select>
+            </div>
+
+            <div class="section-divider">// links</div>
+            <div class="field"><label>[ project_githubUrl ]</label><input type="text" id="edit-github"
+                    placeholder="https://github.com/..."></div>
+            <div class="field"><label>[ project_liveUrl ]</label><input type="text" id="edit-live"
+                    placeholder="https://..."></div>
+
+            <div class="section-divider">// media</div>
+            <div class="field"><label>[ project_thumbnailUrl ]</label><input type="text" id="edit-thumbnail"
+                    placeholder="https://... or R2 URL">
+                <div class="field-hint">// main project thumbnail image</div>
+            </div>
+            <div class="field"><label>[ project_pictures ]</label><textarea id="edit-pictures"
+                    placeholder="one URL per line..." style="min-height:80px"></textarea>
+                <div class="field-hint">// screenshot URLs, one per line</div>
+            </div>
+
+            <div class="section-divider">// tech stack</div>
+            <div class="field"><label>[ project_techstack ]</label><input type="text" id="edit-techstack"
+                    placeholder="Next.js, FastAPI, PostgreSQL, Docker...">
+                <div class="field-hint">// comma separated</div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn" onclick="closeEdit()">[ cancel ]</button>
+                <button class="btn primary" onclick="saveEdit()" id="save-btn">[ publish ] →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRM -->
+    <div class="confirm-bg" id="confirm-modal">
+        <div class="confirm">
+            <div class="modal-header" style="border-bottom-color:#553333">
+                <h2 style="color:#cc4444">&gt; confirm delete</h2>
+            </div>
+            <p>delete <strong id="confirm-title"></strong>?<br>this action cannot be undone.</p>
+            <div style="display:flex;gap:8px">
+                <button class="btn" onclick="closeConfirm()">[ cancel ]</button>
+                <button class="btn danger" onclick="confirmDelete()">[ delete ] →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let projects = [], deleteTarget = null, currentProject = null, isCreate = false;
+        function fmtDate(iso) { try { return new Date(iso).toISOString().split('T')[0] } catch (e) { return '—' } }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800) }
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active') }
+        function statusBadge(s) { const classes = { published: 'status-published', draft: 'status-draft', archived: 'status-archived' }; return `<span class="status-badge ${classes[s] || ''}">${s || 'unknown'}</span>` }
+
+        async function loadProjects() {
+            try { const res = await fetch('/projects/get-all'); projects = await res.json() }
+            catch (e) { projects = []; showToast('// error: could not fetch projects') }
+            renderProjects(projects)
+        }
+
+        function renderProjects(list) {
+            const el = document.getElementById('project-list');
+            document.getElementById('count').textContent = '// ' + list.length + ' project' + (list.length !== 1 ? 's' : '');
+            if (!list.length) { el.innerHTML = '<div class="empty">// no projects found</div>'; return }
+            el.innerHTML = list.map(p => `
+    <div class="project-row">
+      <div>
+        <div class="project-id">[ id: ${p.project_id} ] ${statusBadge(p.project_status)}</div>
+        <span class="project-title" onclick="goDetail(${p.project_id})">${p.project_name}</span>
+        <div class="project-desc">${p.project_short_description}</div>
+        <div class="project-meta">
+          <span>slug: ${p.project_slug}</span>
+          ${p.project_techstack && p.project_techstack.length ? '<span>stack: ' + p.project_techstack.slice(0, 3).join(', ') + (p.project_techstack.length > 3 ? '...' : '') + '</span>' : ''}
+          ${p.project_githubUrl ? '<span>github ↗</span>' : ''}
+          ${p.project_liveUrl ? '<span>live ↗</span>' : ''}
+        </div>
+      </div>
+      <div class="row-actions">
+        <button class="btn" onclick="openEdit(${p.project_id})">[ edit ]</button>
+        <button class="btn danger" onclick="openConfirm(${p.project_id})">[ del ]</button>
+      </div>
+    </div>
+  `).join('')
+        }
+
+        function filterProjects() { const q = document.getElementById('search').value.toLowerCase(); renderProjects(q ? projects.filter(p => p.project_name.toLowerCase().includes(q) || p.project_short_description.toLowerCase().includes(q)) : projects) }
+
+        async function goDetail(id) {
+            showPage('page-detail');
+            document.getElementById('detail-id-label').textContent = id;
+            document.getElementById('detail-hint-id').textContent = id;
+            document.getElementById('detail-loading').style.display = 'block';
+            document.getElementById('detail-content').style.display = 'none';
+            try {
+                const res = await fetch('/projects/get-one/' + id);
+                const p = await res.json();
+                currentProject = p;
+                document.getElementById('detail-title').textContent = p.project_name;
+                document.getElementById('detail-slug').textContent = '/ ' + p.project_slug;
+                document.getElementById('detail-slug-meta').textContent = p.project_slug;
+                document.getElementById('detail-status-badge').innerHTML = statusBadge(p.project_status);
+                document.getElementById('detail-summary').textContent = p.project_short_description;
+                document.getElementById('detail-body').textContent = p.project_description;
+                const thumbWrap = document.getElementById('detail-thumbnail-wrap');
+                thumbWrap.innerHTML = p.project_thumbnailUrl ? `<img class="thumb" src="${p.project_thumbnailUrl}" alt="thumbnail">` : '';
+                const links = document.getElementById('detail-links');
+                links.innerHTML = [
+                    p.project_githubUrl ? `<a class="detail-link" href="${p.project_githubUrl}" target="_blank">github ↗</a>` : '',
+                    p.project_liveUrl ? `<a class="detail-link" href="${p.project_liveUrl}" target="_blank">live demo ↗</a>` : ''
+                ].join('');
+                const techEl = document.getElementById('detail-techstack');
+                techEl.innerHTML = p.project_techstack && p.project_techstack.length ? p.project_techstack.map(t => `<span class="tech-tag">${t}</span>`).join('') : '<span style="color:var(--dim);font-size:11px">// none specified</span>';
+                const picsSection = document.getElementById('detail-pictures-section');
+                const picsEl = document.getElementById('detail-pictures');
+                if (p.project_pictures && p.project_pictures.length) {
+                    picsSection.style.display = 'block';
+                    picsEl.innerHTML = p.project_pictures.map(url => `<img src="${url}" alt="screenshot" onerror="this.style.display='none'">`).join('');
+                } else { picsSection.style.display = 'none' }
+                document.getElementById('detail-loading').style.display = 'none';
+                document.getElementById('detail-content').style.display = 'block';
+            } catch (e) { showToast('// error: could not fetch project') }
+        }
+
+        function goList() { showPage('page-list'); currentProject = null }
+
+        function openCreate() {
+            isCreate = true;
+            document.getElementById('modal-title').textContent = '> projects / create';
+            document.getElementById('modal-hint').textContent = 'POST /projects/create';
+            document.getElementById('save-btn').textContent = '[ publish ] →';
+            ['edit-id', 'edit-name', 'edit-slug', 'edit-short-desc', 'edit-desc', 'edit-github', 'edit-live', 'edit-thumbnail', 'edit-pictures', 'edit-techstack'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('edit-status').value = 'published';
+            document.getElementById('edit-modal').classList.add('open');
+        }
+
+        function openEdit(id) {
+            isCreate = false;
+            const p = projects.find(x => x.project_id === id); if (!p) return;
+            document.getElementById('modal-title').textContent = '> projects / update';
+            document.getElementById('modal-hint').textContent = 'PUT /projects/update/' + id;
+            document.getElementById('save-btn').textContent = '[ save ] →';
+            document.getElementById('edit-id').value = p.project_id;
+            document.getElementById('edit-name').value = p.project_name || '';
+            document.getElementById('edit-slug').value = p.project_slug || '';
+            document.getElementById('edit-short-desc').value = p.project_short_description || '';
+            document.getElementById('edit-desc').value = p.project_description || '';
+            document.getElementById('edit-status').value = p.project_status || 'published';
+            document.getElementById('edit-github').value = p.project_githubUrl || '';
+            document.getElementById('edit-live').value = p.project_liveUrl || '';
+            document.getElementById('edit-thumbnail').value = p.project_thumbnailUrl || '';
+            document.getElementById('edit-pictures').value = p.project_pictures ? p.project_pictures.join('\n') : '';
+            document.getElementById('edit-techstack').value = p.project_techstack ? p.project_techstack.join(', ') : '';
+            document.getElementById('edit-modal').classList.add('open');
+        }
+
+        function openEditFromDetail() { if (currentProject) openEdit(currentProject.project_id) }
+        function closeEdit() { document.getElementById('edit-modal').classList.remove('open') }
+
+        async function saveEdit() {
+            const id = document.getElementById('edit-id').value;
+            const pictures = document.getElementById('edit-pictures').value.split('\n').map(s => s.trim()).filter(Boolean);
+            const techstack = document.getElementById('edit-techstack').value.split(',').map(s => s.trim()).filter(Boolean);
+            const payload = {
+                project_name: document.getElementById('edit-name').value.trim(),
+                project_slug: document.getElementById('edit-slug').value.trim().toLowerCase().replace(/\s+/g, '-'),
+                project_short_description: document.getElementById('edit-short-desc').value.trim(),
+                project_description: document.getElementById('edit-desc').value.trim(),
+                project_status: document.getElementById('edit-status').value,
+                project_githubUrl: document.getElementById('edit-github').value.trim(),
+                project_liveUrl: document.getElementById('edit-live').value.trim(),
+                project_thumbnailUrl: document.getElementById('edit-thumbnail').value.trim(),
+                project_pictures: pictures,
+                project_techstack: techstack
+            };
+            if (!payload.project_name || !payload.project_slug || !payload.project_short_description) { showToast('// error: fill required fields'); return }
+            try {
+                if (isCreate) { await fetch('/projects/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showToast('// project created') }
+                else { await fetch('/projects/update/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showToast('// project updated') }
+                closeEdit(); await loadProjects();
+            } catch (e) { showToast('// error: request failed') }
+        }
+
+        function openConfirm(id) {
+            deleteTarget = id;
+            const p = projects.find(x => x.project_id === id);
+            document.getElementById('confirm-title').textContent = p ? '"' + p.project_name + '"' : 'project #' + id;
+            document.getElementById('confirm-modal').classList.add('open');
+        }
+        function openConfirmFromDetail() { if (currentProject) openConfirm(currentProject.project_id) }
+        function closeConfirm() { document.getElementById('confirm-modal').classList.remove('open'); deleteTarget = null }
+
+        async function confirmDelete() {
+            if (!deleteTarget) return;
+            try {
+                await fetch('/projects/delete/' + deleteTarget, { method: 'DELETE' });
+                showToast('// project deleted'); closeConfirm();
+                if (currentProject && currentProject.project_id === deleteTarget) goList();
+                await loadProjects();
+            } catch (e) { showToast('// error: delete failed') }
+        }
+
+        loadProjects();
+    </script>
+</body>
+
+</html>
