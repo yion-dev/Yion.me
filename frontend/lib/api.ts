@@ -42,7 +42,7 @@ export async function getBlogs() {
     try {
         const res = await fetch(`${API_URL}/blogs/get-all`, {
             method: "GET",
-            next: { revalidate: 0 },
+            next: { revalidate: 3600 },
         })
         
         if(!res.ok) return []
