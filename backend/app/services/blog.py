@@ -34,7 +34,7 @@ def create_blog(blog: BlogCreate,db: Session):
         raise HTTPException(status_code=500, detail=f"{type(error).__name__}: {str(error)}")
 
 def update_blog(blog_id: int, blog: BlogUpdate, db: Session):
-    blog_model = db.query(Blog).filter(Blog.blog_id == id).first()
+    blog_model = db.query(Blog).filter(Blog.blog_id == blog_id).first()
     
     if not blog_model:
         raise HTTPException(status_code=404, detail="Blog Not Found")
@@ -47,7 +47,7 @@ def update_blog(blog_id: int, blog: BlogUpdate, db: Session):
         raise HTTPException(status_code=500, detail=f"{type(error).__name__}: {str(error)}")
 
 def delete_blog(blog_id: int, db: Session):
-    blog_model = db.query(Blog).filter(Blog.blog_id == id).first()
+    blog_model = db.query(Blog).filter(Blog.blog_id == blog_id).first()
     
     if not blog_model:
         raise HTTPException(status_code=404, detail="Blog Not Found")

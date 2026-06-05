@@ -16,10 +16,10 @@ export default async function Blog ({ params }: { params: Promise<{ id: string }
     const{ id } = await params;
     const blog:BlogResponseInterface = await getBlog(Number(id.split("-").pop()))
     return (
-        <div className="bg-background text-foreground font-mono font-medium p-4 lg:px-0">
+        <div className="w-full bg-background text-foreground font-mono font-medium p-4 lg:px-0">
             <div className="flex flex-col w-full max-w-4xl mx-auto gap-4">
                 
-                <main className="relative flex flex-col min-h-180 px-1 gap-6">
+                <main className="w-full relative flex flex-col min-h-180 px-1 gap-6">
                 
                         <Link href={ baseUrl + blogUrl }>
                             <div className="relative flex justify-center items-center h-fit w-fit gap-1 opacity-80 group hover:opacity-100">

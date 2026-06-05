@@ -34,13 +34,16 @@ async def github_callback_service(code: str) -> RedirectResponse:
         if user["login"] != ALLOWED_USER:
             return RedirectResponse(f"{FRONTEND_URL}?error=unauthorized")       
   
-        response = RedirectResponse(url=f"{BASE_URL}/blogs/display/dashboard")
+        response = RedirectResponse(url=f"{BASE_URL}/blogs/display/dashboard", status_code=302)
         response.set_cookie(
             key="session_token",
             value=token,
             httponly=True,
-            samesite="lax"
+            samesite="lax",
+            domain=".yiondev.me",
+            secure=True
         )
+
         
     print(f"token: {token}")
     print(f"user: {user.get('login')}")

@@ -11,7 +11,8 @@ from app.database import Base, engine, SessionLocal
 from app.models.visitor import Visitor
 
 ALLOWED_USER = os.getenv("ALLOWED_USER")
-BASE_URL = os.getenv("BASE_URL")
+# BASE_URL = os.getenv("BASE_URL")
+BASE_URL = "http://localhost:8000"
 
 app = FastAPI()
 
@@ -84,7 +85,7 @@ async def track_visitors(request: Request, call_next):
 
 @app.middleware("http")
 async def auth_middleware(request: Request, call_next):
-    print(f"middleware hit: {request.url.path}")
+    print(f"middleware hit: {BASE_URL}/{request.url.path}")
     if request.url.path.startswith("/blogs/display"):
         token = request.cookies.get("session_token")
         if not token:
