@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import project, blog, visitor, oauth, dashboard
+from app.routers import project, blog, visitor, oauth
 
 from app.database import Base, engine, SessionLocal
 from app.models.visitor import Visitor
@@ -19,7 +19,6 @@ app.include_router(project.router)
 app.include_router(blog.router)
 app.include_router(visitor.router)
 app.include_router(oauth.router)
-app.include_router(dashboard.router)
 
 Base.metadata.create_all(bind=engine);
 
