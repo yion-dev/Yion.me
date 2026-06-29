@@ -9,8 +9,9 @@ def get_visitor_all(db: Session):
     visitors = db.query(Visitor).all()
     return visitors
 
-    if not visitors:
-        raise HTTPException(status_code=404, detail="Visitors Not Found")
+def get_visitor_count(db: Session):
+    visitors = db.query(Visitor).all()
+    return len(visitors)
 
 def create_visitor(visitor: VisitorCreate,db: Session):
     visitorModel = None

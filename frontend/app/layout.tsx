@@ -5,7 +5,7 @@ import "./globals.css";
 import Script from "next/script";
 import Navbar from "@/_components/navbar";
 import { navLinks } from "@/_data/data";
-import { getVisitors } from "@/_lib/api";
+import { getVisitors, getVisitorsCount } from "@/_lib/api";
 import Footer from "@/_components/footer";
 
 const geistSans = Geist({
@@ -113,7 +113,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cfToken = process.env.NEXT_PUBLIC_CLOUDFLARE_TOKEN;
-  const visitors = await getVisitors();
+  const visitors = await getVisitorsCount();
   return (
     <html
       lang="en"
@@ -134,8 +134,8 @@ export default async function RootLayout({
         </Script>
       </head>
 
-      <body className="min-h-full flex flex-col items-center justify-center lg:py-10">
-        <Navbar links={navLinks} websiteVisitorCount={visitors.length} />
+      <body className="min-h-full flex flex-col items-center justify-between px-4 lg:px-0 lg:py-10">
+        <Navbar links={navLinks} websiteVisitorCount={visitors} />
         {children}
         <Footer />
       </body>

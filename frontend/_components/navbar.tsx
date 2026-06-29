@@ -5,14 +5,14 @@ import { NavbarProps } from "../_types/types"
 export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
   console.log(baseUrl)
   return (
-    <nav className="lg:relative flex flex-col w-full max-w-4xl my-4 px-4 lg:px-0 gap-2">
+    <nav className="lg:relative flex flex-col w-full max-w-4xl my-10 lg:my-4 gap-2">
       <Link href={ baseUrl }>
         <h1 className="text-2xl lg:text-3xl">
           _Yiondev
           <span className="text-xl text-foreground-mute">.me</span>
         </h1>
       </Link>
-      <ul className="flex gap-2 md:gap-10">
+      <ul className="flex justify-between lg:justify-start gap-2 md:gap-10">
         {links.map((e, i) => (
           <li key={i}>
             <Link

@@ -12,7 +12,25 @@ const API_URL = process.env.NEXT_PUBLIC_BASE_URL|| "http://localhost:8000"
 
 export async function getVisitors() {
     try {
-        const res = await fetch(API_URL + "/visitors/get-all", {
+        const res = await fetch(API_URL + "/visitors/get-all/data", {
+            method: "GET",
+            next: { revalidate: 60 }
+        })
+
+        if (!res.ok) return []
+
+        return await res.json();
+
+    } catch (e) {
+        console.error("Fetch Error: ", e)
+        return []
+    }
+}
+
+export async function getVisitorsCount() {
+    console.log("WTF"+API_URL)
+    try {
+        const res = await fetch(API_URL + "/visitors/get-all/count", {
             method: "GET",
             next: { revalidate: 60 }
         })

@@ -7,6 +7,7 @@ from app.database import get_db
 from app.schemas.visitor import VisitorCreate
 
 from app.services.visitor import get_visitor_all
+from app.services.visitor import get_visitor_count
 from app.services.visitor import create_visitor
 
 
@@ -15,9 +16,13 @@ router = APIRouter(
     tags=["visitors"]
 )
 
-@router.get("/get-all")
+@router.get("/get-all/data")
 def getVisitors(dbInstance: Session = Depends(get_db)):
     return get_visitor_all(db=dbInstance)
+
+@router.get("/get-all/count")
+def getVisitorsCount(dbInstance: Session = Depends(get_db)):
+    return get_visitor_count(db=dbInstance)
 
 @router.post("/create")
 def createVisitor(visitorObject: VisitorCreate, dbInstance: Session = Depends(get_db)):

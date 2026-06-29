@@ -34,11 +34,11 @@ export const navLinks:NavLinksInterface[] = [
 
 export const information: InformationInterface[] = [
   {
-    displayText: "Software Engineering Student",
+    displayText: "Software Engineering",
     icon: GraduationCap
   },
   {
-    displayText: "Mae Fah Luang, Chiang Rai",
+    displayText: "Chiang Rai, Thailand",
     icon: PinIcon
   },
    

@@ -18,18 +18,20 @@ export default async function Home() {
   const projects: ProjectResponseInterface[] = await getProjects()
 
   return (
-    <main className="flex flex-col p-4 lg:px-0">
+    <main className="flex flex-col py-4">
       <div className="flex flex-col w-full h-auto max-w-4xl mx-auto gap-4">
 
-        <section className="flex flex-col lg:flex-row w-full gap-6">
-          <div className="h-full w-fit min-w-35 box-border overflow-hidden">
+        <section className="flex flex-col lg:flex-row w-full h-auto gap-6">
+          <div className="flex h-auto w-auto gap-4 box-border overflow-hidden">
             <Image
               priority
               width={200}
               height={200}
               src="/yion-square.webp"
               alt="yion"
-              className="h-25 lg:h-35 w-auto min-w-25 lg:min-w-35 opacity-80 overflow-hidden border-2 border-foreground" />
+              className="w-45 h-30 lg:w-42 lg:h-35 opacity-80 overflow-hidden border-2 border-foreground" />
+            
+            <div className="flex lg:hidden grow w-full h-30 border"></div>
           </div>
           <div className="relative flex flex-col justify-between h-full min-h-35 w-full px-4 py-3">
 
@@ -48,7 +50,7 @@ export default async function Home() {
                 {yionData.small_description}
               </p>
             </div>
-            <div className="flex w-full min-h-fit mt-4 lg:mt-0 lg:-mb text-xs lg:text-sm gap-4 lg:gap-10">
+            <div className="flex justify-between lg:justify-start w-full min-h-fit mt-4 lg:mt-0 lg:-mb text-xs lg:text-sm gap-4 lg:gap-10">
               {information.map((e, i) => (
                 <div key={i} className="flex justify-center w-auto h-fit gap-2">
                   <e.icon strokeWidth={1.8} className="size-4.5" />

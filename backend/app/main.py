@@ -13,7 +13,11 @@ from app.models.visitor import Visitor
 ALLOWED_USER = os.getenv("ALLOWED_USER")
 BASE_URL = os.getenv("BASE_URL")
 
-app = FastAPI()
+app = FastAPI(
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+)
 
 app.include_router(project.router)
 app.include_router(blog.router)
@@ -37,7 +41,6 @@ app.add_middleware(
 @app.middleware("http")
 async def track_visitors(request: Request, call_next):
     response = await call_next(request)
-    
     excluded = [
         "/docs",
         "/openapi.json", 
@@ -46,47 +49,37 @@ async def track_visitors(request: Request, call_next):
         "/visitors/get-all",
         "/visitors/create",
     ]
-    
     if request.url.path not in excluded:
-        
         db = SessionLocal()
         try:
-            
-            if request.client:
-            
-                checkExisting = db.query(Visitor).filter(
-                    Visitor.visitor_ip_address == request.client.host
-                ).first()
-                
-                
-                if checkExisting:
-                    if str(request.url.path) not in checkExisting.visitor_visited_pages:
-                        checkExisting.visitor_visited_pages = checkExisting.visitor_visited_pages + [str(request.url.path)]
-                        db.commit()
-                    
-                else:
-                    visitor = Visitor(
-                        visitor_visited_pages=[str(request.url.path)], 
-                        visitor_ip_address=request.client.host
-                    )
-                    db.add(visitor)
+            ip = (
+                request.headers.get("cf-connecting-ip")
+                or request.headers.get("x-real-ip")
+                or (request.headers.get("x-forwarded-for", "").split(",")[0].strip() or None)
+                or (request.client.host if request.client else "unknown")
+            )
+            checkExisting = db.query(Visitor).filter(
+                Visitor.visitor_ip_address == ip
+            ).first()
+            if checkExisting:
+                if str(request.url.path) not in checkExisting.visitor_visited_pages:
+                    checkExisting.visitor_visited_pages = checkExisting.visitor_visited_pages + [str(request.url.path)]
                     db.commit()
             else:
                 visitor = Visitor(
-                    visitor_visited_pages=["unknown"], 
-                    visitor_ip_address="unknown"
+                    visitor_visited_pages=[str(request.url.path)], 
+                    visitor_ip_address=ip
                 )
-                    
-            
+                db.add(visitor)
+                db.commit()
         finally:
             db.close()
-            
     return response
 
 @app.middleware("http")
 async def auth_middleware(request: Request, call_next):
     print(f"middleware hit: {BASE_URL}/{request.url.path}")
-    if request.url.path.startswith("/blogs/display"):
+    if request.url.path == "/get-all/visitors/data":
         token = request.cookies.get("session_token")
         if not token:
             return RedirectResponse(url=f"{BASE_URL}/auth/github")
