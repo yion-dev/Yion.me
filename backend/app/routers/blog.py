@@ -24,7 +24,7 @@ def getAllBlog(dbInstance: Session = Depends(get_db)):
     return get_blog_all(db=dbInstance)
 
 @router.get("/get-one/{blogID}")
-def getOneBlog(blogID: int, dbInstance: Session = Depends(get_db)):
+def getOneBlog(blogID: str, dbInstance: Session = Depends(get_db)):
     return get_blog_one(id=blogID, db=dbInstance);
 
 @router.post("/create")

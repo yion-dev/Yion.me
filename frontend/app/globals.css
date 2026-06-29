@@ -4,14 +4,14 @@
   --background: #0a0b10;
   --background-secondary: #f0f0f0;
   --foreground: #d8d8d8;
-  --muted :#555462;
+  --muted: #555462;
   --accent: #3d2a5a;
 }
 
 @theme inline {
   --font-mono: var(--font-inconsolata);
   --font-sans: var(--font-geist-sans);
-  
+
   --color-background: var(--background);
   --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
@@ -25,12 +25,141 @@
     --background-secondary: #f0f0f0;
     --foreground: #ededed;
     --accent: #3d2a5a;
-    --muted :#555462;
+    --muted: #555462;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-mono), Arial, Helvetica, sans-serif;
+@layer base {
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-mono), monospace;
+    font-weight: 600;
+    border-color: oklch(70.5% 0.015 286.067);
+  }
+
+  h1 {
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    line-height: 1.375;
+  }
+
+  @media (min-width: 1024px) {
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  h3 {
+    font-size: 1rem;
+    line-height: 1.375;
+  }
+
+  @media (min-width: 1024px) {
+    h3 {
+      font-size: 1.125rem;
+    }
+  }
+
+  h4 {
+    font-size: 0.875rem;
+    line-height: 1.375;
+  }
+
+  @media (min-width: 1024px) {
+    h4 {
+      font-size: 1rem;
+    }
+  }
+
+  h5 {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  h6 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    line-height: 1.5;
+  }
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.625;
+  }
+
+  @media (min-width: 1024px) {
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .readme-content h1,
+  .readme-content h2,
+  .readme-content h3 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .readme-content p,
+  .readme-content ul,
+  .readme-content ol,
+  .readme-content pre,
+  .readme-content table {
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .readme-content li {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .readme-content h1:first-child {
+    margin-top: 0 !important;
+  }
+
+  /* Font sizes — mobile only */
+  @media (max-width: 1023px) {
+    .readme-content {
+      font-size: 0.8125rem !important;
+    }
+
+    .readme-content h1 {
+      font-size: 1.125rem !important;
+    }
+
+    .readme-content h2 {
+      font-size: 1rem !important;
+    }
+
+    .readme-content h3 {
+      font-size: 0.9375rem !important;
+    }
+
+    .readme-content p,
+    .readme-content ul,
+    .readme-content ol,
+    .readme-content pre,
+    .readme-content table,
+    .readme-content li {
+      font-size: 0.8125rem !important;
+    }
+
+    .readme-content code {
+      font-size: 0.75rem !important;
+    }
+  }
 }

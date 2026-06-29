@@ -4,10 +4,11 @@ import { Inconsolata } from 'next/font/google'
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import Script from "next/script";
-import Navbar from "@/components/Navbar";
-import { navLinks } from "@/data/data";
-import { getVisitors } from "@/lib/api";
+import Navbar from "@/_components/navbar";
+import { navLinks } from "@/_data/data";
+import { getVisitors } from "@/_lib/api";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Footer from "@/_components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -138,6 +139,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col items-center justify-center lg:py-10">
         <Navbar links={navLinks} websiteVisitorCount={visitors.length} />
         {children}
+        <Footer />
       </body>
 
       <Analytics />

@@ -5,7 +5,7 @@ from app.services.oauth import github_login_service
 from app.services.oauth import github_callback_service
 
 router = APIRouter(
-    prefix="/auth",
+    prefix="/oauth",
     tags=["OAuth"]
 )
 

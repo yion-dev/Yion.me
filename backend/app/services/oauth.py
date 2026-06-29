@@ -7,7 +7,7 @@ GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 FRONTEND_URL = os.getenv("FRONTEND_URL")
 ALLOWED_USER = os.getenv("ALLOWED_USER")
-BASE_URL = os.getenv("BASE_URL")
+DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 
 def github_login_service() -> str:
     return f"https://github.com/login/oauth/authorize?client_id={GITHUB_CLIENT_ID}&scope=user"
@@ -34,13 +34,13 @@ async def github_callback_service(code: str) -> RedirectResponse:
         if user["login"] != ALLOWED_USER:
             return RedirectResponse(f"{FRONTEND_URL}?error=unauthorized")       
   
-        response = RedirectResponse(url=f"{BASE_URL}/dashboard/", status_code=302)
+        response = RedirectResponse(url=f"{FRONTEND_URL}/internal/manage/dashboard", status_code=302)
         response.set_cookie(
             key="session_token",
             value=token,
             httponly=True,
             samesite="lax",
-            domain=".yiondev.me",
+            domain=DOMAIN_NAME,
             secure=True
         )
 

@@ -1,7 +1,7 @@
-import Footer from "@/components/Footer";
-import { getBlogs } from "@/lib/api";
-import { baseUrl, blogUrl } from "@/lib/constants";
-import { BlogResponseInterface } from "@/types/types";
+import Footer from "@/_components/footer";
+import { getBlogs } from "@/_lib/api";
+import { baseUrl, blogUrl } from "@/_lib/constants";
+import { BlogResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Blogs () {
+    
     const blogs:BlogResponseInterface[] = await getBlogs();
-    console.log(blogs)
+    
     return (
         <main className="w-full h-auto bg-background text-foreground font-mono font-medium px-4 lg:px-0">
             <div className="flex flex-col w-full max-w-4xl mx-auto gap-">
@@ -21,7 +22,7 @@ export default async function Blogs () {
                 <main className="relative flex flex-col w-full h-auto min-h-180 px-1 py-6 gap-10 ">
                 
                 { blogs.map((e,i) => (
-                    <Link key={ i } href={ blogUrl + "/849292-" + (e.blog_id) }>
+                    <Link key={ i } href={`/blogs/${e.blog_id}`}>
                         <div className="flex flex-col group cursor-pointer">
                             <h1 className="text-base lg:text-xl font-black lg:font-semibold group-hover:underline">
                                 <span className="text-sm lg:text-lg">[{ i+1 }] </span>
@@ -32,7 +33,7 @@ export default async function Blogs () {
                                         <p className="opacity-80">{ e.blog_author }</p>
                                         <span> { "//" } </span>
                                     <p className="opacity-80">
-                                        {new Date(e.blog_createdAt).toLocaleDateString("en-US", {
+                                        {e.blog_createdAt && new Date(e.blog_createdAt).toLocaleDateString("en-US", {
                                             year: "numeric",
                                             month: "long",
                                             day: "numeric"
@@ -45,8 +46,6 @@ export default async function Blogs () {
                     </Link>
                 ))}
                 </main>
- 
-                <Footer />
  
             </div>
         </main>

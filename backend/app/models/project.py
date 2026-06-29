@@ -1,17 +1,26 @@
-from sqlalchemy import String, Text, func, DateTime, ARRAY
+import uuid
+
+from datetime import datetime
+from app.database import Base
+
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import JSONB
-from app.database import Base
-from datetime import datetime
+from sqlalchemy import String, Text, func, DateTime, ARRAY, UUID
 
 class Project(Base):
     __tablename__ = "projects"
     
     project_id: Mapped[int] =  mapped_column(primary_key=True, index= True)
     project_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    project_slug: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
+    project_slug: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        unique=True,
+        nullable=False,
+        index=True,
+        default=uuid.uuid4
+    )
     project_short_description: Mapped[str] = mapped_column(String(500))
-    project_description: Mapped[str] = mapped_column(Text);
+    project_description: Mapped[str] = mapped_column(Text)
     project_githubUrl: Mapped[str | None]
     project_liveUrl: Mapped[str | None]
     project_thumbnailUrl: Mapped[str | None]

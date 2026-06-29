@@ -1,4 +1,6 @@
 
+import uuid
+
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
@@ -14,8 +16,16 @@ def get_blog_all(db: Session):
     
     return blogs
 
-def get_blog_one(id: int, db: Session):
-    blog = db.query(Blog).filter(Blog.blog_id == id).first();
+def get_blog_one(id: str, db: Session):
+    
+    converted = None
+
+    try:
+        converted = uuid.UUID(id)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid UUID: {e}")
+    
+    blog = db.query(Blog).filter(Blog.blog_id == converted).first();
     
     if not blog:
         raise HTTPException(status_code=404, detail="Blog Not Found")

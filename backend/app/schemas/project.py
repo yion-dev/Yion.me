@@ -1,9 +1,11 @@
+import uuid
+
 from pydantic import BaseModel
 from datetime import datetime
 
 class ProjectBase(BaseModel):
     project_name: str
-    project_slug: str
+    project_slug: uuid.UUID
 
     project_short_description: str | None = None
     project_description: str | None = None
@@ -29,9 +31,9 @@ class ProjectGet(ProjectBase):
 class ProjectCreate(ProjectBase):
     pass;
 
-class ProjectUpdate(ProjectBase):
+class ProjectUpdate(BaseModel):
     project_name: str | None = None
-    project_slug: str | None = None
+    project_slug: uuid.UUID | None = None
 
     project_short_description: str | None = None
     project_description: str | None = None

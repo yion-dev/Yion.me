@@ -19,7 +19,7 @@ def projectGetAll(db: Session = Depends(get_db)):
     return get_project_all(db=db);
 
 @router.get("/get-one/{id}")
-def projectGetOne(id: int, db: Session = Depends(get_db)):
+def projectGetOne(id: str, db: Session = Depends(get_db)):
     return get_project_one(project_id=id, db=db);
 
 @router.post("/create")

@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import { aboutmepictures, yionData } from "@/data/data";
+import Footer from "@/_components/footer";
+import { aboutmepictures, yionData } from "@/_data/data";
 import { Metadata } from "next";
 import Image from "next/image";
 
@@ -36,7 +36,7 @@ export default function About () {
                                 muted
                                 playsInline
                                 preload="auto"
-                                poster="/loading.webp"
+                                poster="/loading.svg"
                                 className="w-full max-h-80 object-cover"
                             >
                                 <source src={aboutmepictures[0].url} type="video/webm" />
@@ -65,7 +65,7 @@ export default function About () {
                                 muted
                                 playsInline
                                 preload="auto"
-                                poster="/loading.webp"
+                                poster="/loading.svg"
                                 className="w-full max-h-70 object-cover"
                             >
                                 <source src={aboutmepictures[1].url} type="video/webm" />
@@ -102,7 +102,6 @@ export default function About () {
                     </p>
 
                 </main>
-                <Footer />
             
             </div>
         </main>

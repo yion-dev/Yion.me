@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { baseUrl } from "../lib/constants"
-import { NavbarProps } from "../types/types"
+import { baseUrl } from "../_lib/constants"
+import { NavbarProps } from "../_types/types"
 
 export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
   console.log(baseUrl)

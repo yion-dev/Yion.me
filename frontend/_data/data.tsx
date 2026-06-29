@@ -1,7 +1,7 @@
-import EmailIcon from "../components/icons/email"
-import GithubIcon from "../components/icons/github"
-import LinkedinIcon from "../components/icons/linkedin"
-import ResumeIcon from "../components/icons/resume"
+import EmailIcon from "../_components/icons/email"
+import GithubIcon from "../_components/icons/github"
+import LinkedinIcon from "../_components/icons/linkedin"
+import ResumeIcon from "../_components/icons/resume"
 import { GraduationCap, PinIcon } from "lucide-react"
 import { 
   InformationInterface, 
@@ -11,7 +11,7 @@ import {
   KnowledgeInterface, 
   NavLinksInterface, 
   AboutMePictureCardInterface,
-  ProjectCardProps} from "../types/types"
+  ProjectCardProps} from "../_types/types"
 
 export const navLinks:NavLinksInterface[] = [
   {
@@ -181,46 +181,6 @@ export const knowledge: KnowledgeInterface[] = [
     displayName: "Rust",
     learnt: false,
   }, 
-]
-
-export const projects: ProjectCardProps[] = [
-  {
-    title: "Juan Discord Bot",
-    itemId: "4228-01", 
-    href: "github.com/yion-dev/juan-discord-bot",
-    thumbnail: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/Projects/project1.webm",
-    tech: [
-      {
-        displayName: "Rust",
-      }, 
-      {
-        displayName: "Serenity",
-      }
-    ],
-    description: "Discord bot created with Rust and Serenity Crate that uses Weather API fetch data and return back to users.",
-    index: 0,
-    status: 'Production'
-  },
-  {
-    title: "Stargazer",
-    itemId: "4228-02", 
-    href: "github.com/yion-dev/stargazer",
-    thumbnail: "https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/Projects/project2.webm",
-    tech: [
-      {
-        displayName: "React",
-      }, 
-      {
-        displayName: "Python",
-      },
-      {
-        displayName: "Flask",
-      }
-    ],
-    description: "Clothing website created with React for the frontend and Python + Flask for the backend",
-    index: 1,
-    status: 'Production'
-  },
 ]
 
 export const aboutmepictures: AboutMePictureCardInterface[] = [

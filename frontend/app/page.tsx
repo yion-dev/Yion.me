@@ -1,10 +1,11 @@
-import Footer from "@/components/Footer";
-import ProjectCard from "@/components/ProjectItem";
-import { information, contact, knowledge, work, projects, education, yionData } from "@/data/data";
+import Footer from "@/_components/footer";
+import ProjectCard from "@/_components/project-card";
+import { information, contact, knowledge, work, education, yionData } from "@/_data/data";
+import { getProjects } from "@/_lib/api";
+import { ProjectResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 export const metadata: Metadata = {
   title: "Home | Yion Dev",
@@ -13,9 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
- 
+
+  const projects: ProjectResponseInterface[] = await getProjects()
+
   return (
-    <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0">
+    <main className="flex flex-col p-4 lg:px-0">
       <div className="flex flex-col w-full h-auto max-w-4xl mx-auto gap-4">
 
         <section className="flex flex-col lg:flex-row w-full gap-6">
@@ -42,7 +45,7 @@ export default async function Home() {
                 <span className=" text-xs"> - pronounced &quot;Yee On&quot;</span>
               </h1>
               <p className="text-sm lg:text-base">
-               { yionData.small_description }
+                {yionData.small_description}
               </p>
             </div>
             <div className="flex w-full min-h-fit mt-4 lg:mt-0 lg:-mb text-xs lg:text-sm gap-4 lg:gap-10">
@@ -61,7 +64,7 @@ export default async function Home() {
         <section className="flex relative w-full">
           <div className="flex flex-wrap items-center w-full min-h-10 px-4 py-2 lg:py-0 gap-x-10 gap-y-2 lg:gap-14 border">
             {contact.map((e, i) => (
-              <Link key={ i } href={ e.href } rel="noopener" target="_blank">
+              <Link key={i} href={e.href} rel="noopener" target="_blank">
                 <div className="flex items-center lg:justify-center w-fit lg:min-w-0 h-fit gap-2 text-sm lg:text-base">
                   {e.icon}
                   {e.displayText}
@@ -130,24 +133,25 @@ export default async function Home() {
           <h2 className="text-xl lg:text-2xl"> &gt; Projects</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-60 gap-10">
-            {projects.map((e, i) => (
-              <React.Fragment key={i}>
-                <ProjectCard 
-                  itemId={ e.itemId }
-                  index={ i+1 } 
-                  title={ e.title } 
-                  href={ e.href } 
-                  thumbnail={ e.thumbnail } 
-                  tech={ e.tech } 
-                  description={ e.description } 
-                  status={"Production"} 
-                  className="flex-col!" />
-              </React.Fragment>
+            {
+              projects && projects.map((e, i) => (
 
-            ))
+                <ProjectCard
+                  key={ i }
+                  project_id={ (i+1) }
+                  project_name={e.project_name}
+                  project_slug={e.project_slug}
+                  project_short_description={e.project_short_description}
+                  project_description={e.project_description}
+                  project_githubUrl={e.project_githubUrl}
+                  project_liveUrl={e.project_liveUrl}
+                  project_thumbnailUrl={e.project_thumbnailUrl}
+                  project_techstack={e.project_techstack}
+                  project_status={e.project_status}
+                  project_pictures={e.project_pictures} />
+              ))
             }
           </div>
-
 
         </section>
 
@@ -188,24 +192,22 @@ export default async function Home() {
                     <span className="absolute top-0 left-0 border-t border-l size-2 group-hover:w-full group-hover:h-ful"></span>
                     <span className="absolute bottom-0 left-0 border-b border-l size-2 group-hover:w-full group-hover:h-full"></span>
                     <span className="absolute top-0 right-0 border-t border-r size-2 group-hover:w-full group-hover:h-full"></span>
-                  <span className="absolute bottom-0 right-0 border-b border-r size-2 group-hover:w-full group-hover:h-full"></span>
+                    <span className="absolute bottom-0 right-0 border-b border-r size-2 group-hover:w-full group-hover:h-full"></span>
 
-                  <h2 className="flex items-center gap-2 ">{ e.icon }{ e.displayText }</h2>
-                  <p className="min-w-0 wrap-break-word text-sm">{ e.href }</p>
+                    <h2 className="flex items-center gap-2 ">{e.icon}{e.displayText}</h2>
+                    <p className="min-w-0 wrap-break-word text-sm">{e.href}</p>
 
-                </div>
-              </Link>
-            ))
-            
-          }
+                  </div>
+                </Link>
+              ))
+
+            }
           </div>
         </section>
 
-        <Footer />
- 
       </div>
- 
-    </main>    
+
+    </main>
 
   );
 }

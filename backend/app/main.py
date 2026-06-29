@@ -60,8 +60,9 @@ async def track_visitors(request: Request, call_next):
                 
                 
                 if checkExisting:
-                    checkExisting.visitor_visited_pages = checkExisting.visitor_visited_pages + [str(request.url.path)]
-                    db.commit()
+                    if str(request.url.path) not in checkExisting.visitor_visited_pages:
+                        checkExisting.visitor_visited_pages = checkExisting.visitor_visited_pages + [str(request.url.path)]
+                        db.commit()
                     
                 else:
                     visitor = Visitor(
