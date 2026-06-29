@@ -194,7 +194,7 @@ export default async function Home() {
                     <span className="absolute top-0 right-0 border-t border-r size-2 group-hover:w-full group-hover:h-full"></span>
                     <span className="absolute bottom-0 right-0 border-b border-r size-2 group-hover:w-full group-hover:h-full"></span>
 
-                    <h2 className="flex items-center gap-2 ">{e.icon}{e.displayText}</h2>
+                    <h3 className="flex items-center gap-2 ">{e.icon}{e.displayText}</h3>
                     <p className="min-w-0 wrap-break-word text-sm">{e.href}</p>
 
                   </div>
