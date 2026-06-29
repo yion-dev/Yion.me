@@ -8,7 +8,7 @@ import {
 } from "@/_types/types";
 import { redirect } from "next/navigation";
 
-const API_URL = process.env.BASE_URL || "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL|| "http://localhost:8000"
 
 export async function getVisitors() {
     try {
