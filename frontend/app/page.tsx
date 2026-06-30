@@ -28,7 +28,7 @@ export default async function Home() {
               priority
               width={200}
               height={200}
-              src="/pfp.png"
+              src="https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/pfp.webp"
               alt="yion"
               className="w-50 lg:w-32 h-full lg:h-40 opacity-80 overflow-hidden mx-auto invert" />
             

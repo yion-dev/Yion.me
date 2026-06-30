@@ -42,10 +42,23 @@ export default async function Authentication({
         h-full w-full py-6 lg:py-10 gap-6
         flex flex-col">
 
-        <div className="flex items-center w-full h-auto gap-10">
+        <div className="flex flex-col lg:flex-row items-center w-full h-auto gap-10">
 
-          <div className="flex max-w-lg">
-            <img src="/lain.gif" alt="" />
+          <div className="w-full lg:w-100 h-80 lg:h-100">
+            <video
+              width={400}
+              height={200}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster="/loading.svg"
+              className="w-full h-full aspect-video object-fit"
+            >
+              <source src="https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/lain-ezgif.com-gif-to-webm-converter.webm" type="video/webm" />
+              <source src="https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/lain-ezgif.com-gif-to-webm-converter.webm" type="video/mp4" />
+            </video>
           </div>
 
           <div className="flex flex-col gap-5">
