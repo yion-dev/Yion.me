@@ -16,29 +16,28 @@ export default async function ProjectPage({
     const response: ProjectResponseInterface = await getProject(id)
 
     console.log(`project name ${response.project_name}`)
-    
+
     const githubResponse: GithubProjectDataInterface = await getGithubProjectData(
-        "yion-dev", 
+        "yion-dev",
         response.project_name
     );
 
     return (
         <main className="
-        h-auto min-h-screen w-full 
-        flex flex-col items-center
-        px-4 lg:px-0">
+            h-auto min-h-screen w-full 
+            flex flex-col items-center">
 
             <Container className="
-        h-full py-6 lg:py-10 gap-6
-        flex flex-col w-full">
+                h-full lg:py-10 gap-6
+                flex flex-col w-full">
 
                 <section className="relative flex flex-col w-full h-fit min-h-20 gap-4">
 
-                    <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-2">
+                    <div className="flex flex-row lg:items-start justify-between gap-2">
                         <div className="flex flex-col gap-1 min-w-0">
-                            <h3 className="wrap-break-word">
+                            <h1 className="wrap-break-word">
                                 <span className="font-medium">#</span> {response.project_name}
-                            </h3>
+                            </h1>
                             <p className="text-zinc-400 text-sm">{response.project_short_description}</p>
                         </div>
                         <span className="text-xs lg:text-sm border px-2 py-1 w-fit h-fit whitespace-nowrap">

@@ -1,3 +1,4 @@
+import Container from "@/_components/container";
 import Footer from "@/_components/footer";
 import { getBlogs } from "@/_lib/api";
 import { baseUrl, blogUrl } from "@/_lib/constants";
@@ -16,14 +17,14 @@ export default async function Blogs () {
     const blogs:BlogResponseInterface[] = await getBlogs();
     
     return (
-        <main className="w-full h-auto bg-background text-foreground font-mono font-medium px-4 lg:px-0">
-            <div className="flex flex-col w-full max-w-4xl mx-auto gap-">
- 
-                <main className="relative flex flex-col w-full h-auto min-h-180 px-1 py-6 gap-10 ">
+        <main className="w-full h-full flex items-center justify-center">
+            <Container className="
+                h-full min-h-[80dvh] w-full py-4 lg:py-10 gap-6
+                flex flex-col justify-start">
                 
                 { blogs.map((e,i) => (
                     <Link key={ i } href={`/blogs/${e.blog_id}`}>
-                        <div className="flex flex-col group cursor-pointer">
+                        <div className="flex flex-col w-full h-fit group cursor-pointer">
                             <h1 className="text-base lg:text-xl font-black lg:font-semibold group-hover:underline">
                                 <span className="text-sm lg:text-lg">[{ i+1 }] </span>
                                 { e.blog_title }
@@ -45,9 +46,7 @@ export default async function Blogs () {
                         </div>
                     </Link>
                 ))}
-                </main>
- 
-            </div>
+            </Container>
         </main>
     )
 }

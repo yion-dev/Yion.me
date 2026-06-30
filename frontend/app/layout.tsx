@@ -114,6 +114,7 @@ export default async function RootLayout({
 }>) {
   const cfToken = process.env.NEXT_PUBLIC_CLOUDFLARE_TOKEN;
   const visitors = await getVisitorsCount();
+  console.log(visitors)
   return (
     <html
       lang="en"

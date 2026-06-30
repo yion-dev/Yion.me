@@ -23,10 +23,10 @@ export default function ProjectCard({
 
   const corners = (
     <>
-      <span className="absolute top-0 left-0 border-t border-l border-transparent group-hover:border-zinc-600 size-3 z-10 transition-colors" />
-      <span className="absolute top-0 right-0 border-t border-r border-transparent group-hover:border-zinc-600 size-3 z-10 transition-colors" />
-      <span className="absolute bottom-0 left-0 border-b border-l border-transparent group-hover:border-zinc-600 size-3 z-10 transition-colors" />
-      <span className="absolute bottom-0 right-0 border-b border-r border-transparent group-hover:border-zinc-600 size-3 z-10 transition-colors" />
+      <span className="absolute top-0 left-0 border-t border-l border-transparent group-hover:border-zinc-300 size-3 z-10 transition-colors" />
+      <span className="absolute top-0 right-0 border-t border-r border-transparent group-hover:border-zinc-300 size-3 z-10 transition-colors" />
+      <span className="absolute bottom-0 left-0 border-b border-l border-transparent group-hover:border-zinc-300 size-3 z-10 transition-colors" />
+      <span className="absolute bottom-0 right-0 border-b border-r border-transparent group-hover:border-zinc-300 size-3 z-10 transition-colors" />
     </>
   )
 
@@ -56,7 +56,7 @@ export default function ProjectCard({
       <h2 className="title text-base lg:text-lg font-bold text-zinc-100">
         [{project_id ?? 0}] {project_name}
       </h2>
-      <span className="text-x1s border border-zinc-600 px-2 py-1 text-zinc-400 whitespace-nowrap shrink-0">
+      <span className="text-xs border border-zinc-600 px-2 py-1 text-zinc-400 whitespace-nowrap shrink-0">
         project_status: {project_status}
       </span>
     </div>
@@ -64,15 +64,16 @@ export default function ProjectCard({
 
   const info = (
     <div className="flex flex-col gap-4">
-      <p className="text-xs text-zinc-600 leading-relaxed">
-        {project_short_description}
+      <p className="text-sm text-zinc-600 leading-relaxed line-clamp-3">
+        {/* {project_short_description} */}
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ut fugiat enim at delectus optio illo earum, amet asperiores totam dolorum aliquam porro officiis fugit quo, error fuga sit, omnis odio temporibus. Laudantium consequuntur alias natus corporis. Consequatur quas eius voluptatem corrupti eveniet eaque, eos aperiam id, assumenda consectetur, quibusdam veniam atque. Reprehenderit qui, maxime animi sit eligendi adipisci fugiat ipsum dolore accusamus saepe quod ex molestias officia ipsa? Ratione enim molestiae sint fuga ut voluptatum saepe quasi dolorum autem atque hic molestias aspernatur perferendis architecto, doloremque odit dignissimos itaque blanditiis minima non debitis dicta expedita soluta impedit? Nam veritatis animi similique laborum tenetur quas sapiente veniam quae? Laborum labore odit eaque nisi saepe quis? Dolores, quasi. Nemo autem explicabo odit laborum aliquam perferendis nesciunt deleniti, laboriosam obcaecati illo nihil ea, beatae exercitationem natus. Dicta aliquam accusantium, natus nisi quas mollitia praesentium saepe eligendi velit ut architecto et ab dolorem modi consectetur sunt ducimus eos beatae dolores, nostrum expedita amet numquam? Voluptatibus facilis cupiditate impedit provident ex, deserunt ut et temporibus recusandae sit dicta minima corporis eum laudantium laboriosam vitae nisi modi quos saepe cumque qui. Fuga, quas in deserunt nostrum, tempore iusto ratione veritatis quod nam adipisci, maiores ipsum?
       </p>
       <div className="flex flex-wrap gap-2">
         {project_techstack.map((e, i) => (
           <TechCard key={i} displayName={e} />
         ))}
       </div>
-      <div className="flex flex-col gap-0.5 text-xs text-zinc-500">
+      <div className="flex flex-col gap-0.5 text-sm text-zinc-500">
         <span>status:    {project_status}</span>
         <span>github:    {project_githubUrl || "—"}</span>
         <span>live:      {project_liveUrl || "—"}</span>
@@ -85,7 +86,7 @@ export default function ProjectCard({
 
       {variant === "default" && (
         <div className={clsx(
-          "flex flex-col gap-4 w-full p-4 group relative",
+          "flex flex-col gap-4 w-full group relative",
           className
         )}>
           {corners}
@@ -134,7 +135,7 @@ export default function ProjectCard({
 
 export function TechCard({ displayName }: { displayName: string }) {
   return (
-    <div className="w-fit h-fit px-2 lg:px-3 text-xs lg:text-sm bg-foreground text-background border">
+    <div className="w-fit h-fit px-2 lg:px-3 text-sm bg-foreground text-background border">
       {displayName}
     </div>
   )

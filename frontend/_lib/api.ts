@@ -1,14 +1,14 @@
-import { 
-    BlogResponseInterface, 
-    GithubLanguagesInterface, 
-    GithubProjectDataInterface, 
-    GithubReadmeInterface, 
-    GithubRepoInterface, 
-    ProjectResponseInterface 
+import {
+    BlogResponseInterface,
+    GithubLanguagesInterface,
+    GithubProjectDataInterface,
+    GithubReadmeInterface,
+    GithubRepoInterface,
+    ProjectResponseInterface
 } from "@/_types/types";
 import { redirect } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL|| "http://localhost:8000"
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000"
 
 export async function getVisitors() {
     try {
@@ -28,15 +28,15 @@ export async function getVisitors() {
 }
 
 export async function getVisitorsCount() {
-    console.log("WTF"+API_URL)
     try {
         const res = await fetch(API_URL + "/visitors/get-all/count", {
             method: "GET",
             next: { revalidate: 60 }
         })
 
+        console.log(res.ok)
+ 
         if (!res.ok) return []
-
         return await res.json();
 
     } catch (e) {
@@ -69,7 +69,6 @@ export async function getProject(id: string) {
             cache: "no-store"
         })
 
-        console.log(`This is return ${res.ok}`)
         if (!res.ok) return []
 
         return await res.json();
@@ -181,4 +180,11 @@ export async function createBlog(data: BlogResponseInterface) {
 
 export async function loginGithub() {
     redirect(`${API_URL}/oauth/github`)
+}
+
+export async function getPing() {
+    const start = performance.now();
+    await fetch("https://api.yiondev.me/visitors/get-all/count");
+    const ms = Math.round(performance.now() - start);
+    return ms
 }

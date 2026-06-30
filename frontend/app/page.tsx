@@ -1,5 +1,6 @@
 import Footer from "@/_components/footer";
 import ProjectCard from "@/_components/project-card";
+import VisitorInfo from "@/_components/visitorinfo-card";
 import { information, contact, knowledge, work, education, yionData } from "@/_data/data";
 import { getProjects } from "@/_lib/api";
 import { ProjectResponseInterface } from "@/_types/types";
@@ -18,22 +19,24 @@ export default async function Home() {
   const projects: ProjectResponseInterface[] = await getProjects()
 
   return (
-    <main className="flex flex-col py-4">
+    <main className="flex flex-col lg:py-4">
       <div className="flex flex-col w-full h-auto max-w-4xl mx-auto gap-4">
 
-        <section className="flex flex-col lg:flex-row w-full h-auto gap-6">
-          <div className="flex h-auto w-auto gap-4 box-border overflow-hidden">
+        <section className="flex flex-col lg:flex-row items-center w-full h-auto gap-6">
+          <div className="flex h-full w-full lg:w-55 gap-4 box-border overflow-hidden lg:border ">
             <Image
               priority
               width={200}
               height={200}
-              src="/yion-square.webp"
+              src="/pfp.png"
               alt="yion"
-              className="w-45 h-30 lg:w-42 lg:h-35 opacity-80 overflow-hidden border-2 border-foreground" />
+              className="w-50 lg:w-32 h-full lg:h-40 opacity-80 overflow-hidden mx-auto invert" />
             
-            <div className="flex lg:hidden grow w-full h-30 border"></div>
+            <div className="flex lg:hidden grow w-full h-auto">
+              <VisitorInfo />
+            </div>
           </div>
-          <div className="relative flex flex-col justify-between h-full min-h-35 w-full px-4 py-3">
+          <div className="relative flex flex-col justify-between h-full lg:h-40 min-h-35 w-full px-4 py-3">
 
             <span className="absolute top-0 left-0 border-t border-l size-4"></span>
             <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>

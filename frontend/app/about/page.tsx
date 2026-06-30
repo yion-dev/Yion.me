@@ -1,3 +1,4 @@
+import Container from "@/_components/container";
 import Footer from "@/_components/footer";
 import { aboutmepictures, yionData } from "@/_data/data";
 import { Metadata } from "next";
@@ -11,10 +12,12 @@ export const metadata: Metadata = {
 
 export default function About () {
     return (
-        <main className="bg-background text-foreground font-mono font-medium p-4 lg:px-0">
-            <div className="flex flex-col w-full max-w-4xl min-h-200 mx-auto gap-4">
+        <main className="">
+            <Container className="
+                h-full min-h-[80dvh] w-full lg:py-10 gap-6
+                flex flex-col justify-start">
             
-                <main className="w-full h-fit flex flex-col gap-6 lg:gap-10 text-base lg:text-xl">
+                <section className="w-full h-fit flex flex-col gap-6 lg:gap-10 text-base lg:text-xl">
                  
                     <div className="flex flex-col lg:flex-row gap-4">
                         <p className="lg:max-w-100">
@@ -101,9 +104,9 @@ export default function About () {
                          Memento Mori...
                     </p>
 
-                </main>
+                </section>
             
-            </div>
+            </Container>
         </main>
     )
 }

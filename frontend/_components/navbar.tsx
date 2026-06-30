@@ -3,10 +3,10 @@ import { baseUrl } from "../_lib/constants"
 import { NavbarProps } from "../_types/types"
 
 export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
-  console.log(baseUrl)
+  console.log("Count = " + websiteVisitorCount)
   return (
     <nav className="lg:relative flex flex-col w-full max-w-4xl my-10 lg:my-4 gap-2">
-      <Link href={ baseUrl }>
+      <Link href={ "/" }>
         <h1 className="text-2xl lg:text-3xl">
           _Yiondev
           <span className="text-xl text-foreground-mute">.me</span>
