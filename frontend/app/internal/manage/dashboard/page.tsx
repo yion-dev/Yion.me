@@ -89,7 +89,7 @@ export default function DashboardPage() {
                         {visitors.slice(0,5).map((v) => (
                             <VisitorCard key={v.visitor_id} visitor={v} />
                         ))}
-                    </div>
+                    </div>``
                 </section>
 
                 <div className="border-t" />

@@ -1,7 +1,5 @@
 import Container from "@/_components/container";
-import Footer from "@/_components/footer";
 import { getBlogs } from "@/_lib/api";
-import { baseUrl, blogUrl } from "@/_lib/constants";
 import { BlogResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Link from "next/link";
