@@ -65,8 +65,7 @@ export default function ProjectCard({
   const info = (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-zinc-600 leading-relaxed line-clamp-3">
-        {/* {project_short_description} */}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ut fugiat enim at delectus optio illo earum, amet asperiores totam dolorum aliquam porro officiis fugit quo, error fuga sit, omnis odio temporibus. Laudantium consequuntur alias natus corporis. Consequatur quas eius voluptatem corrupti eveniet eaque, eos aperiam id, assumenda consectetur, quibusdam veniam atque. Reprehenderit qui, maxime animi sit eligendi adipisci fugiat ipsum dolore accusamus saepe quod ex molestias officia ipsa? Ratione enim molestiae sint fuga ut voluptatum saepe quasi dolorum autem atque hic molestias aspernatur perferendis architecto, doloremque odit dignissimos itaque blanditiis minima non debitis dicta expedita soluta impedit? Nam veritatis animi similique laborum tenetur quas sapiente veniam quae? Laborum labore odit eaque nisi saepe quis? Dolores, quasi. Nemo autem explicabo odit laborum aliquam perferendis nesciunt deleniti, laboriosam obcaecati illo nihil ea, beatae exercitationem natus. Dicta aliquam accusantium, natus nisi quas mollitia praesentium saepe eligendi velit ut architecto et ab dolorem modi consectetur sunt ducimus eos beatae dolores, nostrum expedita amet numquam? Voluptatibus facilis cupiditate impedit provident ex, deserunt ut et temporibus recusandae sit dicta minima corporis eum laudantium laboriosam vitae nisi modi quos saepe cumque qui. Fuga, quas in deserunt nostrum, tempore iusto ratione veritatis quod nam adipisci, maiores ipsum?
+        {project_short_description}
       </p>
       <div className="flex flex-wrap gap-2">
         {project_techstack.map((e, i) => (

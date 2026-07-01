@@ -34,8 +34,6 @@ export async function getVisitorsCount() {
             next: { revalidate: 60 }
         })
 
-        console.log(res.ok)
- 
         if (!res.ok) return []
         return await res.json();
 
@@ -80,7 +78,6 @@ export async function getProject(id: string) {
 }
 
 export async function getBlogs() {
-    console.log(API_URL);
     try {
         const res = await fetch(`${API_URL}/blogs/get-all`, {
             method: "GET",
@@ -104,8 +101,6 @@ export async function getBlog(id: string) {
             next: { revalidate: 86400 },
         })
 
-        console.log(`${API_URL}/blogs/get-one/${id}`)
-
         if (!res.ok) return []
 
         return await res.json();
@@ -121,8 +116,6 @@ export async function getGithubProjectData(
     owner: string,
     repoName: string
 ): Promise<GithubProjectDataInterface> {
-
-    console.log(`https://api.github.com/repos/${owner}/${repoName}`)
 
     const [repoRes, readmeRes, languagesRes] = await Promise.all([
         fetch(`https://api.github.com/repos/${owner}/${repoName}`, { next: { revalidate: 3600 } }),
@@ -187,4 +180,36 @@ export async function getPing() {
     await fetch("https://api.yiondev.me/visitors/get-all/count");
     const ms = Math.round(performance.now() - start);
     return ms
+}
+
+export async function login(username: string, password: string) {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/oauth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ username, password })
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            return { success: false, message: err.detail || "Invalid credentials" };
+        }
+
+        return { success: true };
+    } catch (e) {
+        return { success: false, message: "Network error" };
+    }
+}
+
+export async function deleteBlog(blog_id: string) {
+    const res = await fetch(`${API_URL}/blogs/delete/${blog_id}`, {
+        method: "DELETE",
+    });
+
+    if (!res.ok) {
+        throw new Error(`Failed to delete Blog: ${res.status}`);
+    }
+
+    return res.json();
 }

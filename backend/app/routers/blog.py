@@ -36,7 +36,7 @@ def updateBlog(blogID: int, blogObject: BlogUpdate, dbInstance: Session = Depend
     return update_blog(blog_id=blogID, blog=blogObject, db=dbInstance)
 
 @router.delete("/delete/{blogID}")
-def deleteBlog(blogID: int, dbInstance: Session = Depends(get_db)):
+def deleteBlog(blogID: str, dbInstance: Session = Depends(get_db)):
     return delete_blog(blog_id=blogID, db=dbInstance)
     
 @router.get("/display/edit")

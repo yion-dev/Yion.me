@@ -15,8 +15,6 @@ export default async function ProjectPage({
 
     const response: ProjectResponseInterface = await getProject(id)
 
-    console.log(`project name ${response.project_name}`)
-
     const githubResponse: GithubProjectDataInterface = await getGithubProjectData(
         "yion-dev",
         response.project_name

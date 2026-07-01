@@ -1,8 +1,9 @@
 "use client";
 
 import Container from "@/_components/container"
-import { getBlogs, getProjects, getVisitors } from "@/_lib/api"
+import { deleteBlog, getBlogs, getProjects, getVisitors } from "@/_lib/api"
 import { BlogResponseInterface, ProjectResponseInterface, VisitorResponseInterface } from "@/_types/types"
+import Link from "next/link";
 import { useState, useEffect } from "react"
 
 export default function DashboardPage() {
@@ -55,7 +56,7 @@ export default function DashboardPage() {
     useEffect(() => {
         fetchVisitors()
         fetchProjects()
-        fetchBlogs  
+        fetchBlogs()
     }, [])
 
     const totalVisitors = visitors.length
@@ -69,7 +70,7 @@ export default function DashboardPage() {
             <Container className="h-full py-6 lg:py-10 flex flex-col w-full gap-10">
 
                 {/* Visitor stats */}
-                <section className="grid grid-cols-4 border">
+                <section className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                     <StatCard label="total_visitors" value={totalVisitors} sub="all time" />
                     <StatCard label="unique_ips" value={uniqueIps} sub="distinct addresses" />
                     <StatCard label="pages_visited" value={totalPageHits} sub="total page hits" />
@@ -97,9 +98,9 @@ export default function DashboardPage() {
                 <section className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <h3>projects</h3>
-                        <button className="text-xs border px-3 py-1 hover:border-zinc-600">
+                        <Link href={"/internal/manage/projects"} className="text-xs border px-3 py-1 hover:border-zinc-600">
                             [ + new project ]
-                        </button>
+                        </Link>
                     </div>
                     <div className="border overflow-x-auto">
                         <table className="w-full border-collapse text-xs" style={{ minWidth: "700px" }}>
@@ -146,9 +147,9 @@ export default function DashboardPage() {
                 <section className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <h3>blogs</h3>
-                        <button className="text-xs border px-3 py-1 hover:border-zinc-600 hover:">
+                        <Link href={"/internal/manage/blogs"} className="text-xs border px-3 py-1 hover:border-zinc-600 hover:">
                             [ + new blog ]
-                        </button>
+                        </Link>
                     </div>
                     <div className="border overflow-x-auto">
                         <table className="w-full border-collapse text-xs" style={{ minWidth: "600px" }}>
@@ -162,7 +163,7 @@ export default function DashboardPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {MOCK_BLOGS.map((b, i) => (
+                                {blogs.map((b, i) => (
                                     <tr key={i} className="border-b hover:bg-zinc-900/50">
                                         <td className="px-3 py-2">{(i+1)}</td>
                                         <td className="px-3 py-2  truncate max-w-48">{b.blog_title}</td>
@@ -170,12 +171,17 @@ export default function DashboardPage() {
                                         <td className="px-3 py-2">{b.blog_author}</td>
                                         <td className="px-3 py-2">
                                             <div className="flex gap-2">
-                                                <button className="text-[10px] border px-2 py-1 hover:border-zinc-500 hover:text-zinc-200">
+                                                <button  className="text-[10px] border px-2 py-1 hover:border-zinc-500 hover:text-zinc-200">
                                                     ~
                                                 </button>
-                                                <button className="text-[10px] border px-2 py-1 hover:border-red-900 hover:text-red-500">
-                                                    -
-                                                </button>
+
+                                                {b.blog_id &&
+                                                    <button
+                                                        onClick={() => deleteBlog(b.blog_id!)} 
+                                                        className="text-[10px] border px-2 py-1 hover:border-red-900 hover:text-red-500">
+                                                        -
+                                                    </button>
+                                                }
                                             </div>
                                         </td>
                                     </tr>
@@ -192,7 +198,7 @@ export default function DashboardPage() {
 
 function StatCard({ label, value, sub }: { label: string; value: number; sub: string }) {
     return (
-        <div className="flex flex-col gap-1 px-5 py-4 border-r last:border-r-0">
+        <div className="flex flex-col gap-1 px-5 py-4 border">
             <span className="text-sm tracking-wide">[ {label} ]</span>
             <span className="text-2xl font-medium text-zinc-100">{value}</span>
             <span className="text-xs text-zinc-400">{sub}</span>
@@ -226,16 +232,3 @@ function StatusBadge({ status }: { status: string }) {
         </span>
     )
 }
-
-const MOCK_VISITORS: VisitorResponseInterface[] = [
-    { visitor_id: 1041, visitor_ip_address: "192.168.1.104", visitor_visited_pages: ["/", "/projects", "/projects/book-vision-tui"], visitor_visited_at: "2026-06-26T14:32:00" },
-    { visitor_id: 1040, visitor_ip_address: "203.0.113.55", visitor_visited_pages: ["/", "/about"], visitor_visited_at: "2026-06-26T13:58:00" },
-    { visitor_id: 1039, visitor_ip_address: "198.51.100.22", visitor_visited_pages: ["/projects", "/blogs", "/about"], visitor_visited_at: "2026-06-26T12:11:00" },
-    { visitor_id: 1038, visitor_ip_address: "10.0.0.87", visitor_visited_pages: ["/", "/projects"], visitor_visited_at: "2026-06-26T10:44:00" },
-]
-
-const MOCK_BLOGS = [
-    { blog_title: "How I built a book scanner with YOLO", blog_smallDescription: "Using YOLOv11 and Gemini Vision to identify books", blog_author: "Yion" },
-    { blog_title: "Setting up Hyprland on Arch Linux", blog_smallDescription: "My dotfiles and Caelestia setup walkthrough", blog_author: "Yion" },
-    { blog_title: "Go backend with pgx/v5 and Chi", blog_smallDescription: "Layered architecture with PostgreSQL and Docker", blog_author: "Yion" },
-]

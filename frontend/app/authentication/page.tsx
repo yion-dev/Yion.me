@@ -1,37 +1,23 @@
+"use client"
+
 import Container from "@/_components/container"
-import { redirect } from "next/navigation"
-import { cookies } from "next/headers"
 import { GithubLoginButton } from "@/_components/github-button"
+import { login } from "@/_lib/api"
+import { useState } from "react"
 
-export default async function Authentication({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>
-}) {
-  const { error } = await searchParams
+export default function Authentication() {
+  const [error, setError] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const loginAction = async (formData: FormData) => {
-    "use server"
-
-    const username = formData.get("username") as string
-    const password = formData.get("password") as string
-
-    if (
-      username !== process.env.ADMIN_USERNAME ||
-      password !== process.env.ADMIN_SECRET
-    ) {
-      redirect("/internal/manage/login?error=invalid")
+  const handleSubmit = async () => {
+    const res = await login(username, password);
+    if (res.success) {
+      window.location.href = "/internal/manage/dashboard";
+    } else {
+      setError(res.message);
     }
-
-    const cookieStore = await cookies()
-    cookieStore.set("admin_token", process.env.ADMIN_SECRET!, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7,
-    })
-
-    redirect("/internal/manage/dashboard")
-  }
+  };
 
   return (
     <main className="
@@ -70,37 +56,32 @@ export default async function Authentication({
 
             <div className="border-t" />
 
-            <form action={loginAction} className="flex flex-col gap-5">
-
-              <div className="flex flex-col gap-1">
-                <label>[ username ]</label>
+            <div className="w-full h-full font-mono text-base lg:text-lg">
+              <p className="text-zinc-500">$ admin login</p>
+              <div className="flex flex-col gap-2 mt-2">
                 <input
-                  name="username"
                   type="text"
-                  placeholder="yion"
-                  className="bg-transparent border px-3 py-2 outline-none"
+                  placeholder="username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className="bg-transparent border border-zinc-700 px-2 py-1 outline-none"
                 />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label>[ password ]</label>
                 <input
-                  name="password"
                   type="password"
-                  placeholder="••••••••"
-                  className="bg-transparent border px-3 py-2 outline-none"
+                  placeholder="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="bg-transparent border border-zinc-700 px-2 py-1 outline-none"
                 />
+                {error && <p className="text-red-500">&gt; {error}</p>}
+                <button
+                  onClick={handleSubmit}
+                  className="border border-zinc-700 px-2 py-1 text-center hover:bg-zinc-800 transition-all"
+                >
+                  [ login ]
+                </button>
               </div>
-
-              {error === "invalid" && (
-                <p className="border px-3 py-2">invalid credentials</p>
-              )}
-
-              <button type="submit" className="border px-4 py-2">
-                [ login ]
-              </button>
-
-            </form>
+            </div>
 
             <div className="flex items-center gap-3">
               <span className="flex-1 border-t" />

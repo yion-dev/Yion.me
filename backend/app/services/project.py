@@ -59,8 +59,9 @@ def update_project_update(id: int, project: ProjectUpdate, db: Session):
     
     return project;
         
-def delete_project_remove(id: int, db: Session):
-    project = db.query(Project).filter(Project.project_id == id).first();
+def delete_project_remove(id: str, db: Session):
+    converted = uuid.UUID(id)
+    project = db.query(Project).filter(Project.project_id == converted).first();
     
     if not project:
         raise HTTPException(status_code=404, detail="Project Not Found");

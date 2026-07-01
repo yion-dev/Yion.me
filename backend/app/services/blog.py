@@ -56,8 +56,9 @@ def update_blog(blog_id: int, blog: BlogUpdate, db: Session):
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"{type(error).__name__}: {str(error)}")
 
-def delete_blog(blog_id: int, db: Session):
-    blog_model = db.query(Blog).filter(Blog.blog_id == blog_id).first()
+def delete_blog(blog_id: str, db: Session):
+    converted = uuid.UUID(blog_id)
+    blog_model = db.query(Blog).filter(Blog.blog_id == converted).first()
     
     if not blog_model:
         raise HTTPException(status_code=404, detail="Blog Not Found")

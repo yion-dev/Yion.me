@@ -31,5 +31,5 @@ def projectUpdate(project_id: int, project: ProjectUpdate, db: Session = Depends
     return update_project_update(id=project_id, project=project, db=db);
        
 @router.delete("/delete/{id}")
-def projectDelete(project_id: int, db: Session = Depends(get_db)):
+def projectDelete(project_id: str, db: Session = Depends(get_db)):
     return delete_project_remove(id= project_id, db=db);
