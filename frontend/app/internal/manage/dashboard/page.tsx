@@ -216,7 +216,7 @@ export function VisitorCard({ visitor }: { visitor: VisitorResponseInterface }) 
             <span className="text-base">{visitor.visitor_ip_address}</span>
             <div className="flex flex-wrap gap-1">
                 {[...new Set(visitor.visitor_visited_pages)].map((page, i) => (
-                    <span key={i} className="text-xs border px-1.5 py-0.5">
+                    <span key={i} className="text-xs border px-1.5 py-0.5 break-all">
                         {page}
                     </span>
                 ))}
