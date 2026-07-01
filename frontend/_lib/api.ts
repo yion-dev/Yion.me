@@ -8,7 +8,9 @@ import {
 } from "@/_types/types";
 import { redirect } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000"
+const API_URL = typeof window === "undefined"
+  ? process.env.BASE_URL || "http://backend:8000"
+  : process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000";
 
 export async function getVisitors() {
     try {
@@ -184,7 +186,7 @@ export async function getPing() {
 
 export async function login(username: string, password: string) {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/oauth/login`, {
+        const res = await fetch(`${API_URL}/oauth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
