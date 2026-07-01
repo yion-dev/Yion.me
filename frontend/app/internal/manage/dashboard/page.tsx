@@ -81,12 +81,12 @@ export default function DashboardPage() {
                 <section className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <h3>recent visitors</h3>
-                        <button className="text-xs border px-3 py-1 hover:border-zinc-600">
-                            [ refresh ]
-                        </button>
+                        <Link href={"/internal/manage/website-visitors"} className="text-xs border px-3 py-1 hover:border-zinc-600">
+                            [ more ]
+                        </Link>
                     </div>
-                    <div className="grid grid-cols-2 border divide-x divide-y divide-zinc-800">
-                        {visitors.map((v) => (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 border divide-x divide-y divide-zinc-800">
+                        {visitors.slice(0,5).map((v) => (
                             <VisitorCard key={v.visitor_id} visitor={v} />
                         ))}
                     </div>
@@ -103,7 +103,7 @@ export default function DashboardPage() {
                         </Link>
                     </div>
                     <div className="border overflow-x-auto">
-                        <table className="w-full border-collapse text-xs" style={{ minWidth: "700px" }}>
+                        <table className="w-full border-collapse text-xs table-fixed" style={{ minWidth: "700px" }}>
                             <thead>
                                 <tr className="border-b">
                                     <th className="text-left font-normal px-3 py-2 w-10">id</th>
@@ -206,7 +206,7 @@ function StatCard({ label, value, sub }: { label: string; value: number; sub: st
     )
 }
 
-function VisitorCard({ visitor }: { visitor: VisitorResponseInterface }) {
+export function VisitorCard({ visitor }: { visitor: VisitorResponseInterface }) {
     return (
         <div className="flex flex-col gap-2 p-4">
             <div className="flex items-center justify-between pb-2 border-b">
