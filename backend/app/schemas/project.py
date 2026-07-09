@@ -5,7 +5,7 @@ from datetime import datetime
 
 class ProjectBase(BaseModel):
     project_name: str
-    project_slug: uuid.UUID
+    project_slug: uuid.UUID | None = None
 
     project_short_description: str | None = None
     project_description: str | None = None
