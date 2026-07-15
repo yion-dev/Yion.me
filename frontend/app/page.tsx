@@ -90,7 +90,6 @@ export default async function Home() {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-1 lg:gap-4">
             <h2 className="text-xl lg:text-2xl"> &gt; Knowledge</h2>
             <div className="flex gap-4 text-xs lg:text-sm font-black">
-              <span>[ ] = Not Learnt</span>
               <span>[x] = Learnt</span>
               <span>[~] = Learning</span>
             </div>

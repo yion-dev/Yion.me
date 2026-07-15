@@ -48,7 +48,7 @@ export const contact: ContactInterface[] = [
   {
     displayText: "Resume",
     icon: <ResumeIcon strokeWidth={ 1.8 } className="size-4 fill-foreground" />,
-    href: "https://shorturl.at/x9s8G"
+    href: "https://shorturl.at/TQgBh"
   },
   {
     displayText: "Github",
@@ -155,14 +155,10 @@ export const knowledge: KnowledgeInterface[] = [
   },
   {
     displayName: "Bash",
-    learnt: false,
+    learnt: 'progress',
   },
   {
-    displayName: "C++",
-    learnt: false,
-  },
-  {
-    displayName: "Arduino",
+    displayName: "Embedded Systems",
     learnt: 'progress',
   },
   {
@@ -175,12 +171,8 @@ export const knowledge: KnowledgeInterface[] = [
   },
   {
     displayName: "Cloud Architecture",
-    learnt: false,
+    learnt: 'progress',
   },
-  {
-    displayName: "Rust",
-    learnt: false,
-  }, 
 ]
 
 export const aboutmepictures: AboutMePictureCardInterface[] = [
