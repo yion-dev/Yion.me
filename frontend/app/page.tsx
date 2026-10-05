@@ -176,10 +176,6 @@ export default async function Home() {
 
         <span className="w-full h-px my-6 bg-background-secondary"></span>
 
-        <PublicVisitorMap countriesByVisit={countriesByVisit} />
-
-        <span className="w-full h-px my-6 bg-background-secondary"></span>
-
         <section className="flex flex-col w-full gap-2">
           <h2 className="text-lg lg:text-2xl">&gt; Education</h2>
           <div className="flex flex-col w-full h-auto gap-4">
@@ -227,6 +223,10 @@ export default async function Home() {
             }
           </div>
         </section>
+
+        <span className="w-full h-px my-6 bg-background-secondary"></span>
+
+        <PublicVisitorMap countriesByVisit={countriesByVisit} />
 
       </div>
 

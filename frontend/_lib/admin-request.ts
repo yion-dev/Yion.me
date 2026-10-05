@@ -1,8 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 
+function publicRequestOrigin(request: NextRequest): string {
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  const forwardedProtocol = request.headers.get("x-forwarded-proto")?.split(",")[0].trim();
+  const protocol = forwardedProtocol === "http" || forwardedProtocol === "https"
+    ? forwardedProtocol
+    : request.nextUrl.protocol.replace(":", "");
+  if (!host) return request.nextUrl.origin;
+  try {
+    return new URL(`${protocol}://${host}`).origin;
+  } catch {
+    return request.nextUrl.origin;
+  }
+}
+
 export async function requireAdmin(request: NextRequest, sameOrigin = false): Promise<NextResponse | null> {
   const origin = request.headers.get("origin");
-  if (sameOrigin && origin && origin !== request.nextUrl.origin) {
+  if (sameOrigin && origin && origin !== publicRequestOrigin(request)) {
     return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
   }
 

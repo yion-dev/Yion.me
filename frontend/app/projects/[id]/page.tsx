@@ -1,5 +1,6 @@
 import Container from "@/_components/container";
 import ReadmeViewer from "@/_components/markdown";
+import ProjectPictureCarousel from "@/_components/project-picture-carousel";
 import { TechCard } from "@/_components/project-card";
 import { getGithubProjectData, getProject } from "@/_lib/api";
 import { GithubProjectDataInterface, ProjectResponseInterface } from "@/_types/types";
@@ -120,14 +121,7 @@ export default async function ProjectPage({
                     </div>
                 </section>}
 
-                {!!response.project_pictures?.length && <section className="flex flex-col gap-4">
-                    <h3 className="text-sm lg:text-lg">## Project pictures</h3>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        {response.project_pictures.map((url, index) => <a key={`${url}-${index}`} href={url} target="_blank" rel="noopener noreferrer" className="relative block aspect-video overflow-hidden border border-zinc-700 bg-zinc-900">
-                            <Image unoptimized src={url} alt={`${response.project_name} picture ${index + 1}`} fill sizes="(max-width: 639px) 100vw, 50vw" className="object-contain" />
-                        </a>)}
-                    </div>
-                </section>}
+                {!!response.project_pictures?.length && <ProjectPictureCarousel pictures={response.project_pictures} projectName={response.project_name} />}
 
                 {/* GitHub repo stats */}
                 <section className="relative flex flex-col w-full h-fit min-h-20 px-3 sm:px-4 pt-8 gap-4">

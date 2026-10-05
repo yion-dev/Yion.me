@@ -1,7 +1,6 @@
 import countries from "@/_data/world-countries.json";
 import { VisitorCountryCount } from "@/_types/types";
-
-const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+import VisitorCountryPages from "@/_components/visitor-country-pages";
 
 function intensity(count: number, max: number) {
   if (!count) return 0;
@@ -27,8 +26,6 @@ export default function PublicVisitorMap({ countriesByVisit }: { countriesByVisi
       </svg>
       {countriesByVisit === null ? <p className="public-map-empty">Visitor locations are temporarily unavailable.</p> : !ranked.length ? <p className="public-map-empty">No visitor countries recorded yet.</p> : null}
     </div>
-    {!!ranked.length && <ul className="sr-only" aria-label="Visitors by country">
-      {ranked.map(item => <li key={item.country_code}>{countryNames.of(item.country_code) ?? item.country_code}: {item.visitors}</li>)}
-    </ul>}
+    {!!ranked.length && <VisitorCountryPages countries={ranked} />}
   </section>;
 }

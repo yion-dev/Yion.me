@@ -25,6 +25,25 @@
 .public-map-level-4 { fill: #e4e4e7; }
 .public-map-singapore { stroke: #09090b; stroke-width: 1.8; }
 .public-map-empty { margin: 0 0 .75rem; color: #a1a1aa; text-align: center; }
+.public-country-section { display: flex; flex-direction: column; gap: .5rem; }
+.public-country-heading, .public-country-pages { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
+.public-country-heading { border-bottom: 1px solid #52525b; padding-bottom: .65rem; }
+.public-country-heading h3 { font-size: 1rem; }
+.public-country-heading span, .public-country-pages > span, .public-country-rank { color: #a1a1aa; font-size: .75rem; }
+.public-country-list { margin: 0; padding: 0; list-style: none; }
+.public-country-row { display: grid; grid-template-columns: 2rem minmax(7rem,1fr) minmax(4rem,2fr) 3rem; align-items: center; gap: .75rem; border-bottom: 1px solid #27272a; padding: .65rem .25rem; font-size: .875rem; }
+.public-country-name { overflow-wrap: anywhere; }
+.public-country-row strong { text-align: right; font-weight: 600; }
+.public-country-bar { height: .5rem; background: #27272a; }
+.public-country-bar > span { display: block; height: 100%; background: #e4e4e7; }
+.public-country-pages { padding-top: .5rem; }
+.public-country-pages > div { display: flex; gap: .5rem; }
+.public-country-pages button { min-height: 2.5rem; border: 1px solid #71717a; padding: .35rem .65rem; cursor: pointer; }
+.public-country-pages button:hover:not(:disabled), .public-country-pages button:focus-visible { background: var(--background-secondary); color: #18181b; }
+.public-country-pages button:disabled { cursor: not-allowed; opacity: .4; }
+@media (max-width: 639px) { .public-country-row { grid-template-columns: 1.5rem minmax(5rem,1fr) minmax(2rem,1fr) 2rem; gap: .4rem; font-size: .75rem; } }
+.project-carousel-track { scrollbar-width: none; touch-action: pan-x pan-y; }
+.project-carousel-track::-webkit-scrollbar { display: none; }
 
 :root {
   --background: #0a0b10;

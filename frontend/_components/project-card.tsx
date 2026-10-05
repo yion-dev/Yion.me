@@ -36,15 +36,14 @@ export default function ProjectCard({
   )
 
   const thumbnail = (className: string, sizes: string) => (
-    <div className={clsx("relative grid shrink-0 overflow-hidden bg-zinc-900", className)}>
+    <div className={clsx("relative shrink-0 overflow-hidden bg-zinc-900", className)}>
       <span className="absolute top-0 left-0 border-t border-l border-zinc-100 size-3 z-10" />
       <span className="absolute top-0 right-0 border-t border-r border-zinc-100 size-3 z-10" />
       <span className="absolute bottom-0 left-0 border-b border-l border-zinc-100 size-3 z-10" />
       <span className="absolute bottom-0 right-0 border-b border-r border-zinc-100 size-3 z-10" />
-      {project_thumbnailUrl ? <video autoPlay loop muted playsInline preload="metadata" poster="/loading.svg" className="h-full w-full min-w-0 object-contain"><source src={project_thumbnailUrl} /></video> : pictureUrl ? <div className="relative h-full min-w-0">
-        <Image src={pictureUrl} alt={`${project_name} thumbnail`} fill sizes={sizes} unoptimized={!project_thumbnailImageUrl} className="object-contain" />
-      </div> : null}
-      {!pictureUrl && !project_thumbnailUrl && <span className="flex h-full items-center justify-center text-xs text-zinc-500">[ No media ]</span>}
+      {project_thumbnailUrl ? <video autoPlay loop muted playsInline preload="metadata" poster="/loading.svg" className="absolute inset-0 h-full w-full object-cover"><source src={project_thumbnailUrl} /></video> : pictureUrl ?
+        <Image src={pictureUrl} alt={`${project_name} thumbnail`} fill sizes={sizes} unoptimized={!project_thumbnailImageUrl} className="object-cover" /> :
+        <span className="absolute inset-0 flex items-center justify-center text-xs text-zinc-500">[ No media ]</span>}
     </div>
   )
 
@@ -94,7 +93,7 @@ export default function ProjectCard({
 
       {variant === "horizontal" && (
         <div className={clsx(
-          "flex flex-row gap-8 w-full p-4 group relative",
+          "flex flex-row gap-8 w-full py-4 group relative",
           className
         )}>
           {corners}
