@@ -10,12 +10,12 @@ export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
           <span className="text-xl text-foreground-mute">.me</span>
         </h1>
       </Link>
-      <ul className="flex justify-between lg:justify-start gap-2 md:gap-10">
+      <ul className="flex flex-wrap justify-between gap-1 sm:gap-2 md:gap-10 lg:justify-start">
         {links.map((e, i) => (
           <li key={i}>
             <Link
               href={ e.href }
-              className="text-sm md:text-base font-bold text-foreground-mute hover:bg-background-secondary hover:text-zinc-900 transition-all px-1 py-1">
+              className="px-1 py-1 text-xs font-bold text-foreground-mute transition-all hover:bg-background-secondary hover:text-zinc-900 sm:text-sm md:text-base">
               [ {e.displayName} ]
             </Link>
           </li>

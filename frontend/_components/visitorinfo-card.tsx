@@ -25,41 +25,38 @@ export default function VisitorInfo() {
     const [loading, setLoading] = useState<boolean>(true);
     const [time, setTime] = useState<string>("");
 
-    const handleFetch = async () => {
-        setLoading(true);
-        try {
-            const geoRes = await fetch("https://ipapi.co/json/");
-            const geo = await geoRes.json();
-            const ms = await getPing();
-            const weatherRes = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${geo.latitude}&longitude=${geo.longitude}&current=temperature_2m,weather_code`
-            );
-            const weatherData = await weatherRes.json();
-            const temp = Math.round(weatherData.current.temperature_2m);
-            const desc = weatherCodeMap[weatherData.current.weather_code] || "unknown";
-
-            setLocation(`${geo.city}, ${geo.country_name}`);
-            setPing(`${ms}ms`);
-            setWeather(`${temp}°C, ${desc}`);
-        } catch (e) {
-            setLocation("404, xxx");
-            setPing("xxms");
-            setWeather("--°C, unknown");
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const handleFetch = async () => {
+            try {
+                const geoRes = await fetch("https://ipapi.co/json/");
+                const geo = await geoRes.json();
+                const ms = await getPing();
+                const weatherRes = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${geo.latitude}&longitude=${geo.longitude}&current=temperature_2m,weather_code`
+                );
+                const weatherData = await weatherRes.json();
+                const temp = Math.round(weatherData.current.temperature_2m);
+                const desc = weatherCodeMap[weatherData.current.weather_code] || "unknown";
+
+                setLocation(`${geo.city}, ${geo.country_name}`);
+                setPing(`${ms}ms`);
+                setWeather(`${temp}°C, ${desc}`);
+            } catch {
+                setLocation("404, xxx");
+                setPing("xxms");
+                setWeather("--°C, unknown");
+            } finally {
+                setLoading(false);
+            }
+        };
         handleFetch();
         const tick = () => setTime(new Date().toLocaleTimeString());
-        tick();
         const interval = setInterval(tick, 1000);
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="flex flex-col w-full h-full justify-end gap-2 ps-4 font-mono text-sm">
+        <div className="flex h-full w-full min-w-0 flex-col justify-end gap-2 break-words font-mono text-xs sm:ps-4 sm:text-sm">
             <h4 className="text-zinc-500">$ visitor info</h4>
             <div className="flex flex-col">
                 <p>
@@ -86,7 +83,7 @@ export default function VisitorInfo() {
                         weather
                     )}
                 </p>
-                <p>&gt; local time: {time}</p>
+                <p>&gt; local time: {time || "--:--:--"}</p>
 
             </div>
         </div>

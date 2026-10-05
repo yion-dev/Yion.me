@@ -48,18 +48,18 @@ export default function ProjectCard({
   )
 
   const titleStatus = (
-    <div className="flex items-start justify-between gap-4">
-      <h2 className="title text-base lg:text-lg font-bold text-zinc-100">
+    <div className="flex min-w-0 flex-col items-start gap-2 sm:flex-row sm:justify-between sm:gap-4">
+      <h2 className="title min-w-0 break-words text-base font-bold text-zinc-100 lg:text-lg">
         [{project_id ?? 0}] {project_name}
       </h2>
-      <span className="text-xs border border-zinc-600 px-2 py-1 text-zinc-400 whitespace-nowrap shrink-0">
+      <span className="max-w-full shrink-0 border border-zinc-600 px-2 py-1 text-xs text-zinc-400">
         project_status: {project_status}
       </span>
     </div>
   )
 
   const info = (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-w-0 flex-col gap-4">
       <p className="text-sm text-zinc-600 leading-relaxed line-clamp-3">
         {project_short_description}
       </p>
@@ -68,7 +68,7 @@ export default function ProjectCard({
           <TechCard key={i} displayName={e} />
         ))}
       </div>
-      <div className="flex flex-col gap-0.5 text-sm text-zinc-500">
+      <div className="flex min-w-0 flex-col gap-0.5 break-all text-sm text-zinc-500">
         <span>status:    {project_status}</span>
         <span>github:    {project_githubUrl || "—"}</span>
         <span>live:      {project_liveUrl || "—"}</span>
@@ -77,7 +77,7 @@ export default function ProjectCard({
   )
 
   return (
-    <Link href={`/projects/${project_slug}`} className="block w-full">
+    <Link href={`/projects/${project_slug}`} className="block w-full min-w-0">
 
       {variant === "default" && (
         <div className={clsx(
