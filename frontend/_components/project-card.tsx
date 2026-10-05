@@ -1,6 +1,7 @@
 import { ProjectResponseInterface } from "@/_types/types"
 import clsx from "clsx"
 import Link from "next/link"
+import Image from "next/image"
 
 type ProjectCardProps = ProjectResponseInterface & {
   className?: string
@@ -17,9 +18,13 @@ export default function ProjectCard({
   project_liveUrl,
   project_githubUrl,
   project_thumbnailUrl,
+  project_thumbnailImageUrl,
+  project_pictures,
   className,
   variant = "default",
 }: ProjectCardProps) {
+
+  const pictureUrl = project_thumbnailImageUrl || project_pictures?.[0] || null
 
   const corners = (
     <>
@@ -30,24 +35,16 @@ export default function ProjectCard({
     </>
   )
 
-  const thumbnail = (
-    <div className="relative w-full h-50 shrink-0">
+  const thumbnail = (className: string, sizes: string) => (
+    <div className={clsx("relative grid shrink-0 overflow-hidden bg-zinc-900", className)}>
       <span className="absolute top-0 left-0 border-t border-l border-zinc-100 size-3 z-10" />
       <span className="absolute top-0 right-0 border-t border-r border-zinc-100 size-3 z-10" />
       <span className="absolute bottom-0 left-0 border-b border-l border-zinc-100 size-3 z-10" />
       <span className="absolute bottom-0 right-0 border-b border-r border-zinc-100 size-3 z-10" />
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        poster="/loading.svg"
-        className="w-full h-full object-cover"
-      >
-        <source src={project_thumbnailUrl} type="video/webm" />
-        <source src={project_thumbnailUrl} type="video/mp4" />
-      </video>
+      {project_thumbnailUrl ? <video autoPlay loop muted playsInline preload="metadata" poster="/loading.svg" className="h-full w-full min-w-0 object-contain"><source src={project_thumbnailUrl} /></video> : pictureUrl ? <div className="relative h-full min-w-0">
+        <Image src={pictureUrl} alt={`${project_name} thumbnail`} fill sizes={sizes} unoptimized={!project_thumbnailImageUrl} className="object-contain" />
+      </div> : null}
+      {!pictureUrl && !project_thumbnailUrl && <span className="flex h-full items-center justify-center text-xs text-zinc-500">[ No media ]</span>}
     </div>
   )
 
@@ -90,7 +87,7 @@ export default function ProjectCard({
         )}>
           {corners}
           {titleStatus}
-          {thumbnail}
+          {thumbnail("w-full h-50", "(max-width: 768px) 100vw, 50vw")}
           {info}
         </div>
       )}
@@ -106,25 +103,7 @@ export default function ProjectCard({
             {titleStatus}
             {info}
           </div>
-          {/* Right — video */}
-          <div className="relative w-70 min-w-70 h-full shrink-0">
-            <span className="absolute top-0 left-0 border-t border-l border-zinc-100 size-3 z-10" />
-            <span className="absolute top-0 right-0 border-t border-r border-zinc-100 size-3 z-10" />
-            <span className="absolute bottom-0 left-0 border-b border-l border-zinc-100 size-3 z-10" />
-            <span className="absolute bottom-0 right-0 border-b border-r border-zinc-100 size-3 z-10" />
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              poster="/loading.svg"
-              className="w-full h-full object-cover"
-            >
-              <source src={project_thumbnailUrl} type="video/webm" />
-              <source src={project_thumbnailUrl} type="video/mp4" />
-            </video>
-          </div>
+          {thumbnail("w-70 min-w-70 h-50", "280px")}
         </div>
       )}
 

@@ -5,12 +5,17 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx:/etc/nginx/snippets:ro
       - /etc/letsencrypt:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
       - backend
       - frontend
+    networks:
+      default:
+      visitor_proxy:
+        ipv4_address: ${NGINX_TRACKING_IP:-172.30.50.2}
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   certbot:
@@ -39,6 +44,14 @@ services:
         condition: service_healthy
 
   backend:
+    environment:
+      TRUSTED_PROXY_CIDRS: ${NGINX_TRACKING_IP:-172.30.50.2}/32
+    networks:
+      default:
+      visitor_proxy:
+        ipv4_address: ${BACKEND_TRACKING_IP:-172.30.50.3}
+        aliases:
+          - backend-origin
     build:
       context: ./backend
     expose:
@@ -65,3 +78,11 @@ services:
 
 volumes:
   postgres_data:
+
+# Only Nginx and FastAPI share this network. The backend trusts Nginx's exact IP.
+networks:
+  visitor_proxy:
+    internal: true
+    ipam:
+      config:
+        - subnet: ${VISITOR_PROXY_SUBNET:-172.30.50.0/24}

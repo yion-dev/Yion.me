@@ -21,6 +21,7 @@ class Blog(Base):
     blog_smallDescription: Mapped[str] = mapped_column(String(255));
     blog_description: Mapped[str] = mapped_column(Text);
     blog_author: Mapped[str];
+    blog_coverImage: Mapped[str | None] = mapped_column(Text, nullable=True)
     
     blog_createdAt: Mapped[datetime] = mapped_column( 
         DateTime(timezone=True),

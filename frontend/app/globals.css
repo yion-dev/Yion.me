@@ -1,5 +1,31 @@
 @import "tailwindcss";
 
+.blog-article { max-width: 70ch; overflow-wrap: anywhere; line-height: 1.7; }
+.blog-article p { margin: 0 0 1rem; white-space: pre-line; }
+.blog-article :is(h1,h2,h3,h4) { margin: 1.5rem 0 .75rem; font-weight: 700; }
+.blog-article ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+.blog-article ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+.blog-article a { text-decoration: underline; text-underline-offset: 3px; }
+.blog-article blockquote { border-left: 2px solid currentColor; padding-left: 1rem; opacity: .8; }
+.blog-article pre { overflow-x: auto; padding: 1rem; background: #18181b; }
+.blog-article :not(pre) > code { padding: .1rem .3rem; background: #18181b; }
+.blog-list-link { display: block; border-bottom: 1px solid #3f3f46; padding: 1.25rem 0; }
+.blog-list-card { display: flex; flex-direction: column; align-items: flex-start; gap: .65rem; min-width: 0; }
+.blog-list-excerpt { color: #a1a1aa; overflow-wrap: anywhere; }
+
+.public-map-section { display: flex; flex-direction: column; gap: 1rem; }
+.public-map-frame { position: relative; border: 1px solid #52525b; padding: .75rem; }
+.public-world-map { display: block; width: 100%; height: auto; }
+.public-map-grid { fill: none; stroke: #27272a; stroke-width: .7; stroke-dasharray: 2 5; }
+.public-map-country { stroke: #52525b; stroke-width: .7; vector-effect: non-scaling-stroke; }
+.public-map-level-0 { fill: #27272a; }
+.public-map-level-1 { fill: #52525b; }
+.public-map-level-2 { fill: #71717a; }
+.public-map-level-3 { fill: #a1a1aa; }
+.public-map-level-4 { fill: #e4e4e7; }
+.public-map-singapore { stroke: #09090b; stroke-width: 1.8; }
+.public-map-empty { margin: 0 0 .75rem; color: #a1a1aa; text-align: center; }
+
 :root {
   --background: #0a0b10;
   --background-secondary: #f0f0f0;

@@ -6,6 +6,7 @@ class BlogBase(BaseModel):
     blog_smallDescription: str
     blog_description: str
     blog_author: str
+    blog_coverImage: str | None = None
  
 class BlogGet(BlogBase):
     blog_id: int
@@ -23,4 +24,5 @@ class BlogUpdate(BaseModel):
     blog_smallDescription: str | None = None
     blog_description: str | None = None
     blog_author: str | None = None
+    blog_coverImage: str | None = None
     

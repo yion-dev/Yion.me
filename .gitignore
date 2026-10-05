@@ -45,7 +45,7 @@ frontend/next-env.d.ts
 # BACKEND (Python FastAPI / Flask)
 # ==========================================
 
-backend/__pycache__/
+backend/**/__pycache__/
 backend/*.pyc
 backend/*.pyo
 backend/*.pyd

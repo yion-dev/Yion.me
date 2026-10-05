@@ -1,234 +1,84 @@
 "use client";
 
-import Container from "@/_components/container"
-import { deleteBlog, getBlogs, getProjects, getVisitors } from "@/_lib/api"
-import { BlogResponseInterface, ProjectResponseInterface, VisitorResponseInterface } from "@/_types/types"
+import { deleteBlog, getBlogs, getProjects, getVisitors } from "@/_lib/api";
+import { BlogResponseInterface, ProjectResponseInterface, VisitorResponseInterface } from "@/_types/types";
+import VisitorCard from "@/_components/admin-visitor-card";
+import VisitorWorldMap from "@/_components/visitor-world-map";
 import Link from "next/link";
-import { useState, useEffect } from "react"
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function DashboardPage() {
+  const [projects, setProjects] = useState<ProjectResponseInterface[]>([]);
+  const [blogs, setBlogs] = useState<BlogResponseInterface[]>([]);
+  const [visitors, setVisitors] = useState<VisitorResponseInterface[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
-    const [projects, setProjects] = useState<ProjectResponseInterface[]>([])
-    const [blogs, setBlogs] = useState<BlogResponseInterface[]>([])
-    const [visitors, setVisitors] = useState<VisitorResponseInterface[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    let active = true;
+    Promise.all([getProjects(true), getBlogs(true), getVisitors(true)])
+      .then(([projects, blogs, visitors]) => {
+        if (active) { setProjects(projects); setBlogs(blogs); setVisitors(visitors); }
+      })
+      .catch(() => { if (active) setError("Could not load the dashboard. Please reload to try again."); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, []);
 
-    const fetchVisitors = async () => {
-        setLoading(true)
-        setError(null)
-        try {
-            const data = await getVisitors()
-            setVisitors(data)
-        } catch (err) {
-            setError("failed to fetch visitors")
-        } finally {
-            setLoading(false)
-        }
-    }
+  async function removeBlog(blog: BlogResponseInterface) {
+    if (!blog.blog_id || !window.confirm(`Delete “${blog.blog_title}”? This cannot be undone.`)) return;
+    setDeleting(blog.blog_id);
+    setError(null);
+    try {
+      await deleteBlog(blog.blog_id);
+      setBlogs(current => current.filter(item => item.blog_id !== blog.blog_id));
+    } catch { setError("Could not delete the blog. Please try again."); }
+    finally { setDeleting(null); }
+  }
 
-    const fetchProjects = async () => {
-        setLoading(true)
-        setError(null)
-        try {
-            const data: ProjectResponseInterface[] = await getProjects()
-            setProjects(data)
-        } catch (err) {
-            setError("failed to fetch visitors")
-        } finally {
-            setLoading(false)
-        }
-    }
+  const today = new Date().toISOString().slice(0, 10);
+  const stats = [
+    ["Visitors", visitors.length, "all time"],
+    ["Unique IPs", new Set(visitors.map(v => v.visitor_ip_address)).size, "distinct addresses"],
+    ["Pages recorded", visitors.reduce((sum, v) => sum + v.visitor_visited_pages.length, 0), "across visitor records"],
+    ["Today", visitors.filter(v => v.visitor_visited_at.startsWith(today)).length, "new visitors · UTC"],
+  ];
 
-    const fetchBlogs = async () => {
-        setLoading(true)
-        setError(null)
-        try {
-            const data: BlogResponseInterface[] = await getBlogs()
-            setBlogs(data)
-        } catch (err) {
-            setError("failed to fetch visitors")
-        } finally {
-            setLoading(false)
-        }
-    }
-    
-    useEffect(() => {
-        fetchVisitors()
-        fetchProjects()
-        fetchBlogs()
-    }, [])
-
-    const totalVisitors = visitors.length
-    const uniqueIps = new Set(visitors.map((v) => v.visitor_ip_address)).size
-    const totalPageHits = visitors.reduce((acc, v) => acc + v.visitor_visited_pages.length, 0)
-    const today = new Date().toISOString().slice(0, 10)
-    const todayCount = visitors.filter((v) => v.visitor_visited_at.slice(0, 10) === today).length
-
-    return (
-        <main className="h-auto min-h-screen w-full flex flex-col items-center">
-            <Container className="h-full py-6 lg:py-10 flex flex-col w-full gap-10">
-
-                {/* Visitor stats */}
-                <section className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <StatCard label="total_visitors" value={totalVisitors} sub="all time" />
-                    <StatCard label="unique_ips" value={uniqueIps} sub="distinct addresses" />
-                    <StatCard label="pages_visited" value={totalPageHits} sub="total page hits" />
-                    <StatCard label="today" value={todayCount} sub="visitors today" />
-                </section>
-
-                {/* Recent visitors */}
-                <section className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                        <h3>recent visitors</h3>
-                        <Link href={"/internal/manage/website-visitors"} className="text-xs border px-3 py-1 hover:border-zinc-600">
-                            [ more ]
-                        </Link>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 border divide-x divide-y divide-zinc-800">
-                        {visitors.slice(0,5).map((v) => (
-                            <VisitorCard key={v.visitor_id} visitor={v} />
-                        ))}
-                    </div>``
-                </section>
-
-                <div className="border-t" />
-
-                {/* Projects table */}
-                <section className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                        <h3>projects</h3>
-                        <Link href={"/internal/manage/projects"} className="text-xs border px-3 py-1 hover:border-zinc-600">
-                            [ + new project ]
-                        </Link>
-                    </div>
-                    <div className="border overflow-x-auto">
-                        <table className="w-full border-collapse text-xs table-fixed" style={{ minWidth: "700px" }}>
-                            <thead>
-                                <tr className="border-b">
-                                    <th className="text-left font-normal px-3 py-2 w-10">id</th>
-                                    <th className="text-left font-normal px-3 py-2 w-40">project_name</th>
-                                    <th className="text-left font-normal px-3 py-2">project_short_description</th>
-                                    <th className="text-left font-normal px-3 py-2 w-28">project_status</th>
-                                    <th className="text-left font-normal px-3 py-2 w-28">project_created_at</th>
-                                    <th className="text-left font-normal px-3 py-2 w-28">actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {projects.map((p) => (
-                                    <tr key={p.project_id} className="border-b hover:bg-zinc-900/50 group">
-                                        <td className="px-3 py-2">{p.project_id}</td>
-                                        <td className="px-3 py-2  max-w-40 truncate">{p.project_name}</td>
-                                        <td className="px-3 py-2 truncate max-w-xs">{p.project_short_description}</td>
-                                        <td className="px-3 py-2">
-                                            <StatusBadge status={p.project_status} />
-                                        </td>
-                                        <td className="px-3 py-2">{p.project_created_at?.slice(0, 10)}</td>
-                                        <td className="px-3 py-2">
-                                            <div className="flex gap-2">
-                                                <button className="w-fit border px-2 py-1 hover:border-zinc-500 hover:text-zinc-200">
-                                                    ~
-                                                </button>
-                                                <button className="border px-2 py-1 hover:border-red-900 hover:text-red-500">
-                                                    -
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <div className="border-t" />
-
-                {/* Blogs table */}
-                <section className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                        <h3>blogs</h3>
-                        <Link href={"/internal/manage/blogs"} className="text-xs border px-3 py-1 hover:border-zinc-600 hover:">
-                            [ + new blog ]
-                        </Link>
-                    </div>
-                    <div className="border overflow-x-auto">
-                        <table className="w-full border-collapse text-xs" style={{ minWidth: "600px" }}>
-                            <thead>
-                                <tr className="border-b">
-                                    <th className="text-left font-normal px-3 py-2 w-10">id</th>
-                                    <th className="text-left font-normal px-3 py-2 w-48">blog_title</th>
-                                    <th className="text-left font-normal px-3 py-2">blog_smallDescription</th>
-                                    <th className="text-left font-normal px-3 py-2 w-32">blog_author</th>
-                                    <th className="text-left font-normal px-3 py-2 w-28">actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {blogs.map((b, i) => (
-                                    <tr key={i} className="border-b hover:bg-zinc-900/50">
-                                        <td className="px-3 py-2">{(i+1)}</td>
-                                        <td className="px-3 py-2  truncate max-w-48">{b.blog_title}</td>
-                                        <td className="px-3 py-2 truncate">{b.blog_smallDescription}</td>
-                                        <td className="px-3 py-2">{b.blog_author}</td>
-                                        <td className="px-3 py-2">
-                                            <div className="flex gap-2">
-                                                <button  className="text-[10px] border px-2 py-1 hover:border-zinc-500 hover:text-zinc-200">
-                                                    ~
-                                                </button>
-
-                                                {b.blog_id &&
-                                                    <button
-                                                        onClick={() => deleteBlog(b.blog_id!)} 
-                                                        className="text-[10px] border px-2 py-1 hover:border-red-900 hover:text-red-500">
-                                                        -
-                                                    </button>
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-            </Container>
-        </main>
-    )
-}
-
-function StatCard({ label, value, sub }: { label: string; value: number; sub: string }) {
-    return (
-        <div className="flex flex-col gap-1 px-5 py-4 border">
-            <span className="text-sm tracking-wide">[ {label} ]</span>
-            <span className="text-2xl font-medium text-zinc-100">{value}</span>
-            <span className="text-xs text-zinc-400">{sub}</span>
-        </div>
-    )
-}
-
-export function VisitorCard({ visitor }: { visitor: VisitorResponseInterface }) {
-    return (
-        <div className="flex flex-col gap-2 p-4">
-            <div className="flex items-center justify-between pb-2 border-b">
-                <span className="text-xs">visitor_id: #{visitor.visitor_id}</span>
-                <span className="text-xs text-zinc-400">{visitor.visitor_visited_at.slice(0, 16).replace("T", " ")}</span>
-            </div>
-            <span className="text-base">{visitor.visitor_ip_address}</span>
-            <div className="flex flex-wrap gap-1">
-                {[...new Set(visitor.visitor_visited_pages)].map((page, i) => (
-                    <span key={i} className="text-xs border px-1.5 py-0.5 break-all">
-                        {page}
-                    </span>
-                ))}
-            </div>
-        </div>
-    )
-}
-
-function StatusBadge({ status }: { status: string }) {
-    return (
-        <span className={`text-xs border px-1.5 py-0.5`}>
-            {status}
-        </span>
-    )
+  return (
+    <main className="admin-content" aria-busy={loading}>
+      <div className="admin-heading"><h2>&gt; Overview</h2><span className="admin-eyebrow">[ your portfolio at a glance ]</span></div>
+      {error && <p role="alert" className="admin-error">{error}</p>}
+      {loading && <p role="status" className="admin-muted">[ loading portfolio... ]</p>}
+      <section className="admin-stats" aria-label="Visitor statistics">
+        {stats.map(([label, value, sub]) => <div className="admin-frame admin-stat" key={label}><span>[ {label} ]</span><strong>{loading ? "--" : value}</strong><span className="admin-muted">{sub}</span></div>)}
+      </section>
+      <VisitorWorldMap visitors={visitors} loading={loading} unavailable={Boolean(error)} />
+      <section className="admin-section">
+        <div className="admin-heading"><h2>&gt; Recent Visitors</h2><Link className="admin-action" href="/internal/manage/website-visitors">[ View all ]</Link></div>
+        <div className="admin-visitors">{[...visitors].sort((a,b) => b.visitor_visited_at.localeCompare(a.visitor_visited_at)).slice(0,4).map(v => <VisitorCard key={v.visitor_id} visitor={v} />)}</div>
+        {!loading && !visitors.length && <p className="admin-empty">No visitor records to display.</p>}
+      </section>
+      <section className="admin-section">
+        <div className="admin-heading"><h2>&gt; Projects <span className="admin-eyebrow">[ {projects.length} ]</span></h2><Link className="admin-action" href="/internal/manage/projects">[ + New project ]</Link></div>
+        {!loading && !projects.length && <p className="admin-empty">No projects to display. Add a project to share your work.</p>}
+        {!!projects.length && <div className="admin-list">{projects.map((p, i) => <article className="admin-row" key={p.project_id ?? p.project_name}>
+          <div className="admin-row-copy"><h3>[{i + 1}] {p.project_name}</h3><p className="admin-muted">{p.project_short_description}</p><div className="admin-tags">{p.project_techstack.map(tech => <span className="admin-tag" key={tech}>{tech}</span>)}</div><span className="admin-eyebrow">created: {p.project_created_at?.slice(0, 10) || "—"}</span></div>
+          <div className="flex shrink-0 flex-wrap items-center gap-3 sm:flex-col sm:items-end"><span className="admin-badge">status: {p.project_status}</span><Link className="admin-action" href={`/projects/${p.project_slug || p.project_id}`} aria-label={`View ${p.project_name}`}>[ View project ]</Link></div>
+        </article>)}</div>}
+      </section>
+      <section className="admin-section">
+        <div className="admin-heading"><h2>&gt; Blogs <span className="admin-eyebrow">[ {blogs.length} ]</span></h2><Link className="admin-action" href="/internal/manage/blogs">[ + New blog ]</Link></div>
+        {!loading && !blogs.length && <p className="admin-empty">No blogs to display. Write something you have been learning.</p>}
+        {!!blogs.length && <div className="admin-list">{blogs.map((b, i) => <article className="admin-row" key={b.blog_id ?? i}>
+          <div className="admin-blog-details">
+            {b.blog_coverImage && <Image src={b.blog_coverImage} alt="" width={128} height={80} sizes="(max-width: 639px) 96px, 128px" className="admin-blog-cover" />}
+            <div className="admin-row-copy"><h3>[{i + 1}] {b.blog_title}</h3><p className="admin-muted">{b.blog_smallDescription}</p><span className="admin-eyebrow">{b.blog_author} {"//"} {b.blog_createdAt?.slice(0, 10) || "—"}</span></div>
+          </div>
+          {b.blog_id && <div className="flex shrink-0 flex-wrap gap-2"><Link className="admin-action" href={`/blogs/${b.blog_id}`} aria-label={`Read ${b.blog_title}`}>[ Read ]</Link><button type="button" className="admin-action" disabled={deleting !== null} onClick={() => removeBlog(b)} aria-label={`Delete ${b.blog_title}`}>[ {deleting === b.blog_id ? "Deleting..." : "Delete"} ]</button></div>}
+        </article>)}</div>}
+      </section>
+    </main>
+  );
 }

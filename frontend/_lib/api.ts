@@ -4,26 +4,32 @@ import {
     GithubProjectDataInterface,
     GithubReadmeInterface,
     GithubRepoInterface,
-    ProjectResponseInterface
+    ProjectResponseInterface,
+    VisitorCountryCount
 } from "@/_types/types";
 import { redirect } from "next/navigation";
 
 const API_URL = typeof window === "undefined"
-  ? process.env.BASE_URL || "http://backend:8000"
+  ? process.env.BASE_URL || "http://localhost:8000"
   : process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000";
 
-export async function getVisitors() {
+export async function getVisitors(strict = false) {
     try {
         const res = await fetch(API_URL + "/visitors/get-all/data", {
             method: "GET",
-            next: { revalidate: 60 }
+            cache: "no-store",
+            credentials: "include"
         })
 
-        if (!res.ok) return []
+        if (!res.ok) {
+            if (strict) throw new Error(`Request failed: ${res.status}`);
+            return [];
+        }
 
         return await res.json();
 
     } catch (e) {
+        if (strict) throw e;
         console.error("Fetch Error: ", e)
         return []
     }
@@ -45,18 +51,32 @@ export async function getVisitorsCount() {
     }
 }
 
-export async function getProjects() {
+export async function getVisitorCountries(): Promise<VisitorCountryCount[] | null> {
+    try {
+        const response = await fetch(`${API_URL}/visitors/countries`, { next: { revalidate: 60 } });
+        if (!response.ok) return null;
+        return await response.json();
+    } catch {
+        return null;
+    }
+}
+
+export async function getProjects(strict = false) {
     try {
         const res = await fetch(`${API_URL}/projects/get-all`, {
             method: "GET",
             cache: "no-store"
         })
 
-        if (!res.ok) return []
+        if (!res.ok) {
+            if (strict) throw new Error(`Request failed: ${res.status}`);
+            return [];
+        }
 
         return await res.json();
 
     } catch (e) {
+        if (strict) throw e;
         console.error("Fetch Error: ", e)
         return []
     }
@@ -79,18 +99,22 @@ export async function getProject(id: string) {
     }
 }
 
-export async function getBlogs() {
+export async function getBlogs(strict = false) {
     try {
         const res = await fetch(`${API_URL}/blogs/get-all`, {
             method: "GET",
-            next: { revalidate: 60 },
+            cache: "no-store",
         })
 
-        if (!res.ok) return []
+        if (!res.ok) {
+            if (strict) throw new Error(`Request failed: ${res.status}`);
+            return [];
+        }
 
         return await res.json();
 
     } catch (e) {
+        if (strict) throw e;
         console.error("Fetch Error: ", e)
         return []
     }
@@ -144,6 +168,7 @@ export async function getGithubProjectData(
 export async function createProject(data: ProjectResponseInterface) {
     const res = await fetch(`${API_URL}/projects/create`, {
         method: "POST",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json",
         },
@@ -160,6 +185,7 @@ export async function createProject(data: ProjectResponseInterface) {
 export async function createBlog(data: BlogResponseInterface) {
     const res = await fetch(`${API_URL}/blogs/create`, {
         method: "POST",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json",
         },
@@ -199,7 +225,7 @@ export async function login(username: string, password: string) {
         }
 
         return { success: true };
-    } catch (e) {
+    } catch {
         return { success: false, message: "Network error" };
     }
 }
@@ -207,6 +233,7 @@ export async function login(username: string, password: string) {
 export async function deleteBlog(blog_id: string) {
     const res = await fetch(`${API_URL}/blogs/delete/${blog_id}`, {
         method: "DELETE",
+        credentials: "include",
     });
 
     if (!res.ok) {

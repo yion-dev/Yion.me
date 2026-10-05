@@ -1,8 +1,10 @@
 import httpx
 import os
+import secrets
 
 from app.services.jwt import create_token
 from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi import HTTPException
 
 from app.schemas.login import BaseModel
 
@@ -13,7 +15,16 @@ ALLOWED_USER = os.getenv("ALLOWED_USER")
 DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 
 USERNAME = os.getenv("ADMIN_USERNAME")
-PASSWORD = os.getenv("ADMIN_PASSWORD")
+PASSWORD = os.getenv("ADMIN_PASSWORD") or os.getenv("ADMIN_SECRET")
+
+def session_cookie_options() -> dict:
+    is_local = DOMAIN_NAME in {"localhost", "127.0.0.1"}
+    return {
+        "httponly": True,
+        "samesite": "lax",
+        "domain": None if is_local else DOMAIN_NAME,
+        "secure": not is_local,
+    }
 
 def github_login_service() -> str:
     return f"https://github.com/login/oauth/authorize?client_id={GITHUB_CLIENT_ID}&scope=user"
@@ -46,22 +57,19 @@ async def github_callback_service(code: str) -> RedirectResponse:
         response.set_cookie(
             key="session_token",
             value=token,
-            httponly=True,
-            samesite="lax",
-            domain=DOMAIN_NAME,
-            secure=True
+            **session_cookie_options(),
         )
  
-    print(f"token: {token}")
-    print(f"user: {user.get('login')}")
-    print(f"allowed: {ALLOWED_USER}")
         
     return response
 
 def login_service(username: str, password: str) -> JSONResponse:
     
-    if username != USERNAME and password != PASSWORD:
-        RedirectResponse(url=f"{FRONTEND_URL}/forbidden", status_code=403)
+    if not USERNAME or not PASSWORD or not (
+        secrets.compare_digest(username.encode(), USERNAME.encode())
+        and secrets.compare_digest(password.encode(), PASSWORD.encode())
+    ):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_token(username)
 
@@ -69,10 +77,7 @@ def login_service(username: str, password: str) -> JSONResponse:
     response.set_cookie(
         key="session_token",
         value=token,
-        httponly=True,
-        samesite="lax",
-        domain=DOMAIN_NAME,
-        secure=True,
+        **session_cookie_options(),
         max_age=60 * 60 * 24 * 7
     ) 
 

@@ -3,9 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Inconsolata } from 'next/font/google'
 import "./globals.css";
 import Script from "next/script";
+import VisitorTracker from "@/_components/visitor-tracker";
 import Navbar from "@/_components/navbar";
 import { navLinks } from "@/_data/data";
-import { getVisitors, getVisitorsCount } from "@/_lib/api";
+import { getVisitorsCount } from "@/_lib/api";
 import Footer from "@/_components/footer";
 
 const geistSans = Geist({
@@ -136,6 +137,7 @@ export default async function RootLayout({
 
       <body className="min-h-full flex flex-col items-center justify-between px-4 lg:px-0 lg:py-10">
         <Navbar links={navLinks} websiteVisitorCount={visitors} />
+        <VisitorTracker />
         {children}
         <Footer />
       </body>

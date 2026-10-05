@@ -13,6 +13,7 @@ class Visitor(Base):
     visitor_id: Mapped[int] = mapped_column(primary_key=True, index=True)
     visitor_visited_pages: Mapped[list[str]] = mapped_column(ARRAY(String))
     visitor_ip_address: Mapped[str]
+    visitor_country_code: Mapped[str | None] = mapped_column(String(2), nullable=True)
     visitor_visited_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now()

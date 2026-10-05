@@ -2,6 +2,9 @@ services:
   frontend:
     mem_limit: 2g
 
+    environment:
+      BASE_URL: http://backend:8000
+
     build:
       context: ./frontend
       dockerfile: Dockerfile

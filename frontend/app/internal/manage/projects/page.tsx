@@ -1,15 +1,88 @@
 "use client"
 
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import Container from "@/_components/container"
 import { createProject } from "@/_lib/api";
 import { ProjectResponseInterface } from "@/_types/types";
 
 export default function InsertProjectPage() {
 
+  const [saving, setSaving] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [failed, setFailed] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [pictureUrls, setPictureUrls] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadingMessage, setUploadingMessage] = useState("");
+
+  const uploadProjectImage = async (file: File): Promise<string> => {
+    const body = new FormData();
+    body.append("image", file);
+    const response = await fetch("/api/project-images", { method: "POST", body });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Image upload failed");
+    return result.url as string;
+  };
+
+  const handleThumbnail = async (file?: File) => {
+    if (!file || uploading) return;
+    if (file.size > 5 * 1024 * 1024) {
+      setFailed(true);
+      setFeedback("Choose an image smaller than 5 MB.");
+      return;
+    }
+    setUploading(true);
+    setUploadingMessage("Uploading thumbnail...");
+    setFeedback("");
+    setFailed(false);
+    try {
+      setThumbnailUrl(await uploadProjectImage(file));
+      setFeedback("Thumbnail uploaded.");
+    } catch (error) {
+      setFailed(true);
+      setFeedback(error instanceof Error ? error.message : "Thumbnail upload failed.");
+    } finally {
+      setUploading(false);
+      setUploadingMessage("");
+    }
+  };
+
+  const handlePictures = async (files: File[]) => {
+    if (!files.length || uploading) return;
+    if (files.some(file => !file.size || file.size > 5 * 1024 * 1024)) {
+      setFailed(true);
+      setFeedback("Each picture must be smaller than 5 MB.");
+      return;
+    }
+    setUploading(true);
+    setFeedback("");
+    setFailed(false);
+    let completed = 0;
+    try {
+      for (const file of files) {
+        setUploadingMessage(`Uploading picture ${completed + 1} of ${files.length}...`);
+        const url = await uploadProjectImage(file);
+        setPictureUrls(current => [...current, url]);
+        completed += 1;
+      }
+      setFeedback(`${completed} ${completed === 1 ? "picture" : "pictures"} uploaded.`);
+    } catch (error) {
+      setFailed(true);
+      setFeedback(`${completed} uploaded. ${error instanceof Error ? error.message : "Picture upload failed."}`);
+    } finally {
+      setUploading(false);
+      setUploadingMessage("");
+    }
+  };
+
   const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()  // prevent page reload
 
-    const form = new FormData(e.currentTarget)
+    if (saving || uploading) return;
+    const formElement = e.currentTarget;
+    const form = new FormData(formElement)
 
     const data: ProjectResponseInterface = {
       project_name: form.get("project_name") as string,
@@ -18,15 +91,26 @@ export default function InsertProjectPage() {
       project_status: form.get("project_status") as string,
       project_githubUrl: form.get("project_githubUrl") as string,
       project_liveUrl: form.get("project_liveUrl") as string,
-      project_thumbnailUrl: form.get("project_thumbnailUrl") as string,
-      project_pictures: (form.get("project_pictures") as string).split(",").map(s => s.trim()),
-      project_techstack: (form.get("project_techstack") as string).split(",").map(s => s.trim()),
+      project_thumbnailUrl: (form.get("project_thumbnailUrl") as string).trim() || null,
+      project_thumbnailImageUrl: thumbnailUrl || null,
+      project_pictures: pictureUrls,
+      project_techstack: (form.get("project_techstack") as string).split(",").map(s => s.trim()).filter(Boolean),
     }
 
+    setSaving(true);
+    setFeedback("");
+    setFailed(false);
     try {
-      await createProject(data)
-    } catch (err) {
-      console.error(err)
+      await createProject(data);
+      setFeedback("Project created successfully.");
+      formElement.reset();
+      setThumbnailUrl("");
+      setPictureUrls([]);
+    } catch {
+      setFailed(true);
+      setFeedback("Could not create the project. Your entries are preserved. Please try again.");
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -45,17 +129,16 @@ export default function InsertProjectPage() {
           <section className="relative flex flex-col w-full h-fit min-h-20 gap-4">
 
             <div className="flex items-center justify-between">
-              <h2>New Project</h2>
-              <span className="text-xs lg:text-sm border px-2 py-1 w-fit h-fit whitespace-nowrap">
-                project_status: draft
-              </span>
+              <h2>&gt; New Project</h2>
+
             </div>
 
-            <h3>Basic Info</h3>
+            <h3>01 / Basic Info</h3>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_name" className="text-xs text-zinc-400">[ project_name ]</label>
+              <label htmlFor="project_name" className="text-xs text-zinc-400">[ Project name ]</label>
               <input
+                required
                 id="project_name"
                 name="project_name"
                 type="text"
@@ -65,8 +148,9 @@ export default function InsertProjectPage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_short_description" className="text-xs text-zinc-400">[ project_short_description ]</label>
+              <label htmlFor="project_short_description" className="text-xs text-zinc-400">[ Short description ]</label>
               <input
+                required
                 id="project_short_description"
                 name="project_short_description"
                 type="text"
@@ -76,8 +160,9 @@ export default function InsertProjectPage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_description" className="text-xs text-zinc-400">[ project_description ]</label>
+              <label htmlFor="project_description" className="text-xs text-zinc-400">[ Description ]</label>
               <textarea
+                required
                 id="project_description"
                 name="project_description"
                 rows={6}
@@ -87,7 +172,7 @@ export default function InsertProjectPage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_status" className="text-xs text-zinc-400">[ project_status ]</label>
+              <label htmlFor="project_status" className="text-xs text-zinc-400">[ Status ]</label>
               <select
                 id="project_status"
                 name="project_status"
@@ -105,10 +190,10 @@ export default function InsertProjectPage() {
           {/* Links */}
           <section className="relative flex flex-col w-full h-fit min-h-20 gap-4">
 
-            <h3>Links</h3>
+            <h3>02 / Links</h3>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_githubUrl" className="text-xs text-zinc-400">[ project_githubUrl ]</label>
+              <label htmlFor="project_githubUrl" className="text-xs text-zinc-400">[ GitHub URL ]</label>
               <input
                 id="project_githubUrl"
                 name="project_githubUrl"
@@ -119,7 +204,7 @@ export default function InsertProjectPage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_liveUrl" className="text-xs text-zinc-400">[ project_liveUrl ]</label>
+              <label htmlFor="project_liveUrl" className="text-xs text-zinc-400">[ Live URL ]</label>
               <input
                 id="project_liveUrl"
                 name="project_liveUrl"
@@ -130,7 +215,7 @@ export default function InsertProjectPage() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_thumbnailUrl" className="text-xs text-zinc-400">[ project_thumbnailUrl ]</label>
+              <label htmlFor="project_thumbnailUrl" className="text-xs text-zinc-400">[ Demo video URL ]</label>
               <input
                 id="project_thumbnailUrl"
                 name="project_thumbnailUrl"
@@ -144,21 +229,48 @@ export default function InsertProjectPage() {
           {/* Media & tech */}
           <section className="relative flex flex-col w-full h-fit min-h-20 gap-4">
 
-            <h3>Media &amp; Stack</h3>
+            <h3>03 / Media &amp; Stack</h3>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_pictures" className="text-xs text-zinc-400">[ project_pictures ] (comma separated URLs)</label>
+              <label htmlFor="project_thumbnail_image" className="text-xs text-zinc-400">[ Thumbnail image ] (optional)</label>
               <input
-                id="project_pictures"
-                name="project_pictures"
-                type="text"
-                placeholder="https://.../1.webp, https://.../2.webp"
-                className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
+                id="project_thumbnail_image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+                disabled={uploading || saving}
+                onChange={event => {
+                  void handleThumbnail(event.target.files?.[0]);
+                  event.target.value = "";
+                }}
               />
+              {thumbnailUrl && <Image unoptimized src={thumbnailUrl} alt="Project thumbnail preview" width={800} height={450} className="mt-2 max-h-64 w-full object-contain object-left" />}
+              <p className="admin-form-note">JPEG, PNG, WebP, GIF or AVIF · maximum 5 MB.</p>
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="project_techstack" className="text-xs text-zinc-400">[ project_techstack ] (comma separated)</label>
+              <label htmlFor="project_pictures" className="text-xs text-zinc-400">[ Project pictures ] (optional)</label>
+              <input
+                id="project_pictures"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+                multiple
+                disabled={uploading || saving}
+                onChange={event => {
+                  void handlePictures(Array.from(event.target.files ?? []));
+                  event.target.value = "";
+                }}
+              />
+              <p className="admin-form-note">Choose multiple images. Each image can be up to 5 MB.</p>
+              {!!pictureUrls.length && <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {pictureUrls.map((url, index) => <div key={url} className="flex min-w-0 flex-col gap-1">
+                  <Image unoptimized src={url} alt={`Project picture ${index + 1} preview`} width={400} height={225} className="aspect-video w-full border border-zinc-700 bg-zinc-900 object-contain" />
+                  <button type="button" className="admin-action" disabled={uploading || saving} onClick={() => setPictureUrls(current => current.filter(item => item !== url))}>[ Remove ]</button>
+                </div>)}
+              </div>}
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="project_techstack" className="text-xs text-zinc-400">[ Tech stack ] (comma separated)</label>
               <input
                 id="project_techstack"
                 name="project_techstack"
@@ -169,19 +281,17 @@ export default function InsertProjectPage() {
             </div>
           </section>
 
+          {(feedback || uploading) && <p role={failed ? "alert" : "status"} className={failed ? "admin-error" : "admin-frame"}>{uploading ? uploadingMessage : feedback}</p>}
+
           {/* Actions */}
           <div className="flex flex-wrap items-center justify-end gap-4">
-            <button
-              type="button"
-              className="text-sm lg:text-base border px-4 py-2 hover:bg-background-secondary hover:text-zinc-900"
-            >
-              [ Cancel ]
-            </button>
+            <Link href="/internal/manage/dashboard" className="admin-action">[ Cancel ]</Link>
             <button
               type="submit"
-              className="text-sm lg:text-base border px-4 py-2 hover:bg-background-secondary hover:text-zinc-900"
+              disabled={saving || uploading}
+              className="admin-action admin-primary"
             >
-              [ Create Project ]
+              {saving ? "[ Creating... ]" : "[ Create project ]"}
             </button>
           </div>
 

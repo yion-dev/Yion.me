@@ -37,6 +37,7 @@ export default async function Projects() {
                                 project_githubUrl={e.project_githubUrl}
                                 project_liveUrl={e.project_liveUrl}
                                 project_thumbnailUrl={e.project_thumbnailUrl}
+                                project_thumbnailImageUrl={e.project_thumbnailImageUrl}
                                 project_techstack={e.project_techstack}
                                 project_status={e.project_status}
                                 project_pictures={e.project_pictures} />
@@ -55,6 +56,7 @@ export default async function Projects() {
                                 project_githubUrl={e.project_githubUrl}
                                 project_liveUrl={e.project_liveUrl}
                                 project_thumbnailUrl={e.project_thumbnailUrl}
+                                project_thumbnailImageUrl={e.project_thumbnailImageUrl}
                                 project_techstack={e.project_techstack}
                                 project_status={e.project_status}
                                 project_pictures={e.project_pictures} />

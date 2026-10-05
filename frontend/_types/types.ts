@@ -66,7 +66,13 @@ export interface VisitorResponseInterface {
     visitor_id: number
     visitor_visited_pages: string[]
     visitor_ip_address: string
+    visitor_country_code: string | null
     visitor_visited_at: string
+}
+
+export interface VisitorCountryCount {
+    country_code: string
+    visitors: number
 }
 
 export interface BlogResponseInterface{
@@ -75,6 +81,7 @@ export interface BlogResponseInterface{
     blog_smallDescription: string
     blog_description: string
     blog_author: string
+    blog_coverImage?: string | null
     blog_createdAt?: string
     blog_updatedAt?: string
 }
@@ -87,7 +94,8 @@ export interface ProjectResponseInterface {
     project_description: string
     project_githubUrl: string
     project_liveUrl: string
-    project_thumbnailUrl: string
+    project_thumbnailUrl: string | null
+    project_thumbnailImageUrl?: string | null
     project_techstack: string[]
     project_status: string
     project_pictures: string[]

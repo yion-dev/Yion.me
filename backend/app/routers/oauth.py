@@ -11,6 +11,11 @@ router = APIRouter(
     tags=["OAuth"]
 )
 
+@router.get("/session")
+def admin_session():
+    # The global auth middleware validates the session before this is reached.
+    return {"authenticated": True}
+
 @router.get("/github")
 def github_login():
     redirectUrl = github_login_service()

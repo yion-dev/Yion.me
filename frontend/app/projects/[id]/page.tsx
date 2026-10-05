@@ -3,7 +3,7 @@ import ReadmeViewer from "@/_components/markdown";
 import { TechCard } from "@/_components/project-card";
 import { getGithubProjectData, getProject } from "@/_lib/api";
 import { GithubProjectDataInterface, ProjectResponseInterface } from "@/_types/types";
-import ReactMarkdown from "react-markdown";
+import Image from "next/image";
 
 export default async function ProjectPage({
     params
@@ -94,7 +94,15 @@ export default async function ProjectPage({
 
                 </section>
 
-                <section className="h-full py-4 flex flex-col border">
+                {response.project_thumbnailImageUrl && <section className="h-full py-4 flex flex-col border">
+                    <div className="w-full h-fit px-2 sm:px-4">
+                        <div className="relative aspect-video w-full bg-zinc-900">
+                            <Image src={response.project_thumbnailImageUrl} alt={`${response.project_name} thumbnail`} fill sizes="(max-width: 896px) 100vw, 896px" className="object-contain" />
+                        </div>
+                    </div>
+                </section>}
+
+                {response.project_thumbnailUrl && <section className="h-full py-4 flex flex-col border">
                     <div className="w-full h-fit px-2 sm:px-4">
                         <video
                             width={1280}
@@ -103,15 +111,23 @@ export default async function ProjectPage({
                             loop
                             muted
                             playsInline
-                            preload="auto"
-                            poster="/loading.svg"
-                            className="w-full aspect-video object-cover"
+                            preload="metadata"
+                            poster={response.project_thumbnailImageUrl || "/loading.svg"}
+                            className="w-full aspect-video object-contain bg-zinc-900"
                         >
-                            <source src={response.project_thumbnailUrl} type="video/webm" />
-                            <source src={response.project_thumbnailUrl} type="video/mp4" />
+                            <source src={response.project_thumbnailUrl} />
                         </video>
                     </div>
-                </section>
+                </section>}
+
+                {!!response.project_pictures?.length && <section className="flex flex-col gap-4">
+                    <h3 className="text-sm lg:text-lg">## Project pictures</h3>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {response.project_pictures.map((url, index) => <a key={`${url}-${index}`} href={url} target="_blank" rel="noopener noreferrer" className="relative block aspect-video overflow-hidden border border-zinc-700 bg-zinc-900">
+                            <Image unoptimized src={url} alt={`${response.project_name} picture ${index + 1}`} fill sizes="(max-width: 639px) 100vw, 50vw" className="object-contain" />
+                        </a>)}
+                    </div>
+                </section>}
 
                 {/* GitHub repo stats */}
                 <section className="relative flex flex-col w-full h-fit min-h-20 px-3 sm:px-4 pt-8 gap-4">

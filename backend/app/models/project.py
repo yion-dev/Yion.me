@@ -24,6 +24,7 @@ class Project(Base):
     project_githubUrl: Mapped[str | None]
     project_liveUrl: Mapped[str | None]
     project_thumbnailUrl: Mapped[str | None]
+    project_thumbnailImageUrl: Mapped[str | None] = mapped_column(Text, nullable=True)
     project_pictures: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
     project_techstack: Mapped[list[str]] = mapped_column(JSONB)
     project_status: Mapped[str]

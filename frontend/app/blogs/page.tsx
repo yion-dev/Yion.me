@@ -4,6 +4,8 @@ import { BlogResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Blogs",
   description:
@@ -21,14 +23,15 @@ export default async function Blogs () {
                 flex flex-col justify-start">
                 
                 { blogs.map((e,i) => (
-                    <Link key={ i } href={`/blogs/${e.blog_id}`}>
-                        <div className="flex flex-col w-full h-fit group cursor-pointer">
+                    <Link key={ e.blog_id || i } href={`/blogs/${e.blog_id}`} className="blog-list-link">
+                        <article className="blog-list-card group">
                             <h1 className="text-base lg:text-xl font-black lg:font-semibold group-hover:underline">
                                 <span className="text-sm lg:text-lg">[{ i+1 }] </span>
                                 { e.blog_title }
                             </h1>
+                            {e.blog_smallDescription && <p className="blog-list-excerpt">{e.blog_smallDescription}</p>}
                                 <div className="flex items-center justify-between w-full py-2 lg:py-4 font-bold text-sm lg:text-lg ">
-                                    <div className="flex gap-2">
+                                    <div className="flex flex-wrap gap-x-2">
                                         <p className="opacity-80">{ e.blog_author }</p>
                                         <span> { "//" } </span>
                                     <p className="opacity-80">
@@ -41,7 +44,7 @@ export default async function Blogs () {
                                     </div>
                                     <span>[Read More]</span>
                                 </div>
-                        </div>
+                        </article>
                     </Link>
                 ))}
             </Container>

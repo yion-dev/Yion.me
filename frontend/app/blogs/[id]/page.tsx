@@ -3,6 +3,7 @@ import { getBlog } from "@/_lib/api";
 import { BlogResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Link from "next/link";
+import BlogArticleContent from "@/_components/blog-article-content";
 
 export const metadata: Metadata = {
     title: "Blog",
@@ -44,11 +45,7 @@ export default async function Blog({ params }: { params: Promise<{ id: string }>
                         <span> by {blog.blog_author} </span>
                     </div>
 
-                    <div className="flex w-full text-sm lg:text-lg">
-                        <p className="whitespace-pre-line  wrap-break-word truncate">
-                            {blog.blog_description}
-                        </p>
-                    </div>
+                    <BlogArticleContent title={blog.blog_title} coverUrl={blog.blog_coverImage} description={blog.blog_description} preloadCover />
 
                 </div>
             </Container>

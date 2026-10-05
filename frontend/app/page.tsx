@@ -1,8 +1,9 @@
 import Footer from "@/_components/footer";
 import ProjectCard from "@/_components/project-card";
+import PublicVisitorMap from "@/_components/public-visitor-map";
 import VisitorInfo from "@/_components/visitorinfo-card";
-import { information, contact, knowledge, work, education, yionData } from "@/_data/data";
-import { getProjects } from "@/_lib/api";
+import { information, contact, knowledge, education, yionData } from "@/_data/data";
+import { getProjects, getVisitorCountries } from "@/_lib/api";
 import { ProjectResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -14,9 +15,27 @@ export const metadata: Metadata = {
     "Software Engineering student at Mae Fah Luang University. Full-Stack Developer focused on backend architectures, IoT ecosystems, and low-level programming.",
 };
 
+const experience = [
+  {
+    role: "Software Engineer",
+    organization: "Student Union, Mae Fah Luang University",
+    dates: "Jan 2026 – Present",
+    details: [
+      "Built event backend services supporting more than 2,500 users and two Android apps used by approximately 2,500–2,800 participants.",
+      "Developed student voting, event registration, and landing pages; set up Linux servers for applications and databases.",
+    ],
+  },
+  {
+    role: "Office Assistant",
+    organization: "School of Applied Digital Technology, Mae Fah Luang University",
+    dates: "May 2026 – Present",
+    details: ["Support office operations and coordinate documents and requests between departments."],
+  },
+];
+
 export default async function Home() {
 
-  const projects: ProjectResponseInterface[] = await getProjects()
+  const [projects, countriesByVisit]: [ProjectResponseInterface[], Awaited<ReturnType<typeof getVisitorCountries>>] = await Promise.all([getProjects(), getVisitorCountries()]);
 
   return (
     <main className="flex flex-col lg:py-4">
@@ -110,23 +129,18 @@ export default async function Home() {
         </section>
 
         <section className="flex flex-col  realtive w-full mt-5 gap-2">
-          <h2 className="text-xl lg:text-2xl">&gt; Work Experience</h2>
-          <div className="flex flex-col w-full h-auto gap-4">
-
-            {work.map((e, i) => (
-              <div key={i} className="flex justify-between w-full h-fit min-h-10 py-1">
-                <div className="flex flex-col w-auto h-fit gap-0">
-                  <h2 className="text-sm lg:text-lg">{e.displayName} [ {e.workType} ]</h2>
-                  <p className="-mt-1 text-xs lg:text-sm">{e.institutionName}</p>
-                </div>
-                <div >
-                  {e.timestamp}
-                </div>
-
+          <h2 className="text-xl lg:text-2xl">&gt; Experience</h2>
+          <div className="flex flex-col gap-5">
+            {experience.map(item => <article key={item.role}>
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="text-base lg:text-lg">{item.role}</h3>
+                <span className="text-xs text-zinc-400 lg:text-sm">{item.dates}</span>
               </div>
-            ))
-            }
-
+              <p className="text-sm text-zinc-400">{item.organization}</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed lg:text-base">
+                {item.details.map(detail => <li key={detail}>{detail}</li>)}
+              </ul>
+            </article>)}
           </div>
         </section>
 
@@ -150,6 +164,7 @@ export default async function Home() {
                   project_githubUrl={e.project_githubUrl}
                   project_liveUrl={e.project_liveUrl}
                   project_thumbnailUrl={e.project_thumbnailUrl}
+                  project_thumbnailImageUrl={e.project_thumbnailImageUrl}
                   project_techstack={e.project_techstack}
                   project_status={e.project_status}
                   project_pictures={e.project_pictures} />
@@ -158,6 +173,10 @@ export default async function Home() {
           </div>
 
         </section>
+
+        <span className="w-full h-px my-6 bg-background-secondary"></span>
+
+        <PublicVisitorMap countriesByVisit={countriesByVisit} />
 
         <span className="w-full h-px my-6 bg-background-secondary"></span>
 
@@ -215,4 +234,3 @@ export default async function Home() {
 
   );
 }
-
