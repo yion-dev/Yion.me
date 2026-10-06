@@ -1,4 +1,3 @@
-import { LucideIcon } from "lucide-react"
 import { ComponentPropsWithoutRef } from "react"
 
 export interface NavbarProps {
@@ -13,7 +12,7 @@ export interface NavLinksInterface {
 
 export interface InformationInterface {
   displayText: string,
-  icon: LucideIcon 
+  label: string,
 }
 
 export interface ContactInterface {
@@ -103,7 +102,7 @@ export interface ProjectResponseInterface {
     project_updated_at?: string
 }
 
-export interface ContainerProps extends ComponentPropsWithoutRef<"section"> {}
+export type ContainerProps = ComponentPropsWithoutRef<"section">
 
 export interface GithubRepoInterface {
   id: number;

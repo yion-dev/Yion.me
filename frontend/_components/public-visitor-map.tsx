@@ -14,7 +14,7 @@ export default function PublicVisitorMap({ countriesByVisit }: { countriesByVisi
   const max = Math.max(0, ...ranked.map(item => item.visitors));
 
   return <section className="public-map-section" aria-labelledby="public-map-title">
-    <h2 id="public-map-title" className="text-xl lg:text-2xl">&gt; Visitors info</h2>
+    <h2 id="public-map-title" className="text-xl lg:text-2xl">&gt; Visitor locations</h2>
     <div className="public-map-frame">
       <svg className="public-world-map" viewBox="0 0 1000 500" role="img" aria-label="World map shaded by visitor count per country">
         <path className="public-map-grid" d="M0 114H1000 M0 221H1000 M0 329H1000 M0 436H1000 M83 0V500 M250 0V500 M417 0V500 M583 0V500 M750 0V500 M917 0V500" />

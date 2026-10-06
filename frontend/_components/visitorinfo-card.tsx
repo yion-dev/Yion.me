@@ -56,8 +56,8 @@ export default function VisitorInfo() {
     }, []);
 
     return (
-        <div className="flex h-full w-full min-w-0 flex-col justify-end gap-2 break-words font-mono text-xs sm:ps-4 sm:text-sm">
-            <h4 className="text-zinc-500">$ visitor info</h4>
+        <section className="flex w-full min-w-0 flex-col gap-2 break-words font-mono text-xs sm:text-sm" aria-labelledby="visitor-info-title">
+            <h2 id="visitor-info-title" className="text-xl lg:text-2xl">&gt; Your visitor info</h2>
             <div className="flex flex-col">
                 <p>
                     &gt; location:{" "}
@@ -86,6 +86,6 @@ export default function VisitorInfo() {
                 <p>&gt; local time: {time || "--:--:--"}</p>
 
             </div>
-        </div>
+        </section>
     );
 }

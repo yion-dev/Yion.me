@@ -3,7 +3,7 @@ import { NavbarProps } from "../_types/types"
 
 export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
   return (
-    <nav className="lg:relative flex flex-col w-full max-w-4xl my-10 lg:my-4 gap-2">
+    <nav className="relative flex flex-col w-full max-w-4xl my-5 lg:my-4 gap-2">
       <Link href={ "/" }>
         <h1 className="text-2xl lg:text-3xl">
           _Yiondev
@@ -21,9 +21,9 @@ export default function Navbar({ links, websiteVisitorCount }: NavbarProps) {
           </li>
         ))}
       </ul>
-        <div className="absolute right-2 top-1 lg:right-0 lg:top-0 text-sm">
+        <Link href="/visitors" className="absolute right-2 top-1 text-sm hover:underline focus-visible:underline lg:right-0 lg:top-0">
           [{websiteVisitorCount} visitors]
-        </div>
+        </Link>
     </nav>
   )
 }

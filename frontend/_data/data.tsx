@@ -2,7 +2,6 @@ import EmailIcon from "../_components/icons/email"
 import GithubIcon from "../_components/icons/github"
 import LinkedinIcon from "../_components/icons/linkedin"
 import ResumeIcon from "../_components/icons/resume"
-import { GraduationCap, PinIcon } from "lucide-react"
 import { 
   InformationInterface, 
   ContactInterface, 
@@ -10,8 +9,8 @@ import {
   WorkInterface, 
   KnowledgeInterface, 
   NavLinksInterface, 
-  AboutMePictureCardInterface,
-  ProjectCardProps} from "../_types/types"
+  AboutMePictureCardInterface
+} from "../_types/types"
 
 export const navLinks:NavLinksInterface[] = [
   {
@@ -35,11 +34,11 @@ export const navLinks:NavLinksInterface[] = [
 export const information: InformationInterface[] = [
   {
     displayText: "Software Engineering",
-    icon: GraduationCap
+    label: "Degree"
   },
   {
     displayText: "Chiang Rai, Thailand",
-    icon: PinIcon
+    label: "Location"
   },
    
 ]
@@ -203,7 +202,7 @@ export const aboutmepictures: AboutMePictureCardInterface[] = [
 ]
 
 export const yionData = {
-  small_description: "I am a Backend Developer and a Software Engineering student at Mae Fah Luang University. Currently exploring Embedded Systems and Low-Level Programming on the side.",
+  small_description: "I'm a backend developer. I study Software Engineering at Mae Fah Luang University and explore embedded systems and low-level programming.",
 
   about_me_1: "I am Thuta Naing but many people know me as Yion. I am a software developer originally from Myanmar, currently living in Chiang Rai, Thailand. I am currently studying in Mae Fah Luang University as a Software Engineering Student. I spend most of my time building backend systems, writing APIs, and occasionally breaking things just to fix them again. I don't just like Software Engineering — I love Technology in general.",
 

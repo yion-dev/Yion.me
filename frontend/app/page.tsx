@@ -1,8 +1,6 @@
 import ProjectCard from "@/_components/project-card";
-import PublicVisitorMap from "@/_components/public-visitor-map";
-import VisitorInfo from "@/_components/visitorinfo-card";
 import { information, contact, knowledge, education, yionData } from "@/_data/data";
-import { getProjects, getVisitorCountries } from "@/_lib/api";
+import { getProjects } from "@/_lib/api";
 import { ProjectResponseInterface } from "@/_types/types";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -34,53 +32,50 @@ const experience = [
 
 export default async function Home() {
 
-  const [projects, countriesByVisit]: [ProjectResponseInterface[], Awaited<ReturnType<typeof getVisitorCountries>>] = await Promise.all([getProjects(), getVisitorCountries()]);
+  const projects: ProjectResponseInterface[] = await getProjects();
 
   return (
     <main className="flex w-full min-w-0 flex-col lg:py-4">
       <div className="mx-auto flex h-auto w-full min-w-0 max-w-4xl flex-col gap-4">
 
-        <section className="flex flex-col lg:flex-row items-center w-full h-auto gap-6">
-          <div className="flex h-full w-full min-w-0 flex-col items-center gap-4 sm:flex-row lg:w-55 lg:border">
-            <Image
-              priority
-              width={200}
-              height={200}
-              src="https://lruzdrf7t7zl7ff6.public.blob.vercel-storage.com/pfp.webp"
-              alt="yion"
-              className="mx-auto h-auto w-44 shrink-0 opacity-80 invert sm:w-50 lg:h-40 lg:w-32" />
-            
-            <div className="flex h-auto w-full min-w-0 grow lg:hidden">
-              <VisitorInfo />
+        <section className="relative w-full px-4 py-4 lg:flex lg:items-stretch lg:gap-6 lg:p-0">
+          <div className="flow-root lg:contents">
+            <div className="float-left mb-2 mr-3 w-32 min-[380px]:w-34 sm:w-36 lg:float-none lg:mb-0 lg:mr-0 lg:flex lg:size-52 lg:shrink-0 lg:items-center lg:justify-center lg:border">
+              <Image
+                priority
+                width={843}
+                height={843}
+                src="/yion-transparent.png"
+                alt="Yion profile illustration"
+                className="h-auto w-full lg:size-48" />
             </div>
-          </div>
-          <div className="relative flex flex-col justify-between h-full lg:h-40 min-h-35 w-full px-4 py-3">
+            <div className="pt-14 lg:relative lg:flex lg:w-full lg:min-w-0 lg:min-h-52 lg:flex-col lg:gap-3 lg:px-5 lg:py-4">
 
             <span className="absolute top-0 left-0 border-t border-l size-4"></span>
             <span className="absolute bottom-0 left-0 border-b border-l size-4"></span>
             <span className="absolute top-0 right-0 border-t border-r size-4"></span>
             <span className="absolute bottom-0 right-0 border-b border-r size-4"></span>
 
-            <div className="flex flex-col w-full h-full gap-2">
-              <h1 className="text-base lg:text-xl">
-                hello, i am
-                <span className="w-full font-black"> yion</span>
-                <span className=" text-xs"> - pronounced &quot;Yee On&quot;</span>
+            <div className="mb-3 flex min-w-0 flex-col gap-1 lg:mb-0">
+              <h1 className="text-base leading-tight lg:text-xl">
+                hello, i am <span className="font-black">yion</span>
               </h1>
-              <p className="text-sm lg:text-base">
-                {yionData.small_description}
-              </p>
+              <span className="text-xs">pronounced &quot;Yee On&quot;</span>
             </div>
-            <div className="flex w-full min-h-fit flex-wrap gap-x-4 gap-y-2 text-xs lg:mt-0 lg:gap-10 lg:text-sm">
+            <p className="text-sm leading-relaxed lg:text-base">
+              {yionData.small_description}
+            </p>
+            <div className="clear-both mt-3 grid w-full grid-cols-2 gap-4 border-t border-zinc-700/60 pt-3 lg:mt-0 lg:flex lg:justify-between">
               {information.map((e, i) => (
-                <div key={i} className="flex h-fit min-w-0 items-center gap-2">
-                  <e.icon strokeWidth={1.8} className="size-4.5 shrink-0" />
-                  {e.displayText}
+                <div key={i} className="flex min-w-0 flex-col gap-1">
+                  <span className="text-[10px] uppercase tracking-widest text-zinc-400">{e.label}</span>
+                  <span className="text-xs lg:text-sm">{e.displayText}</span>
                 </div>
               ))
               }
 
             </div>
+          </div>
           </div>
         </section>
 
@@ -98,7 +93,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="relative flex flex-col w-full h-fit min-h-20 mt-5 px-4 py-4 lg:py-6 gap-4">
+        <section className="relative flex flex-col w-full h-fit min-h-20 mt-3 px-4 py-4 lg:mt-5 lg:py-6 gap-4">
 
           <span className="absolute top-0 left-0 border-t border-l w-full h-3"></span>
           <span className="absolute top-0 right-0 border-t border-r w-full h-3"></span>
@@ -113,10 +108,10 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="grid w-full min-w-0 grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2 lg:grid-cols-3 lg:text-base">
+          <div className="grid w-full min-w-0 grid-cols-1 gap-x-3 gap-y-2 text-xs min-[360px]:grid-cols-2 sm:gap-x-6 sm:text-sm lg:grid-cols-3 lg:text-base">
             {knowledge.map((e, i) => (
-              <div key={i} className="flex min-w-0 items-start gap-4">
-                <span className="font-bold">
+              <div key={i} className="flex min-w-0 items-start gap-2 sm:gap-4">
+                <span className="shrink-0 font-bold">
                   [{e.learnt === true ? <>x</> : e.learnt === 'progress' ? <>~</> : ' '}]
                 </span>
                 <p className="min-w-0 break-words">{e.displayName}</p>
@@ -127,7 +122,7 @@ export default async function Home() {
 
         </section>
 
-        <section className="flex flex-col  realtive w-full mt-5 gap-2">
+        <section className="flex flex-col w-full mt-3 gap-2 lg:mt-5">
           <h2 className="text-xl lg:text-2xl">&gt; Experience</h2>
           <div className="flex flex-col gap-5">
             {experience.map(item => <article key={item.role}>
@@ -143,13 +138,13 @@ export default async function Home() {
           </div>
         </section>
 
-        <span className="w-full h-px my-6 bg-background-secondary"></span>
+        <span className="w-full h-px my-4 bg-background-secondary lg:my-6"></span>
 
         <section className="flex flex-col w-full min-h-60 gap-4">
 
           <h2 className="text-xl lg:text-2xl"> &gt; Projects</h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-60 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-60 gap-6 lg:gap-10">
             {
               projects && projects.map((e, i) => (
 
@@ -177,19 +172,18 @@ export default async function Home() {
 
         <section className="flex flex-col w-full gap-2">
           <h2 className="text-lg lg:text-2xl">&gt; Education</h2>
-          <div className="flex flex-col w-full h-auto gap-4">
+          <div className="flex w-full flex-col gap-5">
 
             {education.map((e, i) => (
-              <Link key={i} href={e.href}>
-                <div className="flex w-full min-w-0 flex-col justify-between gap-1 py-1 hover:bg-background-secondary hover:text-zinc-900 hover:ps-2 sm:flex-row sm:gap-3">
-                  <div className="flex min-w-0 flex-col gap-0">
-                    <h2 className="text-base lg:text-lg">{e.displayName}</h2>
-                    <p className="-mt-1 text-xs lg:text-sm">{e.institutionName}</p>
+              <Link key={i} href={e.href} className="group block min-w-0 py-1 focus-visible:outline focus-visible:outline-offset-2">
+                <div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+                  <div className="order-2 flex min-w-0 flex-col sm:order-1">
+                    <h3 className="text-base group-hover:underline lg:text-lg">{e.displayName}</h3>
+                    <p className="text-xs lg:text-sm">{e.institutionName}</p>
                   </div>
-                  <div className="shrink-0 text-xs sm:text-sm lg:text-base">
+                  <span className="order-1 shrink-0 text-xs opacity-70 sm:order-2 sm:text-sm lg:text-base">
                     {e.timestamp}
-                  </div>
-
+                  </span>
                 </div>
               </Link>
             ))
@@ -222,10 +216,6 @@ export default async function Home() {
             }
           </div>
         </section>
-
-        <span className="w-full h-px my-6 bg-background-secondary"></span>
-
-        <PublicVisitorMap countriesByVisit={countriesByVisit} />
 
       </div>
 
