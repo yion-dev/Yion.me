@@ -3,8 +3,9 @@ import ReadmeViewer from "@/_components/markdown";
 import ProjectPictureCarousel from "@/_components/project-picture-carousel";
 import { TechCard } from "@/_components/project-card";
 import { getGithubProjectData, getProject } from "@/_lib/api";
-import { GithubProjectDataInterface, ProjectResponseInterface } from "@/_types/types";
+import { ProjectResponseInterface } from "@/_types/types";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 export default async function ProjectPage({
     params
@@ -15,11 +16,9 @@ export default async function ProjectPage({
     const { id } = await params
 
     const response: ProjectResponseInterface = await getProject(id)
+    if (!response?.project_name) notFound();
 
-    const githubResponse: GithubProjectDataInterface = await getGithubProjectData(
-        "yion-dev",
-        response.project_name
-    );
+    const githubResponse = await getGithubProjectData(response.project_githubUrl);
 
     return (
         <main className="
@@ -124,7 +123,7 @@ export default async function ProjectPage({
                 {!!response.project_pictures?.length && <ProjectPictureCarousel pictures={response.project_pictures} projectName={response.project_name} />}
 
                 {/* GitHub repo stats */}
-                <section className="relative flex flex-col w-full h-fit min-h-20 px-3 sm:px-4 pt-8 gap-4">
+                {githubResponse && <section className="relative flex flex-col w-full h-fit min-h-20 px-3 sm:px-4 pt-8 gap-4">
                     <span className="absolute top-0 left-0 border-t border-l w-full h-3"></span>
                     <span className="absolute top-0 right-0 border-t border-r w-full h-3"></span>
 
@@ -160,11 +159,11 @@ export default async function ProjectPage({
                         <span>last commit: {githubResponse.repo.pushed_at}</span>
                     </div>
 
-                </section>
+                </section>}
 
-                <section className="relative flex flex-col w-full h-fit min-h-20">
+                {githubResponse?.readme && <section className="relative flex flex-col w-full h-fit min-h-20">
                     <ReadmeViewer content={githubResponse.readme} />
-                </section>
+                </section>}
 
             </Container>
 

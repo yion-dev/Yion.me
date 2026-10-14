@@ -139,30 +139,46 @@ export async function getBlog(id: string) {
 
 // lib/github.ts
 export async function getGithubProjectData(
-    owner: string,
-    repoName: string
-): Promise<GithubProjectDataInterface> {
+    githubUrl: string
+): Promise<GithubProjectDataInterface | null> {
+    let repositoryPath: string;
+    try {
+        const url = new URL(githubUrl);
+        const [owner, repoName] = url.pathname.split("/").filter(Boolean);
+        if (!["https:", "http:"].includes(url.protocol) || url.hostname !== "github.com" || !owner || !repoName) return null;
+        repositoryPath = `${encodeURIComponent(owner)}/${encodeURIComponent(repoName.replace(/\.git$/, ""))}`;
+    } catch {
+        return null;
+    }
 
-    const [repoRes, readmeRes, languagesRes] = await Promise.all([
-        fetch(`https://api.github.com/repos/${owner}/${repoName}`, { next: { revalidate: 3600 } }),
-        fetch(`https://api.github.com/repos/${owner}/${repoName}/readme`, { next: { revalidate: 3600 } }),
-        fetch(`https://api.github.com/repos/${owner}/${repoName}/languages`, { next: { revalidate: 3600 } }),
+    const fetchGithub = async (suffix: string) => {
+        try {
+            const response = await fetch(`https://api.github.com/repos/${repositoryPath}${suffix}`, {
+                next: { revalidate: 3600 },
+                signal: AbortSignal.timeout(5000),
+            });
+            return response.ok ? await response.json() : null;
+        } catch {
+            return null;
+        }
+    };
+
+    const [repo, readmeData, languages]: [GithubRepoInterface | null, GithubReadmeInterface | null, GithubLanguagesInterface | null] = await Promise.all([
+        fetchGithub(""),
+        fetchGithub("/readme"),
+        fetchGithub("/languages"),
     ]);
+    if (!repo) return null;
 
-    if (!repoRes.ok) throw new Error(`Failed to fetch repo: ${repoRes.status}`);
-    if (!readmeRes.ok) throw new Error(`Failed to fetch readme: ${readmeRes.status}`);
-    if (!languagesRes.ok) throw new Error(`Failed to fetch languages: ${languagesRes.status}`);
-
-    const repo: GithubRepoInterface = await repoRes.json();
-    const readmeData: GithubReadmeInterface = await readmeRes.json();
-    const languages: GithubLanguagesInterface = await languagesRes.json();
-
-    // decode here, once, properly handling UTF-8 (emoji etc.)
-    const binaryString = atob(readmeData.content);
-    const bytes = Uint8Array.from(binaryString, (char) => char.charCodeAt(0));
-    const readme = new TextDecoder("utf-8").decode(bytes);
-
-    return { repo, readme, languages };
+    let readme = "";
+    if (readmeData?.content) {
+        try {
+            const binaryString = atob(readmeData.content);
+            const bytes = Uint8Array.from(binaryString, (char) => char.charCodeAt(0));
+            readme = new TextDecoder("utf-8").decode(bytes);
+        } catch { /* Repository details remain available if the README cannot be decoded. */ }
+    }
+    return { repo, readme, languages: languages ?? {} };
 }
 
 export async function createProject(data: ProjectResponseInterface) {
