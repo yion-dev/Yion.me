@@ -1,6 +1,6 @@
 import uuid
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import datetime
 
 class ProjectBase(BaseModel):
@@ -43,9 +43,17 @@ class ProjectUpdate(BaseModel):
     project_liveUrl: str | None = None
     project_thumbnailUrl: str | None = None
     project_thumbnailImageUrl: str | None = None
+    project_pictures: list[str] | None = None
 
     project_techstack: list[str] | None = None
 
     project_status: str | None = None
+
+    @field_validator("project_name", "project_slug", "project_techstack", "project_status")
+    @classmethod
+    def reject_null_required_fields(cls, value):
+        if value is None:
+            raise ValueError("This field cannot be null")
+        return value
     
     

@@ -26,7 +26,7 @@ def projectGetOne(id: str, db: Session = Depends(get_db)):
 def projectCreate(project: ProjectCreate, db: Session = Depends(get_db)):
     return post_project_create(ProjectObject=project, db=db);
  
-@router.put("/update/{id}")
+@router.put("/update/{project_id}")
 def projectUpdate(project_id: int, project: ProjectUpdate, db: Session = Depends(get_db)):
     return update_project_update(id=project_id, project=project, db=db);
        

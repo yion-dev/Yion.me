@@ -68,6 +68,7 @@ export async function getProjects(strict = false) {
             cache: "no-store"
         })
 
+        if (res.status === 404) return [];
         if (!res.ok) {
             if (strict) throw new Error(`Request failed: ${res.status}`);
             return [];
@@ -195,6 +196,17 @@ export async function createProject(data: ProjectResponseInterface) {
         throw new Error(`Failed to create project: ${res.status}`);
     }
 
+    return res.json();
+}
+
+export async function updateProject(id: number, data: ProjectResponseInterface): Promise<ProjectResponseInterface> {
+    const res = await fetch(`${API_URL}/projects/update/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(`Failed to update project: ${res.status}`);
     return res.json();
 }
 

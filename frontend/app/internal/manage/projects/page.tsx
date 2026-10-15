@@ -1,13 +1,50 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/_components/container"
-import { createProject } from "@/_lib/api";
+import { createProject, getProjects, updateProject } from "@/_lib/api";
 import { ProjectResponseInterface } from "@/_types/types";
 
 export default function InsertProjectPage() {
+
+  const [projects, setProjects] = useState<ProjectResponseInterface[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [listError, setListError] = useState("");
+  const [editing, setEditing] = useState<ProjectResponseInterface | null>(null);
+  const [formVersion, setFormVersion] = useState(0);
+  const dirty = useRef(false);
+
+  const loadProjects = async () => {
+    setLoadingProjects(true);
+    setListError("");
+    try { setProjects(await getProjects(true)); }
+    catch { setListError("Could not load projects. Please try again."); }
+    finally { setLoadingProjects(false); }
+  };
+  useEffect(() => {
+    let active = true;
+    getProjects(true).then(result => {
+      if (active) setProjects(result);
+    }).catch(() => {
+      if (active) setListError("Could not load projects. Please try again.");
+    }).finally(() => {
+      if (active) setLoadingProjects(false);
+    });
+    return () => { active = false; };
+  }, []);
+
+  const selectProject = (project: ProjectResponseInterface | null) => {
+    if (dirty.current && !window.confirm("Discard unsaved project changes?")) return;
+    setEditing(project);
+    setThumbnailUrl(project?.project_thumbnailImageUrl || "");
+    setPictureUrls(project?.project_pictures || []);
+    setFormVersion(version => version + 1);
+    setFeedback("");
+    setFailed(false);
+    dirty.current = false;
+  };
 
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -39,6 +76,7 @@ export default function InsertProjectPage() {
     setFailed(false);
     try {
       setThumbnailUrl(await uploadProjectImage(file));
+      dirty.current = true;
       setFeedback("Thumbnail uploaded.");
     } catch (error) {
       setFailed(true);
@@ -65,6 +103,7 @@ export default function InsertProjectPage() {
         setUploadingMessage(`Uploading picture ${completed + 1} of ${files.length}...`);
         const url = await uploadProjectImage(file);
         setPictureUrls(current => [...current, url]);
+        dirty.current = true;
         completed += 1;
       }
       setFeedback(`${completed} ${completed === 1 ? "picture" : "pictures"} uploaded.`);
@@ -80,7 +119,7 @@ export default function InsertProjectPage() {
   const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()  // prevent page reload
 
-    if (saving || uploading) return;
+    if (saving || uploading || loadingProjects) return;
     const formElement = e.currentTarget;
     const form = new FormData(formElement)
 
@@ -91,7 +130,7 @@ export default function InsertProjectPage() {
       project_status: form.get("project_status") as string,
       project_githubUrl: form.get("project_githubUrl") as string,
       project_liveUrl: form.get("project_liveUrl") as string,
-      project_thumbnailUrl: (form.get("project_thumbnailUrl") as string).trim() || null,
+      project_thumbnailUrl: editing?.project_thumbnailUrl || null,
       project_thumbnailImageUrl: thumbnailUrl || null,
       project_pictures: pictureUrls,
       project_techstack: (form.get("project_techstack") as string).split(",").map(s => s.trim()).filter(Boolean),
@@ -101,14 +140,23 @@ export default function InsertProjectPage() {
     setFeedback("");
     setFailed(false);
     try {
-      await createProject(data);
-      setFeedback("Project created successfully.");
-      formElement.reset();
-      setThumbnailUrl("");
-      setPictureUrls([]);
+      const saved: ProjectResponseInterface = editing?.project_id !== undefined
+        ? await updateProject(editing.project_id, data)
+        : await createProject(data);
+      setProjects(current => editing
+        ? current.map(project => project.project_id === editing.project_id ? saved : project)
+        : [...current, saved]);
+      dirty.current = false;
+      setFeedback(editing ? "Project updated successfully." : "Project created successfully.");
+      if (editing) { setEditing(saved); }
+      else {
+        formElement.reset();
+        setThumbnailUrl("");
+        setPictureUrls([]);
+      }
     } catch {
       setFailed(true);
-      setFeedback("Could not create the project. Your entries are preserved. Please try again.");
+      setFeedback("Could not save the project. Your entries are preserved. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -124,12 +172,28 @@ export default function InsertProjectPage() {
         h-full py-6 lg:py-10
         flex flex-col w-full">
 
-        <form className="flex flex-col w-full gap-10" onSubmit={handleOnSubmit}>
+        <section className="admin-section mb-8" aria-label="Manage projects">
+          <div className="admin-heading">
+            <h2>&gt; Projects</h2>
+            <button type="button" className="admin-action" disabled={saving || uploading} onClick={() => selectProject(null)}>[ + New project ]</button>
+          </div>
+          {loadingProjects && <p role="status">Loading projects...</p>}
+          {listError && <div role="alert"><p>{listError}</p><button type="button" className="admin-action" disabled={saving || uploading || loadingProjects} onClick={() => void loadProjects()}>[ Retry ]</button></div>}
+          {!loadingProjects && !listError && !projects.length && <p>No projects yet. Create one below.</p>}
+          <div className="admin-list">
+            {projects.map(project => <article className="admin-row" key={project.project_id}>
+              <div className="admin-row-copy"><h3>{project.project_name}</h3><p className="admin-muted">{project.project_status}</p></div>
+              <button type="button" className="admin-action" disabled={saving || uploading} onClick={() => selectProject(project)} aria-label={`Edit ${project.project_name}`}>[ Edit ]</button>
+            </article>)}
+          </div>
+        </section>
+        <form key={formVersion} className="flex flex-col w-full gap-10" onSubmit={handleOnSubmit} onChange={() => { dirty.current = true; }}>
+          <fieldset disabled={saving || uploading} className="flex min-w-0 flex-col gap-10">
 
           <section className="relative flex flex-col w-full h-fit min-h-20 gap-4">
 
             <div className="flex items-center justify-between">
-              <h2>&gt; New Project</h2>
+              <h2>&gt; {editing ? `Edit Project: ${editing.project_name}` : "New Project"}</h2>
 
             </div>
 
@@ -141,6 +205,7 @@ export default function InsertProjectPage() {
                 required
                 id="project_name"
                 name="project_name"
+                defaultValue={editing?.project_name || ""}
                 type="text"
                 placeholder="Book Vision TUI"
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
@@ -153,6 +218,7 @@ export default function InsertProjectPage() {
                 required
                 id="project_short_description"
                 name="project_short_description"
+                defaultValue={editing?.project_short_description || ""}
                 type="text"
                 placeholder="A terminal app that scans books and fetches their info using AI."
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
@@ -165,6 +231,7 @@ export default function InsertProjectPage() {
                 required
                 id="project_description"
                 name="project_description"
+                defaultValue={editing?.project_description || ""}
                 rows={6}
                 placeholder="Full project description..."
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground resize-y"
@@ -176,8 +243,10 @@ export default function InsertProjectPage() {
               <select
                 id="project_status"
                 name="project_status"
+                defaultValue={editing?.project_status || "draft"}
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
               >
+                {editing?.project_status && !["draft", "in_progress", "completed", "published", "archived"].includes(editing.project_status) && <option value={editing.project_status}>{editing.project_status}</option>}
                 <option value="draft">draft</option>
                 <option value="in_progress">in_progress</option>
                 <option value="completed">completed</option>
@@ -197,6 +266,7 @@ export default function InsertProjectPage() {
               <input
                 id="project_githubUrl"
                 name="project_githubUrl"
+                defaultValue={editing?.project_githubUrl || ""}
                 type="text"
                 placeholder="https://github.com/yion-dev/book-vision-tui"
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
@@ -208,22 +278,13 @@ export default function InsertProjectPage() {
               <input
                 id="project_liveUrl"
                 name="project_liveUrl"
+                defaultValue={editing?.project_liveUrl || ""}
                 type="text"
                 placeholder="https://bookvision.com"
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
               />
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label htmlFor="project_thumbnailUrl" className="text-xs text-zinc-400">[ Demo video URL ]</label>
-              <input
-                id="project_thumbnailUrl"
-                name="project_thumbnailUrl"
-                type="text"
-                placeholder="https://.../demo.mp4"
-                className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
-              />
-            </div>
           </section>
 
           {/* Media & tech */}
@@ -244,6 +305,7 @@ export default function InsertProjectPage() {
                 }}
               />
               {thumbnailUrl && <Image unoptimized src={thumbnailUrl} alt="Project thumbnail preview" width={800} height={450} className="mt-2 max-h-64 w-full object-contain object-left" />}
+              {thumbnailUrl && <button type="button" className="admin-action" onClick={() => { setThumbnailUrl(""); dirty.current = true; }}>[ Remove thumbnail ]</button>}
               <p className="admin-form-note">JPEG, PNG, WebP, GIF or AVIF · maximum 5 MB.</p>
             </div>
 
@@ -262,9 +324,9 @@ export default function InsertProjectPage() {
               />
               <p className="admin-form-note">Choose multiple images. Each image can be up to 5 MB.</p>
               {!!pictureUrls.length && <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {pictureUrls.map((url, index) => <div key={url} className="flex min-w-0 flex-col gap-1">
+                {pictureUrls.map((url, index) => <div key={`${url}-${index}`} className="flex min-w-0 flex-col gap-1">
                   <Image unoptimized src={url} alt={`Project picture ${index + 1} preview`} width={400} height={225} className="aspect-video w-full border border-zinc-700 bg-zinc-900 object-contain" />
-                  <button type="button" className="admin-action" disabled={uploading || saving} onClick={() => setPictureUrls(current => current.filter(item => item !== url))}>[ Remove ]</button>
+                  <button type="button" className="admin-action" disabled={uploading || saving} onClick={() => { setPictureUrls(current => current.filter((_, itemIndex) => itemIndex !== index)); dirty.current = true; }}>[ Remove ]</button>
                 </div>)}
               </div>}
             </div>
@@ -274,6 +336,7 @@ export default function InsertProjectPage() {
               <input
                 id="project_techstack"
                 name="project_techstack"
+                defaultValue={editing?.project_techstack?.join(", ") || ""}
                 type="text"
                 placeholder="Python, Textual, OpenCV, YOLO"
                 className="border px-3 py-2 bg-transparent text-sm lg:text-base outline-none focus:border-foreground"
@@ -288,13 +351,14 @@ export default function InsertProjectPage() {
             <Link href="/internal/manage/dashboard" className="admin-action">[ Cancel ]</Link>
             <button
               type="submit"
-              disabled={saving || uploading}
+              disabled={saving || uploading || loadingProjects}
               className="admin-action admin-primary"
             >
-              {saving ? "[ Creating... ]" : "[ Create project ]"}
+              {saving ? "[ Saving... ]" : editing ? "[ Save changes ]" : "[ Create project ]"}
             </button>
           </div>
 
+          </fieldset>
         </form>
 
       </Container>

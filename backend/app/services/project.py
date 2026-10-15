@@ -47,17 +47,20 @@ def post_project_create(ProjectObject: ProjectCreate, db: Session):
 
 def update_project_update(id: int, project: ProjectUpdate, db: Session):
     project_model = db.query(Project).filter(Project.project_id == id).first();
+    if project_model is None:
+        raise HTTPException(status_code=404, detail="Project Not Found")
     
     try:
-        for key, value in project.model_dump().items():
+        for key, value in project.model_dump(exclude_unset=True).items():
             setattr(project_model, key, value);
         
         db.commit();
         db.refresh(project_model); 
     except Exception as error:
+        db.rollback()
         raise HTTPException(status_code=500, detail=f"{type(error).__name__}: {str(error)}")
     
-    return project;
+    return project_model;
         
 def delete_project_remove(id: str, db: Session):
     converted = uuid.UUID(id)

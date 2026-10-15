@@ -6,7 +6,7 @@ import "./manage.css";
 
 const links = [
   ["Overview", "dashboard"],
-  ["New Project", "projects"],
+  ["Projects", "projects"],
   ["New Blog", "blogs"],
   ["Images", "images"],
   ["Visitors", "website-visitors"],
